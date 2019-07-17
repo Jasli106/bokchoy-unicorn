@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:EventDetailVC.swift">
-   </FileRef>
-   <FileRef
       location = "group:bokchoy-unicorn_project.xcodeproj">
    </FileRef>
    <FileRef
