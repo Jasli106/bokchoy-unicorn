@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class ProfileVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let userRef = Database.database().reference()
+        
+        userRef.child("users/username").setValue("user123")
     }
 
 

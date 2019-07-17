@@ -18,11 +18,6 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
-        //adding new username to database
-        self.ref.child("users").setValue(["username":"user123"])
-        
         print("Look, I'm not a dinosaur")
         
         /*
