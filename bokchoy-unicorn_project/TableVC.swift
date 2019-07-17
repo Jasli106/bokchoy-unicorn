@@ -23,7 +23,6 @@ class TableViewController: UITableViewController {
         //adding new username to database
         self.ref.child("users").setValue(["username":"user123"])
         
-        
         print("Hello World")
         
         
