@@ -10,6 +10,9 @@
 		AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */; };
 		AAB9573722CA92A600B293D3 /* TableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9573622CA92A600B293D3 /* TableVC.swift */; };
 		B9585E9A0CE6B35CFBD15F6F /* Pods_bokchoy_unicorn_project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */; };
+		DC00A3C222E26125000C6126 /* StartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C122E26125000C6126 /* StartVC.swift */; };
+		DC00A3C422E2615F000C6126 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C322E2615F000C6126 /* LoginVC.swift */; };
+		DC00A3C622E2617C000C6126 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C522E2617C000C6126 /* SignUpVC.swift */; };
 		DC2A4A1222C52E5400A8BB90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */; };
 		DC2A4A1422C52E5400A8BB90 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */; };
 		DC2A4A1722C52E5400A8BB90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC2A4A1522C52E5400A8BB90 /* Main.storyboard */; };
@@ -29,6 +32,9 @@
 		AAB9573622CA92A600B293D3 /* TableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableVC.swift; sourceTree = "<group>"; };
 		AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bokchoy_unicorn_project.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9D9BEDC9496EBA776518EE /* Pods-bokchoy-unicorn_project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.release.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.release.xcconfig"; sourceTree = "<group>"; };
+		DC00A3C122E26125000C6126 /* StartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartVC.swift; sourceTree = "<group>"; };
+		DC00A3C322E2615F000C6126 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		DC00A3C522E2617C000C6126 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		DC2A4A0E22C52E5400A8BB90 /* bokchoy-unicorn_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bokchoy-unicorn_project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
@@ -96,6 +102,9 @@
 				AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */,
 				DC2A4A1822C52E5800A8BB90 /* Assets.xcassets */,
 				DC2A4A1522C52E5400A8BB90 /* Main.storyboard */,
+				DC00A3C122E26125000C6126 /* StartVC.swift */,
+				DC00A3C322E2615F000C6126 /* LoginVC.swift */,
+				DC00A3C522E2617C000C6126 /* SignUpVC.swift */,
 				DC2A4A1A22C52E5800A8BB90 /* LaunchScreen.storyboard */,
 				DC2A4A1D22C52E5800A8BB90 /* Info.plist */,
 				DCCD1CD422C8F0BF00C36BAE /* GoogleService-Info.plist */,
@@ -228,11 +237,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC00A3C422E2615F000C6126 /* LoginVC.swift in Sources */,
 				DCB003CA22C88CE7001993B7 /* GigsVC.swift in Sources */,
 				DCB003CC22C88D43001993B7 /* HomeVC.swift in Sources */,
 				DC2A4A1422C52E5400A8BB90 /* ProfileVC.swift in Sources */,
+				DC00A3C622E2617C000C6126 /* SignUpVC.swift in Sources */,
 				AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */,
 				AAB9573722CA92A600B293D3 /* TableVC.swift in Sources */,
+				DC00A3C222E26125000C6126 /* StartVC.swift in Sources */,
 				DCB003CE22C88D63001993B7 /* MessagesVC.swift in Sources */,
 				DCB003D622C89499001993B7 /* TabBarController.swift in Sources */,
 				DC2A4A1222C52E5400A8BB90 /* AppDelegate.swift in Sources */,

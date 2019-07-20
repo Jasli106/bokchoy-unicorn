@@ -11,5 +11,6 @@ target 'bokchoy-unicorn_project' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
 
 end
