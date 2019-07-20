@@ -26,7 +26,7 @@ class SignUpVC: UIViewController {
     //Sign up new user
     @IBAction func signupAction(sender:UIButton) {
         
-        //Check passwords match
+        //Check if passwords match
         if password.text != passwordConfirm.text {
             //If not, show alert
             let alertController = UIAlertController(title: "Password Incorrect", message: "Please re-type password", preferredStyle: .alert)
