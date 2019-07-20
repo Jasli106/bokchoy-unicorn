@@ -14,11 +14,18 @@ class TableViewController: UITableViewController {
     //creating database reference for TableVC class
     var ref: DatabaseReference!
     
+    //var events = [DataSnapshot].self
+    
+    var events = [
+        ["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
+        ["title": "Jam Session", "time": "16:20", "text": "Meet community members and have fun!"],
+        ["title": "Open mic", "time": "noon", "text": "Good musicians preffered, but all are welcome."],
+        ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]
+    ]
+    
     //Loading 1st time app opens
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print("Look, I'm not a dinosaur")
         
         /*
         //general structure for future creating table from database
@@ -26,7 +33,7 @@ class TableViewController: UITableViewController {
             //(eachEvent is a dictionary)
             events.append(eachEvent)
          */
-    
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -44,17 +51,28 @@ class TableViewController: UITableViewController {
         //call
        // events.append(Variables.newEvent)
         //fetch_data()
-        print(events)
+        
+        /*
+        //future code to hopefully update table according to database
+        let eventsRef = Database.database().reference()
+        
+        // Listen for new comments in the Firebase database
+        eventsRef.observe(.childAdded, with: { (snapshot) -> Void in
+        self.events.append(snapshot)
+        self.tableView.insertRows(at: [IndexPath(row: self.events.count-1, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
+        })
+        // Listen for deleted comments in the Firebase database
+        eventsRef.observe(.childRemoved, with: { (snapshot) -> Void in
+        let index = self.indexOfEvent(snapshot)
+        self.events.remove(at: index)
+        self.tableView.deleteRows(at: [IndexPath(row: index, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
+        })
+        */
+ 
+        
         tableView.reloadData()
     }
- 
-
-    var events = [
-        ["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
-        ["title": "Jam Session", "time": "16:20", "text": "Meet community members and have fun!"],
-        ["title": "Open mic", "time": "noon", "text": "Good musicians preffered, but all are welcome."],
-        ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]
-    ]
+    
     
     
     // MARK: - Table view data source
@@ -77,10 +95,10 @@ class TableViewController: UITableViewController {
         
     
         // title cell text
-        cell.textLabel?.text = events[indexPath.row]["title"]
+        cell.textLabel?.text = events[indexPath.row]["title"] as? String
         
         // detail cell text
-        cell.detailTextLabel?.text = events[indexPath.row]["time"]
+        cell.detailTextLabel?.text = events[indexPath.row]["time"] as? String
         
         return cell
     }

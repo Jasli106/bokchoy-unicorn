@@ -20,6 +20,14 @@ class EventDetailVC: UIViewController {
     //recieving eventData from TableVC as a dictionary
     public var eventData : Dictionary<String, Any> = [:]
     
+    /*
+     //may be useful later to pull event details from database
+    refHandle = postRef.observe(DataEventType.value, with: { (snapshot) in
+    let postDict = snapshot.value as? [String : AnyObject] ?? [:]
+    // ...
+    })
+    */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
