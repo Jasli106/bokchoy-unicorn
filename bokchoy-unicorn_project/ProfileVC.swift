@@ -12,13 +12,15 @@ import FirebaseAuth
 
 class ProfileVC: UIViewController {
     
-    //Objects
+    //Objects    
     
     
     var user: User!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tabBarController?.tabBar.isHidden = false
         
         //Store user ID in Firebase
         let ref = Database.database().reference()
@@ -27,6 +29,7 @@ class ProfileVC: UIViewController {
         ref.child("users").child(self.user.uid).setValue("TempValue")
     }
 
+    
     //Logout button
     @IBAction func logOutAction(sender: UIButton) {
         //Sign out on Firebase
@@ -42,6 +45,7 @@ class ProfileVC: UIViewController {
         let initial = storyboard.instantiateInitialViewController()
         UIApplication.shared.keyWindow?.rootViewController = initial
     }
+    
 
 
 }
