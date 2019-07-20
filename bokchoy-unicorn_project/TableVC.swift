@@ -14,6 +14,7 @@ class TableViewController: UITableViewController {
     //creating database reference for TableVC class
     var ref: DatabaseReference!
     
+    
     //var events = [DataSnapshot].self
     
     var events = [
@@ -52,26 +53,33 @@ class TableViewController: UITableViewController {
        // events.append(Variables.newEvent)
         //fetch_data()
         
-      /*
+      
         //future code to hopefully update table according to database
-        let eventsRef : Dictionary<String, Any> = Database.database().reference()
+        //let eventsRef : Dictionary<String, Any> = Database.database().reference()
         
+        /*
         // Listen for new comments in the Firebase database
         eventsRef.observe(.childAdded, with: { (snapshot) -> Void in
-        self.events.append(snapshot)
-        self.tableView.insertRows(at: [IndexPath(row: self.events.count-1, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
+            self.events.append(snapshot)
+            self.tableView.insertRows(at: [IndexPath(row: self.events.count-1, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
         })
         // Listen for deleted comments in the Firebase database
         eventsRef.observe(.childRemoved, with: { (snapshot) -> Void in
-        let index = self.indexOfEvent(snapshot)
-        self.events.remove(at: index)
+            let index = self.indexOfEvent(snapshot)
+            self.events.remove(at: index)
         self.tableView.deleteRows(at: [IndexPath(row: index, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
         })
         */
- 
-        
+        /*
+        var eventsRef = ref.child("events")
+        for DataSnapshotChild in eventsRef as Dictionary<String, [Any?]> {
+            events.append(DataSnapshot)
+        }
+        */
         tableView.reloadData()
     }
+    
+
     
     
     
