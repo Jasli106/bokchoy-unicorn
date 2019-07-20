@@ -52,9 +52,9 @@ class TableViewController: UITableViewController {
        // events.append(Variables.newEvent)
         //fetch_data()
         
-        /*
+      /*
         //future code to hopefully update table according to database
-        let eventsRef = Database.database().reference()
+        let eventsRef : Dictionary<String, Any> = Database.database().reference()
         
         // Listen for new comments in the Firebase database
         eventsRef.observe(.childAdded, with: { (snapshot) -> Void in
