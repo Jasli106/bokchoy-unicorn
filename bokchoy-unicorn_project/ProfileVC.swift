@@ -10,12 +10,24 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class ProfileVC: UIViewController {
+
+
+class ProfileVC: UIViewController, KeepProfileInfoDelegate {
     
-    //Objects    
+    //Objects
+    @IBOutlet weak var nameLabel: UILabel!
     
     
+    //Variables
     var user: User!
+    var nameLabelText: String!
+    
+    
+    //Delegate functions
+    func transferInfo(text: String) {
+        nameLabelText = text
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +39,10 @@ class ProfileVC: UIViewController {
         user = Auth.auth().currentUser
         
         ref.child("users").child(self.user.uid).setValue("TempValue")
+        
+        nameLabel.text = nameLabelText
+        
     }
-
     
     //Logout button
     @IBAction func logOutAction(sender: UIButton) {

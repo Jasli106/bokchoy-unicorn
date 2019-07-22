@@ -8,6 +8,11 @@
 
 import UIKit
 
+//Protocol
+protocol KeepProfileInfoDelegate: AnyObject {
+    func transferInfo(text: String)
+}
+
 class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     
     //Objects
@@ -19,10 +24,16 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     @IBOutlet weak var bioField: UITextField!
     @IBOutlet weak var contactButton: UIButton!
     
+    //Variables
+    var delegate: KeepProfileInfoDelegate?
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        self.delegate = ProfileVC()
         
         //Setting nav bar programmatically because XCode is stupid
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style:   UIBarButtonItem.Style.plain, target: self, action: #selector(cancelEditing))
@@ -37,7 +48,11 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     
     //Going back to profile screen after done
     @objc func doneEditing() {
+        var textValue: String
+        textValue = nameField.text ?? ""
+        delegate?.transferInfo(text: textValue)
         self.navigationController?.popViewController(animated: true)
+        
     }
     
 }

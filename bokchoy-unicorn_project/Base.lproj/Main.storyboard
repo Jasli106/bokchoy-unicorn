@@ -155,7 +155,7 @@
                         <outlet property="genderPicker" destination="BCE-2A-KT0" id="BkB-oh-Flt"/>
                         <outlet property="instrumentsField" destination="9u2-2H-Jwu" id="CZl-2Y-GML"/>
                         <outlet property="nameField" destination="cQO-65-rGS" id="fhr-wq-nMg"/>
-                        <outlet property="profilePicButton" destination="z4H-eK-88N" id="Npk-Ep-B3q"/>
+                        <outlet property="profilePicButton" destination="z4H-eK-88N" id="Ocx-3E-IR4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeH-kg-sKo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -269,6 +269,9 @@
                         <viewLayoutGuide key="safeArea" id="1bo-T2-lr9"/>
                     </view>
                     <navigationItem key="navigationItem" id="lP6-9Q-m41"/>
+                    <connections>
+                        <outlet property="nameLabel" destination="G04-ea-9y0" id="GCg-af-RW0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uah-fZ-JJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -817,7 +820,6 @@
         <!--Profile-->
         <scene sceneID="lxV-pW-XuI">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gSp-K7-8nF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yZh-e8-Evg" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="mfg-TO-3p3"/>
                     <toolbarItems/>
@@ -830,6 +832,7 @@
                         <segue destination="RXJ-VN-2uK" kind="relationship" relationship="rootViewController" id="0YV-iv-1YH"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gSp-K7-8nF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="317.60000000000002" y="-815.02463054187194"/>
         </scene>
