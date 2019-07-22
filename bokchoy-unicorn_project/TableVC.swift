@@ -13,18 +13,6 @@ class TableViewController: UITableViewController {
     
     //creating database reference for TableVC class
     var ref: DatabaseReference!
-    /*
-    ref.child("events").observeEventType(of: .value, with: { (snapshot) in
-        if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
-    
-            for snap in snapshots{
-                print(snap)
-            }
-        }
-    })
- */
-    
-    //var events = [DataSnapshot].self
     
     var events = [
         ["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
@@ -44,19 +32,6 @@ class TableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        /*
-        var eventThingie: DataSnapshot.Type { get {
-            let snap = childSnapshot(forPath: "events")
-            return snap
-            }}
-        print("SNAPSHOT HERE", eventThingie.keyPathsForValuesAffectingValue(forKey: String))
-        print("eventthingie type is: ",type(of: eventThingie))
-        
-        let eventStuff = [eventThingie]
-        
-        print("eventStuff is here: ", eventStuff)
-        */
-        
         let refEvents = Database.database().reference().child("events");
         
         //observing the data changes
@@ -66,7 +41,7 @@ class TableViewController: UITableViewController {
             if snapshot.childrenCount > 0 {
                 
                 //clearing the list
-                //self.events.removeAll()
+                self.events.removeAll()
                 
                 //iterating through all the values
                 for events in snapshot.children.allObjects as! [DataSnapshot] {
@@ -74,12 +49,12 @@ class TableViewController: UITableViewController {
                     //getting values
                     let eventObject = events.value as? [String: AnyObject]
                     
-                    let eventTitle  = eventObject?["title"]
-                    //let eventText  = eventObject?["text"]
-                    let eventTime = eventObject?["time"]
+                    let eventTitle  = eventObject?["title"] as! String?
+                    //let eventText  = eventObject?["text"] as! String?
+                    let eventTime = eventObject?["time"] as! String?
                     
                     //creating event object with model and fetched values
-                    let event = ["title": eventTitle as! String?, "time": eventTime as! String?]
+                    let event = ["title": eventTitle, "time": eventTime]
                     
                     //appending it to list
                     self.events.append(event as! [String : String])
@@ -91,8 +66,6 @@ class TableViewController: UITableViewController {
             }
         })
         
-        //let events = childSnapshot(forPath: "event/events").forEach{($0)}
-        
     }
    
 
@@ -102,9 +75,6 @@ class TableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //call
-       // events.append(Variables.newEvent)
-        //fetch_data()
         
       
         //future code to hopefully update table according to database
@@ -125,38 +95,8 @@ class TableViewController: UITableViewController {
         */
         
         
-       // let eventsRef = childSnapshot(forPath: "events")
-       // events.append(eventsRef)
-    
-    
-        
-        //let eventsRef = childSnapshot(forPath: "events")
-        //let events = childSnapshot(forPath: "event/events").map{($0)}
-        
-        //tableView.reloadData()
+        self.tableView.reloadData()
     }
-    
-    
-    //Gets a FIRDataSnapshot for the location at the specified relative path.
-    //The relative path can either be a simple child key (e.g. ‘fred’) or a deeper slash-separated path (e.g. ‘fred/name/first’).
-    //If child location has no data, an empty FIRDataSnapshot is returned.
-    func childSnapshot(forPath childPathString: String) -> DataSnapshot.Type{
-        return DataSnapshot.self
-    }
-/*
-    ref.child("events").observe(.value, with: { (snapshot) in
-    
-        var events = snapshot.value as! [String:AnyObject]
-    
-        for event in events  {
-    
-            self.events.append(event)
-            self.tableView.reloadData()
-    
-            }
-        }
-    })*/
-
     
     
     // MARK: - Table view data source
