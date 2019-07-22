@@ -13,7 +13,16 @@ class TableViewController: UITableViewController {
     
     //creating database reference for TableVC class
     var ref: DatabaseReference!
+    /*
+    ref.child("events").observeEventType(of: .value, with: { (snapshot) in
+        if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
     
+            for snap in snapshots{
+                print(snap)
+            }
+        }
+    })
+ */
     
     //var events = [DataSnapshot].self
     
@@ -28,23 +37,67 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /*
-        //general structure for future creating table from database
-         for eachEvent in database:
-            //(eachEvent is a dictionary)
-            events.append(eachEvent)
-         */
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        /*
+        var eventThingie: DataSnapshot.Type { get {
+            let snap = childSnapshot(forPath: "events")
+            return snap
+            }}
+        print("SNAPSHOT HERE", eventThingie.keyPathsForValuesAffectingValue(forKey: String))
+        print("eventthingie type is: ",type(of: eventThingie))
+        
+        let eventStuff = [eventThingie]
+        
+        print("eventStuff is here: ", eventStuff)
+        */
+        
+        let refEvents = Database.database().reference().child("events");
+        
+        //observing the data changes
+        refEvents.observe(DataEventType.value, with: { (snapshot) in
+            
+            //if the reference have some values
+            if snapshot.childrenCount > 0 {
+                
+                //clearing the list
+                //self.events.removeAll()
+                
+                //iterating through all the values
+                for events in snapshot.children.allObjects as! [DataSnapshot] {
+                    
+                    //getting values
+                    let eventObject = events.value as? [String: AnyObject]
+                    
+                    let eventTitle  = eventObject?["title"]
+                    //let eventText  = eventObject?["text"]
+                    let eventTime = eventObject?["time"]
+                    
+                    //creating event object with model and fetched values
+                    let event = ["title": eventTitle as! String?, "time": eventTime as! String?]
+                    
+                    //appending it to list
+                    self.events.append(event as! [String : String])
+                    
+                    print(self.events)
+                }
+                //reloading the tableview
+                self.tableView.reloadData()
+            }
+        })
+        
+        //let events = childSnapshot(forPath: "event/events").forEach{($0)}
+        
     }
+   
 
     //call self.tableView.reloadData() to reset table contents
-    @objc func reloadData() {
+    func reloadData() {
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,17 +123,40 @@ class TableViewController: UITableViewController {
         self.tableView.deleteRows(at: [IndexPath(row: index, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
         })
         */
-        /*
-        var eventsRef = ref.child("events")
-        for DataSnapshotChild in eventsRef as Dictionary<String, [Any?]> {
-            events.append(DataSnapshot)
-        }
-        */
-        tableView.reloadData()
+        
+        
+       // let eventsRef = childSnapshot(forPath: "events")
+       // events.append(eventsRef)
+    
+    
+        
+        //let eventsRef = childSnapshot(forPath: "events")
+        //let events = childSnapshot(forPath: "event/events").map{($0)}
+        
+        //tableView.reloadData()
     }
     
-
     
+    //Gets a FIRDataSnapshot for the location at the specified relative path.
+    //The relative path can either be a simple child key (e.g. ‘fred’) or a deeper slash-separated path (e.g. ‘fred/name/first’).
+    //If child location has no data, an empty FIRDataSnapshot is returned.
+    func childSnapshot(forPath childPathString: String) -> DataSnapshot.Type{
+        return DataSnapshot.self
+    }
+/*
+    ref.child("events").observe(.value, with: { (snapshot) in
+    
+        var events = snapshot.value as! [String:AnyObject]
+    
+        for event in events  {
+    
+            self.events.append(event)
+            self.tableView.reloadData()
+    
+            }
+        }
+    })*/
+
     
     
     // MARK: - Table view data source
@@ -90,7 +166,7 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events.count
+        return self.events.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -103,10 +179,10 @@ class TableViewController: UITableViewController {
         
     
         // title cell text
-        cell.textLabel?.text = events[indexPath.row]["title"] as? String
+        cell.textLabel?.text = self.events[indexPath.row]["title"]
         
         // detail cell text
-        cell.detailTextLabel?.text = events[indexPath.row]["time"] as? String
+        cell.detailTextLabel?.text = self.events[indexPath.row]["time"]
         
         return cell
     }
@@ -114,7 +190,7 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        performSegue(withIdentifier: "Segue", sender: self)
+        self.performSegue(withIdentifier: "Segue", sender: self)
         
     }
     
@@ -172,9 +248,9 @@ class TableViewController: UITableViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? EventDetailVC,
-            let index = tableView.indexPathForSelectedRow?.row {
+            let index = self.tableView.indexPathForSelectedRow?.row {
             
-            viewController.eventData = events[index]
+            viewController.eventData = self.events[index]
     
         }
         

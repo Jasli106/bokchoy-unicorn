@@ -54,7 +54,7 @@ class NewVC: UIViewController {
         
         let eventRef = Database.database().reference()
         
-        let eventIDNumber = "101"
+        let eventIDNumber = "102"
         
         let eventID = "events/event"+eventIDNumber
         eventRef.child(eventID).setValue(newEvent){
