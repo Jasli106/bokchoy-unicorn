@@ -14,6 +14,7 @@ class TableViewController: UITableViewController {
     //creating database reference for TableVC class
     var ref: DatabaseReference!
     
+    //hardcoded events filler
     var events = [
         ["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
         ["title": "Jam Session", "time": "16:20", "text": "Meet community members and have fun!"],
@@ -32,7 +33,7 @@ class TableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        let refEvents = Database.database().reference().child("events");
+        let refEvents = Database.database().reference().child("events")
         
         //observing the data changes
         refEvents.observe(DataEventType.value, with: { (snapshot) in
@@ -50,16 +51,14 @@ class TableViewController: UITableViewController {
                     let eventObject = events.value as? [String: AnyObject]
                     
                     let eventTitle  = eventObject?["title"] as! String?
-                    //let eventText  = eventObject?["text"] as! String?
+                    let eventText  = eventObject?["text"] as! String?
                     let eventTime = eventObject?["time"] as! String?
                     
                     //creating event object with model and fetched values
-                    let event = ["title": eventTitle, "time": eventTime]
+                    let event = ["title": eventTitle, "time": eventTime, "text": eventText]
                     
                     //appending it to list
                     self.events.append(event as! [String : String])
-                    
-                    print(self.events)
                 }
                 //reloading the tableview
                 self.tableView.reloadData()

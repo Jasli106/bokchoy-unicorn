@@ -51,13 +51,11 @@ class NewVC: UIViewController {
             "text" : "cats allowed"
         ]
         
-        
-        let eventRef = Database.database().reference()
-        
-        let eventIDNumber = "102"
-        
-        let eventID = "events/event"+eventIDNumber
-        eventRef.child(eventID).setValue(newEvent){
+        //referencing "events" in database
+        let refEvents = Database.database().reference().child("events")
+    
+        //adding newEvent to database with automatically assigned unique ID
+        refEvents.childByAutoId().setValue(newEvent){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("Data could not be saved: \(error).")
