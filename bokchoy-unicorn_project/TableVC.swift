@@ -21,7 +21,8 @@ class TableViewController: UITableViewController {
         ["title": "Open mic", "time": "noon", "text": "Good musicians preffered, but all are welcome."],
         ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]
     ]
-    
+
+ 
     //Loading 1st time app opens
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,11 +52,11 @@ class TableViewController: UITableViewController {
                     let eventObject = events.value as? [String: AnyObject]
                     
                     let eventTitle  = eventObject?["title"] as! String?
-                    let eventText  = eventObject?["text"] as! String?
+                    let eventDetails  = eventObject?["details"] as! String?
                     let eventTime = eventObject?["time"] as! String?
                     
                     //creating event object with model and fetched values
-                    let event = ["title": eventTitle, "time": eventTime, "text": eventText]
+                    let event = ["title": eventTitle, "time": eventTime, "details": eventDetails]
                     
                     //appending it to list
                     self.events.append(event as! [String : String])

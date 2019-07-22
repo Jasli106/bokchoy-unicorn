@@ -707,7 +707,10 @@
                     <tabBarItem key="tabBarItem" title="New" id="Yz8-cg-AOI"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="detailsTextField" destination="dwZ-7c-6d0" id="LRr-uJ-1vu"/>
                         <outlet property="postButton" destination="Bxb-R6-PFr" id="qVz-Ph-8ho"/>
+                        <outlet property="timeTextField" destination="Lyb-oA-2vq" id="cxs-l7-nQr"/>
+                        <outlet property="titleTextField" destination="HIX-Qx-lNq" id="LAK-ec-BQj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7o-MT-bo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -734,7 +737,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WZq-B1-rld"/>
         <segue reference="gLw-fN-qwe"/>
     </inferredMetricsTieBreakers>
 </document>
