@@ -565,13 +565,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="location"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="pricing, info, URL, social media, etc." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-7c-6d0" userLabel="Description Scroll View">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="pricing, info, URL, social media, etc." translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-7c-6d0" userLabel="Description Scroll View">
                                 <rect key="frame" x="25" y="258" width="325" height="55"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="dwZ-7c-6d0" secondAttribute="height" multiplier="65:11" priority="750" id="dd7-PP-hjT"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bK4-j2-RQU">

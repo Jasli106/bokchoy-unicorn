@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 class TableViewController: UITableViewController {
     
-    //creating database reference for TableVC class
+    //creating database reference
     var ref: DatabaseReference!
     
     //hardcoded events filler

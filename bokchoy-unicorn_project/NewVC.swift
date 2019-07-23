@@ -13,9 +13,7 @@ class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
     
     @IBOutlet weak var titleTextField: UITextField!
-    
     @IBOutlet weak var timeTextField: UITextField!
-    
     @IBOutlet weak var detailsTextField: UITextView!
     
     // public var events : Array<Dictionary<String, Any>> = []
@@ -23,10 +21,11 @@ class NewVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        print("user is named ",NSUserName())
     }
     
     //clicking "post" button will postEvent()
-    //postEvent() makes userInput into newEvent (dict), adds newEvent to events (list), and forces Home table to reload
+    //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
     @IBAction func postEvent(_ sender: Any) {
         
         /*
@@ -51,15 +50,24 @@ class NewVC: UIViewController {
         let newEvent = [
             "title" : titleTextField.text!,
             "time" : timeTextField.text!,
-            "details" : detailsTextField.text!
+            "details" : detailsTextField.text!,
+            //NSUserName() as of yet does not return anything
+            //NSUserName() should return logon name of the current user as String
+            "author" : NSUserName()
             ] as [String : Any]
         
+        
+        var necessaryTextFields = newEvent
+        //removing traits that are not necessary for posting
+        necessaryTextFields.removeValue(forKey: "author")
+        
         //checking if any textfields were left blank
-        for textField in newEvent.values {
+        for textField in necessaryTextFields.values {
+            
             //if a textfield is blank...
             if (textField as! String).isEmpty {
                 
-                //if a textfield is blank, show alert
+                //alert user
                 let alertController = UIAlertController(title: "Text fields are empty", message: "Please add more information", preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
@@ -79,14 +87,12 @@ class NewVC: UIViewController {
             if let error = error {
                 print("Data could not be saved: \(error).")
             } else {
+                //if no error, alerts user that post was successful
                 let alertController = UIAlertController(title: "Posted!", message: "Data saved successfully", preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             }
         }
-        
-        
     }
-    
 }
