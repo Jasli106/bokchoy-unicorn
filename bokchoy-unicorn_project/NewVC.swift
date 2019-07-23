@@ -20,27 +20,16 @@ class NewVC: UIViewController {
     
     // public var events : Array<Dictionary<String, Any>> = []
     
+    let dateFormatter = DateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view
+        
     }
     
-    @IBAction func timeSelected() {
-        //Time stuff
-        /*let calendar = Calendar.
-        let comp = calendar.dateComponents([.hour, .minute], from: Date())
-        let hour = comp.hour
-        let minute = comp.minute*/
-        
-        let calendar = startTimePicker.calendar
-        let comp = calendar?.dateComponents([.hour, .minute], from: Date())
-        let hour = comp?.hour
-        let minute = comp?.minute
-        
-        print(hour)
-        print(minute)
-        
-    }
+    
+    //Convert times to time zone of poster + store in database as that time
 
     //clicking "post" button will postEvent()
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
@@ -70,7 +59,7 @@ class NewVC: UIViewController {
             "title" : titleTextField.text!,
             //time picker stuff
             "start date" : startTimePicker.date,
-            "start time" : "enter start time here",
+            //"start time" : 3,
             "end time" : "enter end time here",
             "details" : detailsTextField.text!,
             
@@ -82,6 +71,9 @@ class NewVC: UIViewController {
         var necessaryTextFields = newEvent
         //removing traits that are not necessary for posting
         necessaryTextFields.removeValue(forKey: "author")
+        necessaryTextFields.removeValue(forKey: "start date")
+        necessaryTextFields.removeValue(forKey: "start time")
+        necessaryTextFields.removeValue(forKey: "end time")
         
         //checking if any textfields were left blank
         for textField in necessaryTextFields.values {
