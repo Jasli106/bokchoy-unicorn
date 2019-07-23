@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
@@ -21,7 +22,6 @@ class NewVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("user is named ",NSUserName())
     }
     
     //clicking "post" button will postEvent()
@@ -45,16 +45,17 @@ class NewVC: UIViewController {
         
         //coding newEvent based on user input in text fields
         
+        let user = Auth.auth().currentUser?.uid
         
         
         let newEvent = [
             "title" : titleTextField.text!,
             "time" : timeTextField.text!,
             "details" : detailsTextField.text!,
-            //NSUserName() as of yet does not return anything
-            //NSUserName() should return logon name of the current user as String
-            "author" : NSUserName()
+            
+            "author" : user!
             ] as [String : Any]
+        
         
         
         var necessaryTextFields = newEvent
