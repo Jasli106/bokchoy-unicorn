@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 //Protocol
 protocol KeepProfileInfoDelegate: AnyObject {
-    func transferInfo(text: String)
+    func transferInfo(data: String)
 }
 
 class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
@@ -26,6 +27,8 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     
     //Variables
     var delegate: KeepProfileInfoDelegate?
+    
+    let ref = Database.database().reference()
     
 
     
@@ -50,9 +53,8 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     @objc func doneEditing() {
         var textValue: String
         textValue = nameField.text ?? ""
-        delegate?.transferInfo(text: textValue)
         self.navigationController?.popViewController(animated: true)
-        
+        delegate?.transferInfo(data: textValue)
     }
     
 }

@@ -12,7 +12,7 @@ import FirebaseAuth
 
 
 
-class ProfileVC: UIViewController, KeepProfileInfoDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileInfoDelegate {
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
@@ -20,29 +20,37 @@ class ProfileVC: UIViewController, KeepProfileInfoDelegate {
     
     //Variables
     var user: User!
-    var nameLabelText: String!
+    //var nameLabelText: String!
+    
+    let ref = Database.database().reference()
+    var databaseHandle: DatabaseHandle?
     
     
     //Delegate functions
-    func transferInfo(text: String) {
-        nameLabelText = text
+    func transferInfo(data: String) {
+        ref.child("users").child(self.user.uid).setValue(data)
+        //nameLabelText = data
+        //print(nameLabelText as String)
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tabBarController?.tabBar.isHidden = false
         
         //Store user ID in Firebase
-        let ref = Database.database().reference()
         user = Auth.auth().currentUser
-        
-        ref.child("users").child(self.user.uid).setValue("TempValue")
-        
-        nameLabel.text = nameLabelText
-        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //print(nameLabelText ?? "...")
+        databaseHandle = ref.child("users").child(self.user.uid).observe(.value) { (snapshot) in
+            let username = snapshot.value as! String ?? ""
+            self.nameLabel.text = username
+        }
+    }
+    
     
     //Logout button
     @IBAction func logOutAction(sender: UIButton) {
@@ -60,7 +68,5 @@ class ProfileVC: UIViewController, KeepProfileInfoDelegate {
         UIApplication.shared.keyWindow?.rootViewController = initial
     }
     
-
-
 }
 

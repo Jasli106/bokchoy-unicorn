@@ -213,6 +213,9 @@
                                 <rect key="frame" x="259" y="286" width="100" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Contact"/>
+                                <connections>
+                                    <action selector="updateInfo" destination="RXJ-VN-2uK" eventType="touchUpInside" id="w2x-SE-nq7"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DxX-lz-YI2" userLabel="Videos Collection View">
                                 <rect key="frame" x="14" y="346" width="345" height="120"/>
