@@ -20,7 +20,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     
     //Variables
     var user: User!
-    //var nameLabelText: String!
+    var nameLabelText: String!
     
     let ref = Database.database().reference()
     var databaseHandle: DatabaseHandle?
@@ -28,8 +28,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     
     //Delegate functions
     func transferInfo(data: String) {
-        ref.child("users").child(self.user.uid).setValue(data)
-        //nameLabelText = data
+        let delegateRef = Database.database().reference()
+        delegateRef.child("users").child(self.user.uid).setValue(data)
         //print(nameLabelText as String)
     }
     
