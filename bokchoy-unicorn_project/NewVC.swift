@@ -14,8 +14,9 @@ class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
     
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var detailsTextField: UITextView!
+    @IBOutlet weak var startTimePicker: UIDatePicker!
+    @IBOutlet weak var endTimePicker: UIDatePicker!
     
     // public var events : Array<Dictionary<String, Any>> = []
     
@@ -24,6 +25,23 @@ class NewVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func timeSelected() {
+        //Time stuff
+        /*let calendar = Calendar.
+        let comp = calendar.dateComponents([.hour, .minute], from: Date())
+        let hour = comp.hour
+        let minute = comp.minute*/
+        
+        let calendar = startTimePicker.calendar
+        let comp = calendar?.dateComponents([.hour, .minute], from: Date())
+        let hour = comp?.hour
+        let minute = comp?.minute
+        
+        print(hour)
+        print(minute)
+        
+    }
+
     //clicking "post" button will postEvent()
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
     @IBAction func postEvent(_ sender: Any) {
@@ -50,7 +68,10 @@ class NewVC: UIViewController {
         
         let newEvent = [
             "title" : titleTextField.text!,
-            "time" : timeTextField.text!,
+            //time picker stuff
+            "start date" : startTimePicker.date,
+            "start time" : "enter start time here",
+            "end time" : "enter end time here",
             "details" : detailsTextField.text!,
             
             "author" : user!
