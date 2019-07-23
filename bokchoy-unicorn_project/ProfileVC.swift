@@ -20,7 +20,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     
     //Variables
     var user: User!
-    var nameLabelText: String!
+    var nameLabelText: String! //Supposed to be variable to store data in but it doesn't work
     
     let ref = Database.database().reference()
     var databaseHandle: DatabaseHandle?
@@ -28,8 +28,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     
     //Delegate functions
     func transferInfo(data: String) {
-        let delegateRef = Database.database().reference()
-        delegateRef.child("users").child(self.user.uid).setValue(data)
+        //let delegateRef = Database.database().reference()
+        //delegateRef.child("users").child(self.user.uid).setValue(data)
         //print(nameLabelText as String)
     }
     
@@ -41,15 +41,18 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
         
         //Store user ID in Firebase
         user = Auth.auth().currentUser
+        
+        //New code under here
+        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    /*override func viewDidAppear(_ animated: Bool) {
         //print(nameLabelText ?? "...")
-        databaseHandle = ref.child("users").child(self.user.uid).observe(.value) { (snapshot) in
+        /*databaseHandle = ref.child("users").child(self.user.uid).observe(.value) { (snapshot) in
             let username = snapshot.value as! String ?? ""
             self.nameLabel.text = username
-        }
-    }
+        }*/
+    }*/
     
     
     //Logout button
