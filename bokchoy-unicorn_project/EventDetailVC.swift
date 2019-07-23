@@ -34,7 +34,7 @@ class EventDetailVC: UIViewController {
         //Customizing labels to eventData
         titleLabel.text = eventData["title"] as? String
         timeLabel.text = "time: \(eventData["time"] as! String)"
-        detailLabel.text = eventData["text"] as? String
+        detailLabel.text = eventData["details"] as? String
     }
     
     //@IBAction func interested(_ sender: Any) {

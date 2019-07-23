@@ -340,6 +340,7 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
+                            <outlet property="dataSource" destination="mu2-ay-fhg" id="GAH-u4-hw8"/>
                             <outlet property="delegate" destination="mu2-ay-fhg" id="LeQ-1k-vtc"/>
                         </connections>
                     </tableView>
@@ -653,13 +654,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="location"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="pricing, info, URL, social media, etc." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-7c-6d0" userLabel="Description Scroll View">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="pricing, info, URL, social media, etc." translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-7c-6d0" userLabel="Description Scroll View">
                                 <rect key="frame" x="25" y="258" width="325" height="55"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="dwZ-7c-6d0" secondAttribute="height" multiplier="65:11" priority="750" id="dd7-PP-hjT"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bK4-j2-RQU">
@@ -795,7 +796,10 @@
                     <tabBarItem key="tabBarItem" title="New" id="Yz8-cg-AOI"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="detailsTextField" destination="dwZ-7c-6d0" id="LRr-uJ-1vu"/>
                         <outlet property="postButton" destination="Bxb-R6-PFr" id="qVz-Ph-8ho"/>
+                        <outlet property="timeTextField" destination="Lyb-oA-2vq" id="cxs-l7-nQr"/>
+                        <outlet property="titleTextField" destination="HIX-Qx-lNq" id="LAK-ec-BQj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7o-MT-bo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -841,6 +845,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7Sg-jO-rU3"/>
+        <segue reference="gLw-fN-qwe"/>
     </inferredMetricsTieBreakers>
 </document>

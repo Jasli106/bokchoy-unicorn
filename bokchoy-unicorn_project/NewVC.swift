@@ -12,21 +12,21 @@ import FirebaseDatabase
 class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
     
-   // public var events : Array<Dictionary<String, Any>> = []
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var timeTextField: UITextField!
+    @IBOutlet weak var detailsTextField: UITextView!
+    
+    // public var events : Array<Dictionary<String, Any>> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        print("user is named ",NSUserName())
     }
     
     //clicking "post" button will postEvent()
-    //postEvent() makes userInput into newEvent (dict), adds newEvent to events (list), and forces Home table to reload
-    
-    var TableVC:TableViewController?
+    //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
     @IBAction func postEvent(_ sender: Any) {
-        
-        //let eventTitleUserInput = "exampletitlelol"
-        //UserDefaults.standard.set(eventTitleUserInput, forKey: "title")
         
         /*
         //gives who the post author is (useful later)
@@ -43,30 +43,56 @@ class NewVC: UIViewController {
         }
         */
         
+        //coding newEvent based on user input in text fields
+        
+        
         
         let newEvent = [
-            //"title" : eventTitleUserInput,
-            "title" : "new title!!",
-            "time" : "the best time",
-            "text" : "cats allowed"
-        ]
+            "title" : titleTextField.text!,
+            "time" : timeTextField.text!,
+            "details" : detailsTextField.text!,
+            //NSUserName() as of yet does not return anything
+            //NSUserName() should return logon name of the current user as String
+            "author" : NSUserName()
+            ] as [String : Any]
         
         
-        let eventRef = Database.database().reference()
+        var necessaryTextFields = newEvent
+        //removing traits that are not necessary for posting
+        necessaryTextFields.removeValue(forKey: "author")
         
-        let eventIDNumber = "101"
+        //checking if any textfields were left blank
+        for textField in necessaryTextFields.values {
+            
+            //if a textfield is blank...
+            if (textField as! String).isEmpty {
+                
+                //alert user
+                let alertController = UIAlertController(title: "Text fields are empty", message: "Please add more information", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+                
+                //stop 'postEvent' function
+                return
+            }
+        }
         
-        let eventID = "events/event"+eventIDNumber
-        eventRef.child(eventID).setValue(newEvent){
+        //referencing "events" in database
+        let refEvents = Database.database().reference().child("events")
+    
+        //adding newEvent to database with automatically assigned unique ID
+        refEvents.childByAutoId().setValue(newEvent){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("Data could not be saved: \(error).")
             } else {
-                print("Data saved successfully!")
+                //if no error, alerts user that post was successful
+                let alertController = UIAlertController(title: "Posted!", message: "Data saved successfully", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
-        
-        
     }
-    
 }
