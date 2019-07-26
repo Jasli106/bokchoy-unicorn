@@ -21,7 +21,6 @@
 		DC2A4A1C22C52E5800A8BB90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC2A4A1A22C52E5800A8BB90 /* LaunchScreen.storyboard */; };
 		DC81C5BA22EA4270006DEFF1 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC81C5B922EA4270006DEFF1 /* DateExtensions.swift */; };
 		DCB003CA22C88CE7001993B7 /* GigsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003C922C88CE7001993B7 /* GigsVC.swift */; };
-		DCB003CC22C88D43001993B7 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003CB22C88D43001993B7 /* HomeVC.swift */; };
 		DCB003D422C890D4001993B7 /* NewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003D322C890D4001993B7 /* NewVC.swift */; };
 		DCB003D622C89499001993B7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003D522C89499001993B7 /* TabBarController.swift */; };
 		DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCCD1CD422C8F0BF00C36BAE /* GoogleService-Info.plist */; };
@@ -46,7 +45,6 @@
 		DC2A4A1D22C52E5800A8BB90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC81C5B922EA4270006DEFF1 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		DCB003C922C88CE7001993B7 /* GigsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GigsVC.swift; sourceTree = "<group>"; };
-		DCB003CB22C88D43001993B7 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		DCB003D322C890D4001993B7 /* NewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewVC.swift; sourceTree = "<group>"; };
 		DCB003D522C89499001993B7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		DCCD1CD422C8F0BF00C36BAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 				DCB003D522C89499001993B7 /* TabBarController.swift */,
 				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DCB003C922C88CE7001993B7 /* GigsVC.swift */,
-				DCB003CB22C88D43001993B7 /* HomeVC.swift */,
 				DCB003D322C890D4001993B7 /* NewVC.swift */,
 				DC81C5B922EA4270006DEFF1 /* DateExtensions.swift */,
 				AAB9573622CA92A600B293D3 /* TableVC.swift */,
@@ -242,7 +239,6 @@
 			files = (
 				DC00A3C422E2615F000C6126 /* LoginVC.swift in Sources */,
 				DCB003CA22C88CE7001993B7 /* GigsVC.swift in Sources */,
-				DCB003CC22C88D43001993B7 /* HomeVC.swift in Sources */,
 				DC2A4A1422C52E5400A8BB90 /* ProfileVC.swift in Sources */,
 				DC00A3C622E2617C000C6126 /* SignUpVC.swift in Sources */,
 				AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */,
