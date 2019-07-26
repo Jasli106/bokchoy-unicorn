@@ -95,7 +95,6 @@
 			children = (
 				DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */,
 				DCB003D522C89499001993B7 /* TabBarController.swift */,
-				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DCB003C922C88CE7001993B7 /* GigsVC.swift */,
 				DCB003CB22C88D43001993B7 /* HomeVC.swift */,
 				DCB003D322C890D4001993B7 /* NewVC.swift */,
@@ -104,6 +103,7 @@
 				AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */,
 				DC2A4A1822C52E5800A8BB90 /* Assets.xcassets */,
 				DC2A4A1522C52E5400A8BB90 /* Main.storyboard */,
+				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DC00A3C722E356C6000C6126 /* ProfileEditorVC.swift */,
 				DC00A3C122E26125000C6126 /* StartVC.swift */,
 				DC00A3C322E2615F000C6126 /* LoginVC.swift */,

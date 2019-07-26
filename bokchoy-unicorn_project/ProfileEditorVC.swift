@@ -25,6 +25,8 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     @IBOutlet weak var bioField: UITextField!
     @IBOutlet weak var contactButton: UIButton!
     
+    @IBOutlet weak var doneEditingButton: UIBarButtonItem!
+    
     //Variables
     var delegate: KeepProfileInfoDelegate?
     
@@ -38,17 +40,33 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
         
         self.delegate = ProfileVC()
         
-        //Setting nav bar programmatically because XCode is stupid
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style:   UIBarButtonItem.Style.plain, target: self, action: #selector(cancelEditing))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style:   UIBarButtonItem.Style.plain, target: self, action: #selector(doneEditing))
+    }
+
+    @IBAction func doneEditing(){
+        let nameLabelText: String = nameField.text ?? "nameField didn't work, here's default"
+        
+        delegate?.transferInfo(data: nameLabelText)
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+
+    /*
+    @IBAction func doneEditing(){
+        print("SEGUE WAS TRIGGERED")
+        self.performSegue(withIdentifier: "Segue", sender: self)
+        
     }
     
-    //Doing everything programmatically because XCode has to make things COMPLICATED
-    //Going back to profile screen after cancelling
-    @objc func cancelEditing() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if  let viewController = segue.destination as? ProfileVC{
+            
+            viewController.textValue = nameField.text ?? ""
+            print("hey, look, the segue happened! (at least, somewhat)")
+            }
+        }
+    /*
+    /*
     //Going back to profile screen after done
     @objc func doneEditing() {
         var textValue: String
@@ -56,5 +74,6 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
         self.navigationController?.popViewController(animated: true)
         delegate?.transferInfo(data: textValue)
     }
-    
+    */
+ }*/*/
 }
