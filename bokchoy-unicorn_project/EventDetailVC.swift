@@ -14,6 +14,7 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     
     @IBOutlet weak var interestedButton: UIButton!
     
@@ -31,9 +32,13 @@ class EventDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let startDate = ((eventData["start date"] as! NSArray) as Array)
+        let startTime = ((eventData["start time"] as! NSArray) as Array)
+        
         //Customizing labels to eventData
         titleLabel.text = eventData["title"] as? String
-        //timeLabel.text = "time: \(eventData["time"] as! String)"
+        timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
+        dateLabel.text = "date: \(startDate[0])/\(startDate[1])/\(startDate[2])"
         detailLabel.text = eventData["details"] as? String
     }
     

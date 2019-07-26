@@ -25,15 +25,10 @@ class NewVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view
-        
     }
     
     
     //Convert times to time zone of poster + store in database as that time
-    
-    @IBAction func timerTest() {
-        print("\(startTimePicker.date.getDateTime().hour) : \(startTimePicker.date.getDateTime().minute)")
-    }
 
     //clicking "post" button will postEvent()
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
@@ -110,11 +105,23 @@ class NewVC: UIViewController {
                 print("Data could not be saved: \(error).")
             } else {
                 //if no error, alerts user that post was successful
-                let alertController = UIAlertController(title: "Posted!", message: "Data saved successfully", preferredStyle: .alert)
+                /*let alertController = UIAlertController(title: "Posted!", message: "Data saved successfully", preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)*/
+                
+                let alert = UIAlertController(title: "Posted!",
+                                              message: "Data saved successfully",
+                                              preferredStyle: .alert)
+                let okay = UIAlertAction(title: "OK", style: .default, handler: {_ in
+                    CATransaction.setCompletionBlock({
+                        self.performSegue(withIdentifier: "newToHome", sender: nil)
+                    })
+                })
+                alert.addAction(okay)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
+
 }
