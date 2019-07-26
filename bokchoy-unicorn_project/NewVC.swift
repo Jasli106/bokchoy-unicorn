@@ -68,8 +68,6 @@ class NewVC: UIViewController {
             "author" : user!
             ] as [String : Any]
         
-        
-        
         var necessaryTextFields = newEvent
         //removing traits that are not necessary for posting
         necessaryTextFields.removeValue(forKey: "author")
