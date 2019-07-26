@@ -39,7 +39,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4H-eK-88N" userLabel="ProfilePicButton">
-                                <rect key="frame" x="15" y="84" width="245" height="245"/>
+                                <rect key="frame" x="15" y="107.99999999999999" width="132.66666666666666" height="132.66666666666663"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
@@ -58,7 +58,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cQO-65-rGS" userLabel="NameTextField">
-                                <rect key="frame" x="270" y="84" width="315" height="78.5"/>
+                                <rect key="frame" x="157.66666666666663" y="108" width="202.33333333333337" height="41"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="name"/>
@@ -76,17 +76,17 @@
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZIM-1u-qUv" userLabel="AgePicker">
-                                <rect key="frame" x="270" y="167.5" width="315" height="78"/>
+                                <rect key="frame" x="157.66666666666663" y="154" width="202.33333333333337" height="40.666666666666657"/>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6E-fb-RgQ" userLabel="ContactButton">
-                                <rect key="frame" x="485" y="344" width="100" height="30"/>
+                                <rect key="frame" x="260" y="255.66666666666663" width="100" height="30"/>
                                 <state key="normal" title="Contact"/>
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCE-2A-KT0" userLabel="GenderPicker">
-                                <rect key="frame" x="270" y="250.5" width="315" height="78.5"/>
+                                <rect key="frame" x="157.66666666666663" y="199.66666666666666" width="202.33333333333337" height="41"/>
                             </pickerView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TOd-Tc-JCu" userLabel="Videos Collection View">
-                                <rect key="frame" x="15" y="389" width="570" height="120"/>
+                                <rect key="frame" x="15" y="300.66666666666669" width="345" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="DDX-Jx-41Q"/>
@@ -748,6 +748,9 @@
                                 <rect key="frame" x="265" y="234" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="timerTest" destination="7F8-5o-pPq" eventType="touchUpInside" id="jv5-H9-mFE"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yN-J4-gMh">
                                 <rect key="frame" x="16" y="195" width="37.666666666666657" height="30"/>

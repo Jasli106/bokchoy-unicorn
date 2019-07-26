@@ -15,12 +15,11 @@ class TableViewController: UITableViewController {
     var ref: DatabaseReference!
     
     //hardcoded events filler
-    var events = [
-        ["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
+    var events = [[String : AnyObject]]()
+        /*["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
         ["title": "Jam Session", "time": "16:20", "text": "Meet community members and have fun!"],
         ["title": "Open mic", "time": "noon", "text": "Good musicians preffered, but all are welcome."],
-        ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]
-    ]
+        ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]*/
 
  
     //Loading 1st time app opens
@@ -53,13 +52,16 @@ class TableViewController: UITableViewController {
                     
                     let eventTitle  = eventObject?["title"] as! String?
                     let eventDetails  = eventObject?["details"] as! String?
-                    let eventTime = eventObject?["time"] as! String?
+                    let eventStartDate = eventObject?["start date"]
+                    let eventStartTime = eventObject?["time"]
+                    let eventEndDate = eventObject?["end date"]
+                    let eventEndTime = eventObject?["end time"]
                     
                     //creating event object with model and fetched values
-                    let event = ["title": eventTitle, "time": eventTime, "details": eventDetails]
+                    let event = ["title": eventTitle, "details": eventDetails, "start date": eventStartDate, "start time": eventStartTime, "end date": eventEndDate, "end time": eventEndTime] as [String : AnyObject]
                     
                     //appending it to list
-                    self.events.append(event as! [String : String])
+                    self.events.append(event)
                 }
                 //reloading the tableview
                 self.tableView.reloadData()
@@ -119,10 +121,10 @@ class TableViewController: UITableViewController {
         
     
         // title cell text
-        cell.textLabel?.text = self.events[indexPath.row]["title"]
+        cell.textLabel?.text = self.events[indexPath.row]["title"] as! String
         
         // detail cell text
-        cell.detailTextLabel?.text = self.events[indexPath.row]["time"]
+        //cell.detailTextLabel?.text = self.events[indexPath.row]["time"]
         
         return cell
     }

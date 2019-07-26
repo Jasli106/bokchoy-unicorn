@@ -30,6 +30,10 @@ class NewVC: UIViewController {
     
     
     //Convert times to time zone of poster + store in database as that time
+    
+    @IBAction func timerTest() {
+        print("\(startTimePicker.date.getDateTime().hour) : \(startTimePicker.date.getDateTime().minute)")
+    }
 
     //clicking "post" button will postEvent()
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
@@ -54,13 +58,16 @@ class NewVC: UIViewController {
         
         let user = Auth.auth().currentUser?.uid
         
+        //Getting date and time components as ints
+        let startDate = startTimePicker.date.getDateTime()
+        let endDate = startTimePicker.date.getDateTime()
         
         let newEvent = [
             "title" : titleTextField.text!,
-            //time picker stuff
-            "start date" : startTimePicker.date,
-            //"start time" : 3,
-            "end time" : "enter end time here",
+            "start date" : [startDate.month, startDate.day, startDate.year],
+            "start time" : [startDate.hour, startDate.minute],
+            "end date" : [endDate.month, endDate.day, endDate.year],
+            "end time" : [endDate.hour, endDate.minute],
             "details" : detailsTextField.text!,
             
             "author" : user!
@@ -73,6 +80,7 @@ class NewVC: UIViewController {
         necessaryTextFields.removeValue(forKey: "author")
         necessaryTextFields.removeValue(forKey: "start date")
         necessaryTextFields.removeValue(forKey: "start time")
+        necessaryTextFields.removeValue(forKey: "end date")
         necessaryTextFields.removeValue(forKey: "end time")
         
         //checking if any textfields were left blank
