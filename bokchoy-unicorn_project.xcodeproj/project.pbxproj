@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */; };
-		AAB9573722CA92A600B293D3 /* TableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9573622CA92A600B293D3 /* TableVC.swift */; };
+		AAB9573722CA92A600B293D3 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9573622CA92A600B293D3 /* HomeVC.swift */; };
 		B9585E9A0CE6B35CFBD15F6F /* Pods_bokchoy_unicorn_project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */; };
 		DC00A3C222E26125000C6126 /* StartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C122E26125000C6126 /* StartVC.swift */; };
 		DC00A3C422E2615F000C6126 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C322E2615F000C6126 /* LoginVC.swift */; };
@@ -29,7 +29,7 @@
 /* Begin PBXFileReference section */
 		767B3F28F99085413E2E2478 /* Pods-bokchoy-unicorn_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.debug.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.debug.xcconfig"; sourceTree = "<group>"; };
 		AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; usesTabs = 0; };
-		AAB9573622CA92A600B293D3 /* TableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableVC.swift; sourceTree = "<group>"; };
+		AAB9573622CA92A600B293D3 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bokchoy_unicorn_project.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9D9BEDC9496EBA776518EE /* Pods-bokchoy-unicorn_project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.release.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.release.xcconfig"; sourceTree = "<group>"; };
 		DC00A3C122E26125000C6126 /* StartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartVC.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 				DCB003C922C88CE7001993B7 /* GigsVC.swift */,
 				DCB003D322C890D4001993B7 /* NewVC.swift */,
 				DC81C5B922EA4270006DEFF1 /* DateExtensions.swift */,
-				AAB9573622CA92A600B293D3 /* TableVC.swift */,
+				AAB9573622CA92A600B293D3 /* HomeVC.swift */,
 				AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */,
 				DC2A4A1822C52E5800A8BB90 /* Assets.xcassets */,
 				DC2A4A1522C52E5400A8BB90 /* Main.storyboard */,
@@ -243,7 +243,7 @@
 				DC00A3C622E2617C000C6126 /* SignUpVC.swift in Sources */,
 				AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */,
 				DC00A3C822E356C6000C6126 /* ProfileEditorVC.swift in Sources */,
-				AAB9573722CA92A600B293D3 /* TableVC.swift in Sources */,
+				AAB9573722CA92A600B293D3 /* HomeVC.swift in Sources */,
 				DC00A3C222E26125000C6126 /* StartVC.swift in Sources */,
 				DCB003D622C89499001993B7 /* TabBarController.swift in Sources */,
 				DC2A4A1222C52E5400A8BB90 /* AppDelegate.swift in Sources */,
