@@ -30,6 +30,9 @@ extension Date {
         
         return(day, month, year, hour, minute)
     }
+    
+    /*func convertTimeZone (initTimeZone: TimeZone, finalTimeZone: TimeZone) -> Date? {
+    }*/
 }
 
 

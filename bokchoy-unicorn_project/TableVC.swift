@@ -53,7 +53,7 @@ class TableViewController: UITableViewController {
                     let eventTitle  = eventObject?["title"] as! String?
                     let eventDetails  = eventObject?["details"] as! String?
                     let eventStartDate = eventObject?["start date"]
-                    let eventStartTime = eventObject?["time"]
+                    let eventStartTime = eventObject?["start time"]
                     let eventEndDate = eventObject?["end date"]
                     let eventEndTime = eventObject?["end time"]
                     
@@ -120,11 +120,22 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         
     
-        // title cell text
+        // title cell text: title
         cell.textLabel?.text = self.events[indexPath.row]["title"] as! String
         
-        // detail cell text
-        //cell.detailTextLabel?.text = self.events[indexPath.row]["time"]
+        
+        // format time
+        
+        // convert start time value to array
+        let startTime = ((self.events[indexPath.row]["start time"] as! NSArray) as Array)
+        
+        // detail cell text: start time
+        if (startTime[1] as! Int) < 10 {
+            cell.detailTextLabel?.text = "\(startTime[0]):0\(startTime[1])"
+        }
+        else {
+            cell.detailTextLabel?.text = "\(startTime[0]):\(startTime[1])"
+        }
         
         return cell
     }
