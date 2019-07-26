@@ -145,12 +145,26 @@
                         <viewLayoutGuide key="safeArea" id="Sff-gI-vhk"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Edit Profile" id="cfD-tz-cvl">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="hXB-Db-dJc">
+                            <connections>
+                                <action selector="cancelEditing:" destination="N1f-lA-qme" id="iXk-X3-SuU"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="UrU-Li-oVe">
+                            <connections>
+                                <action selector="doneEditing:" destination="N1f-lA-qme" id="YA7-ax-2sE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="agePicker" destination="ZIM-1u-qUv" id="VOE-Cf-gPd"/>
                         <outlet property="bioField" destination="zPO-GE-Z4q" id="MjV-j7-qth"/>
+                        <outlet property="cancelButton" destination="hXB-Db-dJc" id="nYW-9U-3bK"/>
                         <outlet property="contactButton" destination="J6E-fb-RgQ" id="L0L-9t-4tk"/>
+                        <outlet property="doneButton" destination="UrU-Li-oVe" id="ZtS-Wq-iyr"/>
                         <outlet property="genderPicker" destination="BCE-2A-KT0" id="BkB-oh-Flt"/>
                         <outlet property="instrumentsField" destination="9u2-2H-Jwu" id="CZl-2Y-GML"/>
                         <outlet property="nameField" destination="cQO-65-rGS" id="fhr-wq-nMg"/>
@@ -159,7 +173,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeH-kg-sKo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2316" y="-744"/>
+            <point key="canvasLocation" x="2385" y="-567"/>
         </scene>
         <!--Profile VC-->
         <scene sceneID="fKJ-pk-xyY">
@@ -244,7 +258,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit Profile"/>
                                 <connections>
-                                    <segue destination="N1f-lA-qme" kind="show" id="kle-VR-KY9"/>
+                                    <segue destination="N1f-lA-qme" kind="show" id="PSH-zC-D1n"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-bP-e2a" userLabel="LogoutButton">
@@ -277,7 +291,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uah-fZ-JJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1295" y="-744"/>
+            <point key="canvasLocation" x="1362" y="-567"/>
         </scene>
         <!--Gigs VC-->
         <scene sceneID="ANT-wx-yKY">
@@ -439,7 +453,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0D-t9-cHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Lya-IA-cCE" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-962" y="559"/>
+            <point key="canvasLocation" x="-1033" y="559"/>
         </scene>
         <!--Sign Up VC-->
         <scene sceneID="Mck-um-oan">
@@ -514,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJZ-R8-h2F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1578.4000000000001" y="-1620.4433497536947"/>
+            <point key="canvasLocation" x="-1553" y="-1307"/>
         </scene>
         <!--Start VC-->
         <scene sceneID="Oi3-YG-eTi">
@@ -555,7 +569,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bVj-6d-kGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-962" y="-2404"/>
+            <point key="canvasLocation" x="-937" y="-2091"/>
         </scene>
         <!--Log In VC-->
         <scene sceneID="I3w-K7-Eqx">
@@ -615,7 +629,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xSi-9y-iWi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-396" y="-1620.4433497536947"/>
+            <point key="canvasLocation" x="-370" y="-1307"/>
         </scene>
         <!--New VC-->
         <scene sceneID="0tr-DG-gbe">
@@ -733,7 +747,7 @@
                             <constraint firstItem="Bxb-R6-PFr" firstAttribute="top" secondItem="uDP-kg-KjH" secondAttribute="bottom" constant="5" id="3Mg-CJ-IqT"/>
                             <constraint firstItem="RWG-JR-nOn" firstAttribute="leading" secondItem="Jr7-Ek-vHr" secondAttribute="leading" id="5pW-SO-6xg"/>
                             <constraint firstItem="Hdb-rp-fHd" firstAttribute="top" secondItem="FUs-Nf-tRH" secondAttribute="bottom" constant="5" id="72R-Kb-fIZ"/>
-                            <constraint firstItem="uDP-kg-KjH" firstAttribute="top" secondItem="Hdb-rp-fHd" secondAttribute="bottom" constant="10" id="A8d-IX-bRO"/>
+                            <constraint firstItem="uDP-kg-KjH" firstAttribute="top" secondItem="Hdb-rp-fHd" secondAttribute="bottom" priority="750" constant="10" id="A8d-IX-bRO"/>
                             <constraint firstItem="dwZ-7c-6d0" firstAttribute="leading" secondItem="RWG-JR-nOn" secondAttribute="leading" constant="10" id="AVn-6Q-gaU"/>
                             <constraint firstItem="RWG-JR-nOn" firstAttribute="height" secondItem="Jr7-Ek-vHr" secondAttribute="height" id="Egu-GJ-NPo"/>
                             <constraint firstItem="pwy-mi-OUQ" firstAttribute="leading" secondItem="Jr7-Ek-vHr" secondAttribute="trailing" constant="40" id="Fgi-vN-ON6"/>
@@ -805,7 +819,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T3q-oC-FAu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2226" y="-2404"/>
+            <point key="canvasLocation" x="-2201" y="-2091"/>
         </scene>
         <!--Profile-->
         <scene sceneID="lxV-pW-XuI">
@@ -824,10 +838,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gSp-K7-8nF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="-744"/>
+            <point key="canvasLocation" x="374" y="-567"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="gLw-fN-qwe"/>
+        <segue reference="lt2-3K-kFX"/>
     </inferredMetricsTieBreakers>
 </document>
