@@ -309,7 +309,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <slider key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="0It-fx-bKu">
-                            <rect key="frame" x="0.0" y="748" width="375" height="30"/>
+                            <rect key="frame" x="0.0" y="699" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </slider>
                         <prototypes>
@@ -345,7 +345,7 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Home" id="WQP-fX-wCw"/>
                     <connections>
-                        <segue destination="YLM-UD-1k2" kind="show" identifier="Segue" id="WZq-B1-rld"/>
+                        <segue destination="YLM-UD-1k2" kind="show" identifier="homeToDetail" id="WZq-B1-rld"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gwg-bX-UoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -771,7 +771,7 @@
                         <outlet property="postButton" destination="Bxb-R6-PFr" id="qVz-Ph-8ho"/>
                         <outlet property="startTimePicker" destination="Ahg-la-CQf" id="f5U-yP-6rl"/>
                         <outlet property="titleTextField" destination="HIX-Qx-lNq" id="LAK-ec-BQj"/>
-                        <segue destination="mu2-ay-fhg" kind="show" identifier="newToHome" id="Hxc-6B-cBQ"/>
+                        <segue destination="Iym-UZ-OI9" kind="show" identifier="newToHome" id="Lfy-JR-pVP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7o-MT-bo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -817,7 +817,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Hxc-6B-cBQ"/>
-        <segue reference="gLw-fN-qwe"/>
+        <segue reference="Lfy-JR-pVP"/>
     </inferredMetricsTieBreakers>
 </document>

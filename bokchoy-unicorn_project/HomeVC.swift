@@ -9,23 +9,17 @@
 import UIKit
 import FirebaseDatabase
 
+//Struct for table sections
+
 class TableViewController: UITableViewController {
     
-    //creating database reference
+    //Variables
     var ref: DatabaseReference!
-    
-    //hardcoded events filler
     var events = [[String : AnyObject]]()
-        /*["title": "Rock Concert", "time": "9-12pm", "text": "Please come, we can't afford the venue without an audience. $5 entry."],
-        ["title": "Jam Session", "time": "16:20", "text": "Meet community members and have fun!"],
-        ["title": "Open mic", "time": "noon", "text": "Good musicians preffered, but all are welcome."],
-        ["title": "Meeting??", "time": "whenever", "text": "I'm bored. pls hang out w/ me"]*/
 
- 
     //Loading 1st time app opens
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -67,12 +61,6 @@ class TableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         })
-        
-    }
-   
-
-    //call self.tableView.reloadData() to reset table contents
-    func reloadData() {
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,8 +83,6 @@ class TableViewController: UITableViewController {
         self.tableView.deleteRows(at: [IndexPath(row: index, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
         })
         */
-        
-        
         self.tableView.reloadData()
     }
     
@@ -119,12 +105,10 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         
-    
         // title cell text: title
         cell.textLabel?.text = self.events[indexPath.row]["title"] as! String
         
-        
-        // format time
+        // format time here
         
         // convert start time value to array
         let startTime = ((self.events[indexPath.row]["start time"] as! NSArray) as Array)
@@ -139,12 +123,9 @@ class TableViewController: UITableViewController {
         
         return cell
     }
-        
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        self.performSegue(withIdentifier: "Segue", sender: self)
-        
+        self.performSegue(withIdentifier: "homeToDetail", sender: self)
     }
     
     /*
@@ -192,7 +173,6 @@ class TableViewController: UITableViewController {
     }
     */
 
-    
     // MARK: - Navigation
     
     
@@ -204,9 +184,7 @@ class TableViewController: UITableViewController {
             let index = self.tableView.indexPathForSelectedRow?.row {
             
             viewController.eventData = self.events[index]
-    
         }
-        
     }
  
 
