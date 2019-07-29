@@ -33,7 +33,6 @@
         <!--Profile-->
         <scene sceneID="Wha-K4-L55">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EDT-tf-gkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="wax-EO-6zZ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="f1o-Th-YNx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="l9K-va-b3a">
@@ -44,6 +43,7 @@
                         <segue destination="RXJ-VN-2uK" kind="relationship" relationship="rootViewController" id="u58-Pk-p6Z"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EDT-tf-gkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="374" y="-752"/>
         </scene>
@@ -166,6 +166,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Done" id="9eH-vh-Bs3">
                             <connections>
                                 <action selector="doneEditing" destination="N1f-lA-qme" id="7oC-gY-oUr"/>
+                                <segue destination="RXJ-VN-2uK" kind="show" id="eKc-ht-M8n"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -828,7 +829,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="WZq-B1-rld"/>
         <segue reference="Hxc-6B-cBQ"/>
+        <segue reference="eKc-ht-M8n"/>
         <segue reference="gLw-fN-qwe"/>
     </inferredMetricsTieBreakers>
 </document>
