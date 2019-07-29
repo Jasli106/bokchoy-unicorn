@@ -12,7 +12,7 @@ import FirebaseAuth
 
 
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileInfoDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate{//, KeepProfileInfoDelegate {
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
@@ -21,11 +21,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    var nameLabelText: String! //Supposed to be variable to store data in but it doesn't work
+    //var nameLabelText: String! //Supposed to be variable to store data in but it doesn't work
     let ref = Database.database().reference()
     var databaseHandle: DatabaseHandle?
     
+    //recieving nameLabelText from ProfileEditorVC
+    public var nameLabelText : String = ""
     
+    /*
     //Delegate functions
     func transferInfo(data: String) {
         //let delegateRef = Database.database().reference()
@@ -37,7 +40,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
         print("2: ",nameLabelText!)
         
     }
-    
+    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,8 +72,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, KeepProfileIn
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.ref.child("users").child(userDatabaseID!).setValue(["name": self.nameLabelText])
         
-        print("3: ",self.nameLabelText ?? "...")
+        print("3: ",self.nameLabelText )
         /*databaseHandle = ref.child("users").child(self.user.uid).observe(.value) { (snapshot) in
             let username = snapshot.value as! String ?? ""
             self.nameLabel.text = username

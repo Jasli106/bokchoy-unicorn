@@ -33,7 +33,6 @@
         <!--Profile-->
         <scene sceneID="Wha-K4-L55">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EDT-tf-gkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="wax-EO-6zZ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="f1o-Th-YNx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="l9K-va-b3a">
@@ -44,6 +43,7 @@
                         <segue destination="RXJ-VN-2uK" kind="relationship" relationship="rootViewController" id="u58-Pk-p6Z"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EDT-tf-gkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="374" y="-752"/>
         </scene>
@@ -166,6 +166,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Done" id="9eH-vh-Bs3">
                             <connections>
                                 <action selector="doneEditing" destination="N1f-lA-qme" id="7oC-gY-oUr"/>
+                                <segue destination="RXJ-VN-2uK" kind="show" id="eKc-ht-M8n"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -342,7 +343,9 @@
                             </connections>
                         </searchBar>
                         <slider key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="0It-fx-bKu">
+
                             <rect key="frame" x="0.0" y="711" width="375" height="30"/>
+
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </slider>
                         <prototypes>
@@ -821,7 +824,10 @@
                         <outlet property="postButton" destination="Bxb-R6-PFr" id="qVz-Ph-8ho"/>
                         <outlet property="startTimePicker" destination="Ahg-la-CQf" id="f5U-yP-6rl"/>
                         <outlet property="titleTextField" destination="HIX-Qx-lNq" id="LAK-ec-BQj"/>
+
+
                         <segue destination="Iym-UZ-OI9" kind="show" identifier="newToHome" id="Lfy-JR-pVP"/>
+
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7o-MT-bo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -848,6 +854,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+
+        <segue reference="eKc-ht-M8n"/>
+        <segue reference="gLw-fN-qwe"/>
+
         <segue reference="Lfy-JR-pVP"/>
+
     </inferredMetricsTieBreakers>
 </document>

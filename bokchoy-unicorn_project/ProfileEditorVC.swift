@@ -38,34 +38,33 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        self.delegate = ProfileVC()
+        //self.delegate = ProfileVC()
         
     }
-
+/*
     @IBAction func doneEditing(){
-        let nameLabelText: String = nameField.text ?? "nameField didn't work, here's default"
         
-        delegate?.transferInfo(data: nameLabelText)
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-
-    /*
-    @IBAction func doneEditing(){
-        print("SEGUE WAS TRIGGERED")
+        print("SEGUE WAS (maybe) TRIGGERED")
         self.performSegue(withIdentifier: "Segue", sender: self)
         
+        print("SEGUE WAS ACTUALLY TRIGGERED")
     }
-    
+ */
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? ProfileVC{
             
-            viewController.textValue = nameField.text ?? ""
+            viewController.nameLabelText = nameField.text ?? ""
             print("hey, look, the segue happened! (at least, somewhat)")
             }
+        //comment out this linde to revert to version where Profile ends up being a stacked VC. This line makes the weird extra VC w/ cancel button show up
+            self.navigationController?.popToRootViewController(animated: true)
+        
         }
-    /*
+
+    }
     /*
     //Going back to profile screen after done
     @objc func doneEditing() {
@@ -75,5 +74,5 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
         delegate?.transferInfo(data: textValue)
     }
     */
- }*/*/
-}
+
+
