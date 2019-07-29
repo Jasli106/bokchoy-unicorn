@@ -12,35 +12,20 @@ import FirebaseAuth
 
 
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate{//, KeepProfileInfoDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate{
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
-    
+    @IBOutlet weak var instrumentsLabel: UILabel!
+    @IBOutlet weak var bioLabel: UILabel!
     
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    //var nameLabelText: String! //Supposed to be variable to store data in but it doesn't work
     let ref = Database.database().reference()
-    var databaseHandle: DatabaseHandle?
     
-    //recieving nameLabelText from ProfileEditorVC
-    public var nameLabelText : String = ""
-    
-    /*
-    //Delegate functions
-    func transferInfo(data: String) {
-        //let delegateRef = Database.database().reference()
-        //delegateRef.child("users").child(self.user.uid).setValue(data)
-        print("type of data: ",type(of: data))
-        self.nameLabelText = data as String
-        print("1: ",nameLabelText!)
-        self.ref.child("users").child(userDatabaseID!).setValue(["name": self.nameLabelText])
-        print("2: ",nameLabelText!)
-        
-    }
-    */
+    //recieving newProfile from ProfileEditorVC
+    public var newProfile : Dictionary<String, Any> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,21 +35,13 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{//, KeepProfil
         //Store user ID in Firebase
         user = Auth.auth().currentUser
         
-        //New code under here
         
-        let refUsers = Database.database().reference().child("users").child(userDatabaseID!)
-    
+        let userProfileRef = Database.database().reference().child("users").child(userDatabaseID!)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.ref.child("users").child(userDatabaseID!).setValue(["name": self.nameLabelText])
         
-        print("3: ",self.nameLabelText )
-        /*databaseHandle = ref.child("users").child(self.user.uid).observe(.value) { (snapshot) in
-            let username = snapshot.value as! String ?? ""
-            self.nameLabel.text = username
-        }*/
-        nameLabel.text = self.nameLabelText
     }
     
     

@@ -8,11 +8,7 @@
 
 import UIKit
 import Firebase
-
-//Protocol
-protocol KeepProfileInfoDelegate: AnyObject {
-    func transferInfo(data: String)
-}
+import FirebaseAuth
 
 class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     
@@ -28,48 +24,36 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     @IBOutlet weak var doneEditingButton: UIBarButtonItem!
     
     //Variables
-    var delegate: KeepProfileInfoDelegate?
+    var userDatabaseID = Auth.auth().currentUser?.uid
+    let userProfileRef = Database.database().reference().child("users")
     
-    let ref = Database.database().reference()
     
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
-/*
-    @IBAction func doneEditing(){
-        
-        print("SEGUE WAS (maybe) TRIGGERED")
-        self.performSegue(withIdentifier: "Segue", sender: self)
-        
-        print("SEGUE WAS ACTUALLY TRIGGERED")
-    }
- */
+
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? ProfileVC{
             
-            viewController.nameLabelText = nameField.text ?? ""
-            print("hey, look, the segue happened! (at least, somewhat)")
-            }
+            let editedProfile = ["name": self.nameField.text,
+                             "instruments": self.instrumentsField.text,
+                             "bio": self.bioField.text]
+            
+            //adding changes to database
+            userProfileRef.child(userDatabaseID!).setValue(editedProfile)
+            
+            
+            viewController.newProfile = editedProfile as Dictionary<String, Any>
+            
         //comment out this linde to revert to version where Profile ends up being a stacked VC. This line makes the weird extra VC w/ cancel button show up
             self.navigationController?.popViewController(animated: true)
         
         }
 
     }
-    /*
-    //Going back to profile screen after done
-    @objc func doneEditing() {
-        var textValue: String
-        textValue = nameField.text ?? ""
-        self.navigationController?.popViewController(animated: true)
-        delegate?.transferInfo(data: textValue)
-    }
-    */
-
-
+}

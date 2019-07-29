@@ -304,6 +304,8 @@
                         <barButtonItem key="backBarButtonItem" title="Cancel" id="R9P-rL-c39"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="bioLabel" destination="Sez-2D-dTp" id="S3B-DU-m0f"/>
+                        <outlet property="instrumentsLabel" destination="DJj-Na-Uws" id="8I3-np-5s1"/>
                         <outlet property="nameLabel" destination="G04-ea-9y0" id="GCg-af-RW0"/>
                     </connections>
                 </viewController>
@@ -932,19 +934,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kv1-hW-w28">
-                                <rect key="frame" x="121" y="518" width="67" height="24"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNZ-nC-cii">
+                                <rect key="frame" x="150" y="678" width="74" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <state key="normal" title="Privacy Policy"/>
+                                <state key="normal" title="Delete Account"/>
                                 <connections>
-                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="kv1-hW-w28" id="JC8-gH-nKr">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
+                                    <action selector="deleteUser" destination="h1d-86-3TN" eventType="touchUpInside" id="6c7-3c-4QE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-zy-nQd">
-                                <rect key="frame" x="122" y="305" width="64" height="24"/>
+                                <rect key="frame" x="155" y="307" width="64" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Terms of Use"/>
@@ -954,11 +954,25 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kv1-hW-w28">
+                                <rect key="frame" x="154" y="520" width="67" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <state key="normal" title="Privacy Policy"/>
+                                <connections>
+                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="kv1-hW-w28" id="JC8-gH-nKr">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="aVr-gy-7WW"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="H6B-X5-IhR"/>
+                    <connections>
+                        <outlet property="deleteAccountButton" destination="jNZ-nC-cii" id="uot-Rs-KqH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kjc-ad-2Cl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -966,6 +980,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="Y9u-pP-lyD"/>
         <segue reference="wBw-jY-2sh"/>
         <segue reference="eKc-ht-M8n"/>
         <segue reference="2ie-fL-Hxp"/>
