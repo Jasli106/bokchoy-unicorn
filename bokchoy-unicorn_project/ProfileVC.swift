@@ -51,23 +51,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{//, KeepProfil
         user = Auth.auth().currentUser
         
         //New code under here
-        /*
+        
         let refUsers = Database.database().reference().child("users").child(userDatabaseID!)
-        
-        //observing the data changes
-        refUsers.observe(DataEventType.value, with: { (snapshot) in
-        
-            //getting values
-            let userObject = refUsers.value as? [String: AnyObject]
-        
-            let userName  = userObject?["name"]
-            let userAge  = userObject?["age"]
-            let userGender = userObject?["gender"]
-            let userInstruments = userObject?["instruments"]
-            let userBio = userObject?["bio"]
-           
-        })
- */
     
     }
     
