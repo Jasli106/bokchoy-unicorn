@@ -36,9 +36,6 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        //self.delegate = ProfileVC()
         
     }
 /*
@@ -60,7 +57,7 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
             print("hey, look, the segue happened! (at least, somewhat)")
             }
         //comment out this linde to revert to version where Profile ends up being a stacked VC. This line makes the weird extra VC w/ cancel button show up
-            self.navigationController?.popToRootViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         
         }
 

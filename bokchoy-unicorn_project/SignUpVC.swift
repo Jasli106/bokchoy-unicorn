@@ -57,4 +57,11 @@ class SignUpVC: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // This will show in the next view controller being pushed
+        let backItem = UIBarButtonItem()
+        backItem.title = "Close"
+        navigationItem.backBarButtonItem = backItem
+    }
+    
 }
