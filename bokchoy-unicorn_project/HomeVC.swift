@@ -9,17 +9,36 @@
 import UIKit
 import FirebaseDatabase
 
+/*extension HomeVC: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}*/
+
 //Struct for table sections
 
-class TableViewController: UITableViewController {
+class HomeVC: UITableViewController, UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
     
     //Variables
     var ref: DatabaseReference!
     var events = [[String : AnyObject]]()
+    var filteredEvents = [Dictionary<String, AnyObject>]()
+    
+    let searchController = UISearchController(searchResultsController: nil)
 
-    //Loading 1st time app opens
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Search bar setup
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = true
+        self.tableView.tableHeaderView = searchController.searchBar
+        definesPresentationContext = true
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -63,6 +82,25 @@ class TableViewController: UITableViewController {
         })
     }
     
+    //Search functions
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredEvents = (events.filter({( event : Dictionary<String, AnyObject>) -> Bool in
+            return (event["title"]!.lowercased.contains(searchText.lowercased()))
+        }))
+        
+        tableView.reloadData()
+    }
+    
+    //Updating table based on search functions
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -94,7 +132,12 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.events.count
+        if isFiltering() {
+            return filteredEvents.count
+        }
+        else {
+            return self.events.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -104,9 +147,16 @@ class TableViewController: UITableViewController {
     // creates cells according to Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
+        let event: Dictionary<String, AnyObject>
+        
+        if isFiltering() {
+            event = filteredEvents[indexPath.row]
+        } else {
+            event = events[indexPath.row]
+        }
         
         // title cell text: title
-        cell.textLabel?.text = self.events[indexPath.row]["title"] as! String
+        cell.textLabel?.text = event["title"] as! String
         
         // format time here
         
