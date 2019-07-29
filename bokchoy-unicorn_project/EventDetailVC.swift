@@ -19,7 +19,7 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var interestedButton: UIButton!
     
     //recieving eventData from TableVC as a dictionary
-    public var eventData : Dictionary<String, Any> = [:]
+    public var eventData = Event(title: "", details: "", startDate: [], startTime: [], endDate: [], endTime: [])
     
     /*
      //may be useful later to pull event details from database
@@ -32,27 +32,17 @@ class EventDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let startDate = ((eventData["start date"] as! NSArray) as Array)
-        let startTime = ((eventData["start time"] as! NSArray) as Array)
+        let startDate = eventData.startDate
+        let startTime = eventData.startTime
         
         //Customizing labels to eventData
-        titleLabel.text = eventData["title"] as? String
+        titleLabel.text = eventData.title
         timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
         dateLabel.text = "date: \(startDate[0])/\(startDate[1])/\(startDate[2])"
-        detailLabel.text = eventData["details"] as? String
+        detailLabel.text = eventData.details
     }
     
     //@IBAction func interested(_ sender: Any) {
     //}
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

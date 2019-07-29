@@ -9,13 +9,18 @@
 import UIKit
 import FirebaseDatabase
 
-/*extension HomeVC: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-}*/
 
-//Struct for table sections
+//Struct for events
+struct Event {
+    var title: String
+    //var author: String
+    var details: String
+    var startDate: Array<Int>
+    var startTime: Array<Int>
+    var endDate: Array<Int>
+    var endTime: Array<Int>
+}
+
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
@@ -25,8 +30,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     
     //Variables
     var ref: DatabaseReference!
-    var events = [[String : AnyObject]]()
-    var filteredEvents = [Dictionary<String, AnyObject>]()
+    var events = [Event]()//[[String : AnyObject]]()
+    var filteredEvents = [Event]()//[Dictionary<String, AnyObject>]()
     
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -41,12 +46,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
+        //Database reference
         let refEvents = Database.database().reference().child("events")
         
         //observing the data changes
@@ -62,17 +62,20 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 for events in snapshot.children.allObjects as! [DataSnapshot] {
                     
                     //getting values
-                    let eventObject = events.value as? [String: AnyObject]
+                    let value = events.value as? [String: AnyObject]
                     
-                    let eventTitle  = eventObject?["title"] as! String?
-                    let eventDetails  = eventObject?["details"] as! String?
-                    let eventStartDate = eventObject?["start date"]
-                    let eventStartTime = eventObject?["start time"]
-                    let eventEndDate = eventObject?["end date"]
-                    let eventEndTime = eventObject?["end time"]
+                    //Converting to custom object of type Event
+                    let eventObject = Event(title: value!["title"] as! String, details: value!["details"] as! String, startDate: value!["start date"] as! Array<Int>, startTime: value!["start time"] as! Array<Int>, endDate: value!["end date"] as! Array<Int>, endTime: value!["end time"] as! Array<Int>)
+                    
+                    let eventTitle  = eventObject.title
+                    let eventDetails  = eventObject.details
+                    let eventStartDate = eventObject.startDate
+                    let eventStartTime = eventObject.startTime
+                    let eventEndDate = eventObject.endDate
+                    let eventEndTime = eventObject.endTime
                     
                     //creating event object with model and fetched values
-                    let event = ["title": eventTitle, "details": eventDetails, "start date": eventStartDate, "start time": eventStartTime, "end date": eventEndDate, "end time": eventEndTime] as [String : AnyObject]
+                    let event = Event(title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
                     
                     //appending it to list
                     self.events.append(event)
@@ -90,8 +93,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filteredEvents = (events.filter({( event : Dictionary<String, AnyObject>) -> Bool in
-            return (event["title"]!.lowercased.contains(searchText.lowercased()))
+        filteredEvents = (events.filter({( event : Event) -> Bool in
+            return (event.title.lowercased().contains(searchText.lowercased()))
         }))
         
         tableView.reloadData()
@@ -105,23 +108,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-      
-        //future code to hopefully update table according to database
-        //let eventsRef : Dictionary<String, Any> = Database.database().reference()
-        
-        /*
-        // Listen for new comments in the Firebase database
-        eventsRef.observe(.childAdded, with: { (snapshot) -> Void in
-            self.events.append(snapshot)
-            self.tableView.insertRows(at: [IndexPath(row: self.events.count-1, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
-        })
-        // Listen for deleted comments in the Firebase database
-        eventsRef.observe(.childRemoved, with: { (snapshot) -> Void in
-            let index = self.indexOfEvent(snapshot)
-            self.events.remove(at: index)
-        self.tableView.deleteRows(at: [IndexPath(row: index, section: self.kSectionEvents)], with: UITableView.RowAnimation.automatic)
-        })
-        */
         self.tableView.reloadData()
     }
     
@@ -148,7 +134,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     // creates cells according to Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-        let event: Dictionary<String, AnyObject>
+        let event: Event//Dictionary<String, AnyObject>
         
         if isFiltering() {
             event = filteredEvents[indexPath.row]
@@ -157,15 +143,15 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         }
         
         // title cell text: title
-        cell.textLabel?.text = event["title"] as! String
+        cell.textLabel?.text = event.title
         
         // format time here
         
         // convert start time value to array
-        let startTime = ((self.events[indexPath.row]["start time"] as! NSArray) as Array)
+        let startTime = self.events[indexPath.row].startTime
         
         // detail cell text: start time
-        if (startTime[1] as! Int) < 10 {
+        if startTime[1] < 10 {
             cell.detailTextLabel?.text = "\(startTime[0]):0\(startTime[1])"
         }
         else {
@@ -233,11 +219,9 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? EventDetailVC,
             let index = self.tableView.indexPathForSelectedRow?.row {
-            
-            viewController.eventData = self.events[index]
-        }
+                viewController.eventData = self.events[index]
+            }
     }
  
-
 }
 
