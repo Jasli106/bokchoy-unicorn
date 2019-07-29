@@ -39,6 +39,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         searchController.dimsBackgroundDuringPresentation = true
         self.tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
+        searchController.searchBar.placeholder = "Search Gigs"
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
