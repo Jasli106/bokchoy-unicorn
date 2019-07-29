@@ -340,7 +340,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <slider key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="0It-fx-bKu">
-                            <rect key="frame" x="0.0" y="748" width="375" height="30"/>
+                            <rect key="frame" x="0.0" y="699" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </slider>
                         <prototypes>
@@ -802,7 +802,6 @@
                         <outlet property="postButton" destination="Bxb-R6-PFr" id="qVz-Ph-8ho"/>
                         <outlet property="startTimePicker" destination="Ahg-la-CQf" id="f5U-yP-6rl"/>
                         <outlet property="titleTextField" destination="HIX-Qx-lNq" id="LAK-ec-BQj"/>
-                        <segue destination="mu2-ay-fhg" kind="show" identifier="newToHome" id="Hxc-6B-cBQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7o-MT-bo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -829,8 +828,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WZq-B1-rld"/>
-        <segue reference="Hxc-6B-cBQ"/>
         <segue reference="eKc-ht-M8n"/>
         <segue reference="gLw-fN-qwe"/>
     </inferredMetricsTieBreakers>
