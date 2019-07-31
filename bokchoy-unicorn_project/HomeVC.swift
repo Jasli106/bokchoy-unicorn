@@ -13,39 +13,43 @@ import FirebaseDatabase
 //Struct for events
 struct Event {
     var title: String
-    //var author: String
+    //var author: String //Idk if this actually needs to be in the struct? Unless we use the author at some point. So probably.
     var details: String
     var startDate: Array<Int>
     var startTime: Array<Int>
     var endDate: Array<Int>
     var endTime: Array<Int>
+    //var location: String //Might have to change type later, research how location works?
+}
+
+//Make Events equatable (can check if they are equal)
+extension Event: Equatable {
+    static func == (firstEvent: Event, secondEvent: Event) -> Bool {
+        return
+            firstEvent.title == secondEvent.title &&
+                firstEvent.details == secondEvent.details &&
+                firstEvent.startDate == secondEvent.startDate &&
+                firstEvent.startTime == secondEvent.startTime &&
+                firstEvent.endDate == secondEvent.endDate &&
+                firstEvent.endTime == secondEvent.endTime
+    }
 }
 
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-    
     
     //Variables
     var ref: DatabaseReference!
-    var events = [Event]()//[[String : AnyObject]]()
-    var filteredEvents = [Event]()//[Dictionary<String, AnyObject>]()
+    var events = [Event]()
+    var filteredEvents = [Event]()
+    var uniqueDates = [Array<Int>]()
+    var sectionedEvents = [[Event]]()
     
     let searchController = UISearchController(searchResultsController: nil)
 
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //Search bar setup
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = true
-        self.tableView.tableHeaderView = searchController.searchBar
-        definesPresentationContext = true
-        searchController.searchBar.placeholder = "Search Gigs"
-        
+    fileprivate func addDatabaseToEvents() {
+        //This function takes the information from the database and adds it to the list of events in this view controller, so that it can use it later
         //Database reference
         let refEvents = Database.database().reference().child("events")
         
@@ -86,7 +90,30 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         })
     }
     
-    //Search functions
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //Search bar setup
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = true
+        self.tableView.tableHeaderView = searchController.searchBar
+        definesPresentationContext = true
+        searchController.searchBar.placeholder = "Search Gigs"
+        
+        addDatabaseToEvents()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
+    }
+    
+    //Search and filter functions
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
@@ -100,22 +127,34 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         tableView.reloadData()
     }
     
-    //Updating table based on search functions
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.tableView.reloadData()
+    
+    // Determining characteristics of table (sections, rows, etc.)
+    func calculateSections() {
+        uniqueDates = [Array<Int>]()
+        sectionedEvents = [[Event]]()
+        //Iterates through all events and checks if they occur on a new date or not. If not, add date to list of dates when events occur (uniqueDates). Also checks if event is already in sectioned events section
+        for event in events {
+            if uniqueDates.contains(event.startDate) {
+                let index = uniqueDates.firstIndex(of: event.startDate)
+                //if sectionedEvents[index!].contains(event) {
+                    sectionedEvents[index!].append(event)
+                //}
+            }
+            else {
+                uniqueDates.append(event.startDate)
+                sectionedEvents.append([event])
+            }
+        }
+        print(sectionedEvents)
     }
     
-    
-    // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        calculateSections()
+        return uniqueDates.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -123,32 +162,32 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             return filteredEvents.count
         }
         else {
-            return self.events.count
+            return sectionedEvents[section].count
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Section \(section)"
+        return "\(uniqueDates[section][0])/\(uniqueDates[section][1])/\(uniqueDates[section][2])"
     }
     
     // creates cells according to Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-        let event: Event//Dictionary<String, AnyObject>
+        let event: Event
         
-        if isFiltering() {
-            event = filteredEvents[indexPath.row]
-        } else {
-            event = events[indexPath.row]
-        }
+        /*if isFiltering() {
+            event = filteredEvents[indexPath.section][indexPath.row]
+        } else {*/
+            event = sectionedEvents[indexPath.section][indexPath.row]
+        //}
         
         // title cell text: title
         cell.textLabel?.text = event.title
         
-        // format time here
+        // TODO: format time here
         
         // convert start time value to array
-        let startTime = self.events[indexPath.row].startTime
+        let startTime = event.startTime
         
         // detail cell text: start time
         if startTime[1] < 10 {
@@ -161,65 +200,18 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         return cell
     }
     
+    //When cell is selected, show event detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "homeToDetail", sender: self)
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    // MARK: - Navigation
-    
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // Passing data when segue happens to event detail
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? EventDetailVC,
-            let index = self.tableView.indexPathForSelectedRow?.row {
-                viewController.eventData = self.events[index]
+            let index = self.tableView.indexPathForSelectedRow {
+                viewController.eventData = self.sectionedEvents[index.section][index.row]
             }
     }
  
