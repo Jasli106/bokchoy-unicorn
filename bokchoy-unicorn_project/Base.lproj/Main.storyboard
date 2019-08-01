@@ -23,8 +23,8 @@
                         <segue destination="h1d-86-3TN" kind="relationship" relationship="viewControllers" id="utu-I6-PdJ"/>
                         <segue destination="wax-EO-6zZ" kind="relationship" relationship="viewControllers" id="ykQ-TP-feV"/>
                         <segue destination="mu2-ay-fhg" kind="relationship" relationship="viewControllers" id="KtV-Qw-jN2"/>
-                        <segue destination="WVA-Fc-rjp" kind="relationship" relationship="viewControllers" id="v50-oS-JdW"/>
                         <segue destination="7F8-5o-pPq" kind="relationship" relationship="viewControllers" id="EfQ-LE-Hud"/>
+                        <segue destination="Nks-SG-1Fd" kind="relationship" relationship="viewControllers" id="BRG-s8-lWY"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zfn-zm-QMJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -312,21 +312,58 @@
             </objects>
             <point key="canvasLocation" x="1326" y="-655"/>
         </scene>
-        <!--Gigs VC-->
-        <scene sceneID="ANT-wx-yKY">
+        <!--Item-->
+        <scene sceneID="jGm-dl-MXj">
             <objects>
-                <viewController id="WVA-Fc-rjp" userLabel="Gigs VC" customClass="GigsVC" customModule="bokchoy_unicorn_project" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qOb-Jv-eM4">
+                <tableViewController storyboardIdentifier="Gigs" id="Nks-SG-1Fd" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="elk-jo-RnF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="K9g-8w-nPg"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Gigs" id="9eZ-En-9je" userLabel="Gigs"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="O5k-pH-I44" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="MCp-aB-dsD">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LabelCell" textLabel="bXS-7r-3BO" detailTextLabel="sjz-fu-rTL" style="IBUITableViewCellStyleValue1" id="hZD-wp-vPc">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hZD-wp-vPc" id="TCN-2v-BM5">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bXS-7r-3BO">
+                                            <rect key="frame" x="16.000000000000004" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sjz-fu-rTL">
+                                            <rect key="frame" x="315" y="11.999999999999998" width="44" height="20.333333333333332"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="YLM-UD-1k2" kind="presentation" id="My4-2Y-AsS"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Nks-SG-1Fd" id="ans-y5-TmV"/>
+                            <outlet property="delegate" destination="Nks-SG-1Fd" id="KU6-8v-rp2"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Item" id="eBu-TY-RPz"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="35I-zy-LNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="374" y="88"/>
+            <point key="canvasLocation" x="374" y="-12"/>
         </scene>
         <!--Home VC-->
         <scene sceneID="nNr-ld-3EA">
@@ -344,10 +381,6 @@
                                 <outlet property="delegate" destination="mu2-ay-fhg" id="m2d-PV-xIC"/>
                             </connections>
                         </searchBar>
-                        <slider key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="0It-fx-bKu">
-                            <rect key="frame" x="0.0" y="711" width="375" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        </slider>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LabelCell" textLabel="AWQ-b5-trB" detailTextLabel="11u-6T-c3J" style="IBUITableViewCellStyleValue1" id="WzW-9l-jJP">
                                 <rect key="frame" x="0.0" y="84" width="375" height="44"/>
@@ -978,6 +1011,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="wBw-jY-2sh"/>
+        <segue reference="My4-2Y-AsS"/>
         <segue reference="2ie-fL-Hxp"/>
     </inferredMetricsTieBreakers>
 </document>
