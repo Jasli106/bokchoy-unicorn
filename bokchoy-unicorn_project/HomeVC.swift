@@ -37,11 +37,14 @@ extension Event: Equatable {
 
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
+    //TODO: Sort dates in chronological order
+    //TODO: Delete old posts; make sure user can't create post w/ start date earlier than current date
+    //TODO: Format dates (ew)
     
     //Variables
     var ref: DatabaseReference!
     var events = [Event]()
-    var filteredEvents = [Event]()
+    var filteredEvents = [[Event]]()
     var uniqueDates = [Array<Int>]()
     var sectionedEvents = [[Event]]()
     
@@ -120,9 +123,14 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filteredEvents = (events.filter({( event : Event) -> Bool in
-            return (event.title.lowercased().contains(searchText.lowercased()))
-        }))
+        filteredEvents = [[Event]]()
+        //Filters each section, appends to filteredEvents
+        for section in sectionedEvents {
+            filteredEvents.append(section.filter({( event : Event) -> Bool in
+                return (event.title.lowercased().contains(searchText.lowercased()))
+            }))
+            print(filteredEvents)
+        }
         
         tableView.reloadData()
     }
@@ -149,7 +157,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 sectionedEvents.append([event])
             }
         }
-        print(sectionedEvents)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -159,7 +166,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering() {
-            return filteredEvents.count
+            return filteredEvents[section].count
         }
         else {
             return sectionedEvents[section].count
@@ -175,11 +182,11 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         let event: Event
         
-        /*if isFiltering() {
+        if isFiltering() {
             event = filteredEvents[indexPath.section][indexPath.row]
-        } else {*/
+        } else {
             event = sectionedEvents[indexPath.section][indexPath.row]
-        //}
+        }
         
         // title cell text: title
         cell.textLabel?.text = event.title
