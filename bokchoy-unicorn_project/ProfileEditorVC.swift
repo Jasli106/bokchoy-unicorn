@@ -33,27 +33,16 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
         super.viewDidLoad()
         
     }
-
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        if  let viewController = segue.destination as? ProfileVC{
-            
-            let editedProfile = ["name": self.nameField.text,
+    
+    @IBAction func doneEditing(_ sender: Any) {
+        let editedProfile = ["name": self.nameField.text,
                              "instruments": self.instrumentsField.text,
                              "bio": self.bioField.text]
-            
-            //adding changes to database
-            userProfileRef.child(userDatabaseID!).setValue(editedProfile)
-            
-            
-            viewController.newProfile = editedProfile as Dictionary<String, Any>
-            
-        //comment out this linde to revert to version where Profile ends up being a stacked VC. This line makes the weird extra VC w/ cancel button show up
-            self.navigationController?.popViewController(animated: true)
         
-        }
-
+        //adding changes to database
+        userProfileRef.child(userDatabaseID!).setValue(editedProfile)
+        
+        self.navigationController?.popViewController(animated: true)
     }
+    
 }
