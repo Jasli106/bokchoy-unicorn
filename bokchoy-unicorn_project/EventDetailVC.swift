@@ -19,7 +19,7 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var interestedButton: UIButton!
     
     //Declaring eventData as an Event; data recieved from HomeVC through segue
-    public var eventData = Event(title: "", details: "", startDate: [], startTime: [], endDate: [], endTime: [])
+    public var eventData = Event(title: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class EventDetailVC: UIViewController {
         //Customizing labels to eventData
         titleLabel.text = eventData.title
         timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
-        dateLabel.text = "date: \(startDate[0])/\(startDate[1])/\(startDate[2])"
+        dateLabel.text = "date: \(startDate)"
         detailLabel.text = eventData.details
     }
     

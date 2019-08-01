@@ -59,9 +59,9 @@ class NewVC: UIViewController {
         
         let newEvent = [
             "title" : titleTextField.text!,
-            "start date" : [startDate.month, startDate.day, startDate.year],
+            "start date" : "\(startDate.month)/\(startDate.day)/\(startDate.year)",
             "start time" : [startDate.hour, startDate.minute],
-            "end date" : [endDate.month, endDate.day, endDate.year],
+            "end date" : "\(endDate.month)/\(endDate.day)/\(endDate.year)",
             "end time" : [endDate.hour, endDate.minute],
             "details" : detailsTextField.text!,
             
