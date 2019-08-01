@@ -26,13 +26,32 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate {
     //Variables
     var userDatabaseID = Auth.auth().currentUser?.uid
     let userProfileRef = Database.database().reference().child("users")
+    var profileData : Dictionary<String, Any> = [:]
     
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fillTextFields()
     }
+    
+    //checks user profile in database and inserts textfield text accordingly
+    func fillTextFields(){
+        userProfileRef.child(userDatabaseID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get values
+            let value = snapshot.value as? NSDictionary
+            
+            //assigning values to textfields
+            self.nameField.text = value?["name"] as? String ?? ""
+            self.instrumentsField.text = value?["instruments"] as? String ?? ""
+            self.bioField.text = value?["bio"] as? String ?? ""
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    
     
     @IBAction func doneEditing(_ sender: Any) {
         let editedProfile = ["name": self.nameField.text,

@@ -36,19 +36,19 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
         updateProfile()
         
         print("working?", profileData)
-        //assigning textlabels
-        nameLabel.text = self.profileData["name"] as? String
-        instrumentsLabel.text = self.profileData["instruments"] as? String
-        bioLabel.text = self.profileData["bio"] as? String
+        
+        nameLabel.isHidden = false
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        print("VIEWDIDAPPEAR WAS CALLED")
         
         nameLabel.text = self.profileData["name"] as? String
         instrumentsLabel.text = self.profileData["instruments"] as? String
         bioLabel.text = self.profileData["bio"] as? String
+        
+        print("this is profile data 1: ",profileData)
     }
     
     //checks database for any profile changes and changes local "profileData" dict accordingly
@@ -66,8 +66,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
                 //getting key value pairs
                 let value = characteristic.value!
                 let key = characteristic.key
-                
-                //let textLabel = key + "Label"
                 
                 self.profileData[key] = value
             }
