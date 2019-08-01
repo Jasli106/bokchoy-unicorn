@@ -272,7 +272,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit Profile"/>
                                 <connections>
-                                    <segue destination="N1f-lA-qme" kind="show" id="Y9u-pP-lyD"/>
+                                    <segue destination="N1f-lA-qme" kind="show" identifier="profileToProfileEditor" id="Y9u-pP-lyD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-bP-e2a" userLabel="LogoutButton">
@@ -441,9 +441,7 @@
                                     <navigationItem title="Event Detail" id="zVF-yA-0la">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="NXH-Mv-5pY">
                                             <connections>
-                                                <segue destination="Iym-UZ-OI9" kind="popoverPresentation" animates="NO" popoverAnchorBarButtonItem="NXH-Mv-5pY" id="gLw-fN-qwe">
-                                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                                </segue>
+                                                <segue destination="Iym-UZ-OI9" kind="show" animates="NO" id="gLw-fN-qwe"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -979,7 +977,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="WZq-B1-rld"/>
         <segue reference="wBw-jY-2sh"/>
-        <segue reference="2ie-fL-Hxp"/>
+        <segue reference="gLw-fN-qwe"/>
     </inferredMetricsTieBreakers>
 </document>
