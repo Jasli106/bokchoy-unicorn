@@ -15,9 +15,9 @@ struct Event {
     var title: String
     //var author: String //Idk if this actually needs to be in the struct? Unless we use the author at some point. So probably.
     var details: String
-    var startDate: Array<Int>
+    var startDate: Date
     var startTime: Array<Int>
-    var endDate: Array<Int>
+    var endDate: Date
     var endTime: Array<Int>
     //var location: String //Might have to change type later, research how location works?
 }
@@ -35,18 +35,23 @@ extension Event: Equatable {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
     //TODO: Sort dates in chronological order
-    //TODO: Delete old posts; make sure user can't create post w/ start date earlier than current date
+    //TODO: Store old posts in database but remove from home table
     //TODO: Format dates (ew)
     
     //Variables
     var ref: DatabaseReference!
     var events = [Event]()
     var filteredEvents = [[Event]]()
-    var uniqueDates = [Array<Int>]()
+    var uniqueDates = [Date]()
     var sectionedEvents = [[Event]]()
+    var orderedUniqueDates = [Date]()
+    var orderedSectionedEvents = [[Event]]()
+    
+    let dateFormatter = DateFormatter()
     
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -71,8 +76,11 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     //getting values
                     let value = events.value as? [String: AnyObject]
                     
+                    let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
+                    let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
+                    
                     //Converting to custom object of type Event
-                    let eventObject = Event(title: value!["title"] as! String, details: value!["details"] as! String, startDate: value!["start date"] as! Array<Int>, startTime: value!["start time"] as! Array<Int>, endDate: value!["end date"] as! Array<Int>, endTime: value!["end time"] as! Array<Int>)
+                    let eventObject = Event(title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
                     let eventTitle  = eventObject.title
                     let eventDetails  = eventObject.details
@@ -93,6 +101,22 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         })
     }
     
+    //TODO: Order dates chronologically
+    /*func orderDates() {
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        
+        for date in uniqueDates {
+            //let dateString
+            //let formattedDate = dateFormatter.date(from: date)
+            //if let date = date {
+            //    convertedArray.append(date)
+            //}
+        }
+    }*/
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,6 +128,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         searchController.searchBar.placeholder = "Search Gigs"
         
         addDatabaseToEvents()
+        
+        dateFormatter.dateFormat = "MM/dd/yyyy"
         
     }
     
@@ -142,7 +168,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     
     // Determining characteristics of table (sections, rows, etc.)
     func calculateSections() {
-        uniqueDates = [Array<Int>]()
+        uniqueDates = [Date]()
         sectionedEvents = [[Event]]()
         //Iterates through all events and checks if they occur on a new date or not. If not, add date to list of dates when events occur (uniqueDates). Also checks if event is already in sectioned events section
         for event in events {
@@ -174,7 +200,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(uniqueDates[section][0])/\(uniqueDates[section][1])/\(uniqueDates[section][2])"
+        let date = dateFormatter.string(from: uniqueDates[section])
+        return date
     }
     
     // creates cells according to Prototype cell
