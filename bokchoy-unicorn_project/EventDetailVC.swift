@@ -18,16 +18,8 @@ class EventDetailVC: UIViewController {
     
     @IBOutlet weak var interestedButton: UIButton!
     
-    //recieving eventData from TableVC as a dictionary
+    //Declaring eventData as an Event; data recieved from HomeVC through segue
     public var eventData = Event(title: "", details: "", startDate: [], startTime: [], endDate: [], endTime: [])
-    
-    /*
-     //may be useful later to pull event details from database
-    refHandle = postRef.observe(DataEventType.value, with: { (snapshot) in
-    let postDict = snapshot.value as? [String : AnyObject] ?? [:]
-    // ...
-    })
-    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
