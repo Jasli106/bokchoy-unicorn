@@ -95,14 +95,19 @@ class NewVC: UIViewController {
         
         //referencing "events" in database
         let refEvents = Database.database().reference().child("events")
+        let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
     
+        let randomID = Database.database().reference().childByAutoId().key!
+        print(randomID)
+        
         //adding newEvent to database with automatically assigned unique ID
-        refEvents.childByAutoId().setValue(newEvent){
+        refEvents.child(randomID).setValue(newEvent){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("Data could not be saved: \(error).")
             } else {
-                //if no error, alerts user that post was successful
+                refEventsByUser.child("authored").child(randomID).setValue(randomID)
+                //if no error, alerts user that post was successful                
                 let alert = UIAlertController(title: "Posted!",
                                               message: "Data saved successfully",
                                               preferredStyle: .alert)
