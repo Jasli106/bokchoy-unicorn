@@ -55,7 +55,7 @@ class NewVC: UIViewController {
         
         //Getting date and time components as ints
         let startDate = startTimePicker.date.getDateTime()
-        let endDate = startTimePicker.date.getDateTime()
+        let endDate = endTimePicker.date.getDateTime()
         
         let newEvent = [
             "title" : titleTextField.text!,
