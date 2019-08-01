@@ -8,10 +8,12 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 
 //Struct for events
 struct Event {
+    var key: String
     var title: String
     //var author: String //Idk if this actually needs to be in the struct? Unless we use the author at some point. So probably.
     var details: String
@@ -43,7 +45,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     //TODO: Format dates sort of...(ew)
     
     //Variables
-    var ref: DatabaseReference!
     var events = [Event]()
     var filteredEvents = [[Event]]()
     var uniqueDates = [Date]()
@@ -80,33 +81,45 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let eventObject = Event(title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                    let eventObject = Event(key: events.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
-                    let eventTitle  = eventObject.title
-                    let eventDetails  = eventObject.details
+                    let eventKey = eventObject.key
+                    let eventTitle = eventObject.title
+                    let eventDetails = eventObject.details
                     let eventStartDate = eventObject.startDate
                     let eventStartTime = eventObject.startTime
                     let eventEndDate = eventObject.endDate
                     let eventEndTime = eventObject.endTime
                     
                     //creating event object with model and fetched values
-                    let event = Event(title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                    let event = Event(key: eventKey, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
                     
                     //appending it to list
                     self.events.append(event)
                 }
+                //Archiving old posts
+                self.saveOldPosts()
                 //reloading the tableview
-                self.tableView.reloadData()
             }
+            self.tableView.reloadData()
         })
     }
     
-    /*func saveOldPosts() {
+    //TODO: forbid user from setting end date to a date before start date
+    func saveOldPosts() {
+        let oldRef = Database.database().reference()
+        let date = Date()
         for event in events {
-            if event.endDate < Calendar.current.date(from: <#T##DateComponents#>)
+            let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
+            if event.endDate < date {
+                /*oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
+                events.remove(at: events.firstIndex(of: event)!)
+                oldRef.child("events").child(event.key).removeValue()*/
+                print(event.endDate)
+                print("AAAAA")
+            }
         }
-        ref.childByAutoId().setValue(<#T##value: Any?##Any?#>)
-    }*/
+    }
     
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------

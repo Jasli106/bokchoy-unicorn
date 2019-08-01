@@ -55,7 +55,7 @@ class NewVC: UIViewController {
         
         //Getting date and time components as ints
         let startDate = startTimePicker.date.getDateTime()
-        let endDate = startTimePicker.date.getDateTime()
+        let endDate = endTimePicker.date.getDateTime()
         
         let newEvent = [
             "title" : titleTextField.text!,
@@ -102,7 +102,7 @@ class NewVC: UIViewController {
             if let error = error {
                 print("Data could not be saved: \(error).")
             } else {
-                //if no error, alerts user that post was successful                
+                //if no error, alerts user that post was successful
                 let alert = UIAlertController(title: "Posted!",
                                               message: "Data saved successfully",
                                               preferredStyle: .alert)
