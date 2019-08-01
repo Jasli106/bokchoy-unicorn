@@ -25,37 +25,17 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
     let ref = Database.database().reference()
     var profileData : Dictionary<String, Any> = [:]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Store user ID in Firebase
         user = Auth.auth().currentUser
-        
-        
-        updateProfile()
-        
-        print("working?", profileData)
-        
-        nameLabel.isHidden = false
-        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("VIEWDIDAPPEAR WAS CALLED")
+    override func viewWillAppear(_ animated: Bool) {
+        print("STARTING TO UPDATE PROFILE")
         
-        nameLabel.text = self.profileData["name"] as? String
-        instrumentsLabel.text = self.profileData["instruments"] as? String
-        bioLabel.text = self.profileData["bio"] as? String
-        
-        print("this is profile data 1: ",profileData)
-    }
-    
-    //checks database for any profile changes and changes local "profileData" dict accordingly
-    func updateProfile(){
-        
-        print("UPDATE PROFILE WAS CALLED")
-        let userProfileRef = Database.database().reference().child("users").child(userDatabaseID!)
+        let userProfileRef = ref.child("users").child(userDatabaseID!)
         
         //observing the data changes
         userProfileRef.observe(DataEventType.value, with: { (snapshot) in
@@ -69,10 +49,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
                 
                 self.profileData[key] = value
             }
+            //assigning text to labels
+            self.nameLabel.text = self.profileData["name"] as? String
+            self.instrumentsLabel.text = self.profileData["instruments"] as? String
+            self.bioLabel.text = self.profileData["bio"] as? String
         })
-        print(self.profileData)
     }
-    
     
     //Logout button
     @IBAction func logOutAction(sender: UIButton) {

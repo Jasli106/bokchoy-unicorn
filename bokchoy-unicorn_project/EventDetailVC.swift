@@ -37,6 +37,9 @@ class EventDetailVC: UIViewController {
         dateLabel.text = "date: " + startDate
         detailLabel.text = eventData.details
     }
+    @IBAction func backToHomeTable(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     //@IBAction func interested(_ sender: Any) {
     //}

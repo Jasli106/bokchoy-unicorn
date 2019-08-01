@@ -382,7 +382,7 @@
                     <tabBarItem key="tabBarItem" title="Home" id="WQP-fX-wCw"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="VPj-yT-9Q8" id="af5-AY-XfC"/>
-                        <segue destination="YLM-UD-1k2" kind="show" identifier="homeToDetail" id="WZq-B1-rld"/>
+                        <segue destination="YLM-UD-1k2" kind="presentation" identifier="homeToDetail" id="WZq-B1-rld"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gwg-bX-UoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -441,7 +441,7 @@
                                     <navigationItem title="Event Detail" id="zVF-yA-0la">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="NXH-Mv-5pY">
                                             <connections>
-                                                <segue destination="Iym-UZ-OI9" kind="show" animates="NO" id="gLw-fN-qwe"/>
+                                                <action selector="backToHomeTable:" destination="YLM-UD-1k2" id="YZd-bg-Sf7"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -977,8 +977,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WZq-B1-rld"/>
         <segue reference="wBw-jY-2sh"/>
-        <segue reference="gLw-fN-qwe"/>
+        <segue reference="2ie-fL-Hxp"/>
     </inferredMetricsTieBreakers>
 </document>
