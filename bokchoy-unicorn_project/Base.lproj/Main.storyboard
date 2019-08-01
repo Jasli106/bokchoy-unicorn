@@ -166,8 +166,7 @@
                     <navigationItem key="navigationItem" title="Edit Profile" id="cSc-D6-5Fh">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="9eH-vh-Bs3">
                             <connections>
-                                <action selector="doneEditing" destination="N1f-lA-qme" id="7oC-gY-oUr"/>
-                                <segue destination="RXJ-VN-2uK" kind="push" id="eKc-ht-M8n"/>
+                                <action selector="doneEditing:" destination="N1f-lA-qme" id="Y7R-qg-BiX"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -980,9 +979,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Y9u-pP-lyD"/>
         <segue reference="wBw-jY-2sh"/>
-        <segue reference="eKc-ht-M8n"/>
         <segue reference="2ie-fL-Hxp"/>
     </inferredMetricsTieBreakers>
 </document>

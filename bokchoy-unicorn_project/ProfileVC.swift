@@ -23,25 +23,56 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
     let ref = Database.database().reference()
+    var profileData : Dictionary<String, Any> = [:]
     
-    //recieving newProfile from ProfileEditorVC
-    public var newProfile : Dictionary<String, Any> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tabBarController?.tabBar.isHidden = false
         
         //Store user ID in Firebase
         user = Auth.auth().currentUser
         
         
-        let userProfileRef = Database.database().reference().child("users").child(userDatabaseID!)
+        updateProfile()
+        
+        print("working?", profileData)
+        //assigning textlabels
+        nameLabel.text = self.profileData["name"] as? String
+        instrumentsLabel.text = self.profileData["instruments"] as? String
+        bioLabel.text = self.profileData["bio"] as? String
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
+        
+        nameLabel.text = self.profileData["name"] as? String
+        instrumentsLabel.text = self.profileData["instruments"] as? String
+        bioLabel.text = self.profileData["bio"] as? String
+    }
+    
+    //checks database for any profile changes and changes local "profileData" dict accordingly
+    func updateProfile(){
+        
+        print("UPDATE PROFILE WAS CALLED")
+        let userProfileRef = Database.database().reference().child("users").child(userDatabaseID!)
+        
+        //observing the data changes
+        userProfileRef.observe(DataEventType.value, with: { (snapshot) in
+            
+            //iterating through all the values
+            for characteristic in snapshot.children.allObjects as! [DataSnapshot] {
+                
+                //getting key value pairs
+                let value = characteristic.value!
+                let key = characteristic.key
+                
+                //let textLabel = key + "Label"
+                
+                self.profileData[key] = value
+            }
+        })
+        print(self.profileData)
     }
     
     
@@ -62,4 +93,5 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
     }
     
 }
+
 
