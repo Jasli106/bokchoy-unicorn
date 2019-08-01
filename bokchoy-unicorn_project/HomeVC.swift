@@ -39,6 +39,7 @@ extension Event: Equatable {
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
     //TODO: Store old posts in database but remove from home table
+    //TODO: Sort posts by time as well (within each section)
     //TODO: Format dates sort of...(ew)
     
     //Variables
@@ -100,12 +101,20 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         })
     }
     
+    /*func saveOldPosts() {
+        for event in events {
+            if event.endDate < Calendar.current.date(from: <#T##DateComponents#>)
+        }
+        ref.childByAutoId().setValue(<#T##value: Any?##Any?#>)
+    }*/
+    
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        dateFormatter.dateFormat = "MM/dd/yyyy"
         
         //Search bar setup
         searchController.searchResultsUpdater = self
@@ -115,10 +124,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         searchController.searchBar.placeholder = "Search Gigs"
         
         addDatabaseToEvents()
-        
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -172,9 +177,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             }
         }
         
-        //Order dates
+        //Order dates and events
         orderedUniqueDates = uniqueDates.sorted(by: <)
-        //TODO: order events also
         for date in orderedUniqueDates {
             for eventSection in sectionedEvents {
                 if eventSection[0].startDate == date {

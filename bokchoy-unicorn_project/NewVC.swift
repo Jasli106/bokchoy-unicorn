@@ -102,12 +102,7 @@ class NewVC: UIViewController {
             if let error = error {
                 print("Data could not be saved: \(error).")
             } else {
-                //if no error, alerts user that post was successful
-                /*let alertController = UIAlertController(title: "Posted!", message: "Data saved successfully", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)*/
-                
+                //if no error, alerts user that post was successful                
                 let alert = UIAlertController(title: "Posted!",
                                               message: "Data saved successfully",
                                               preferredStyle: .alert)
