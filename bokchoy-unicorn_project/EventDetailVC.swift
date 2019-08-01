@@ -21,16 +21,20 @@ class EventDetailVC: UIViewController {
     //Declaring eventData as an Event; data recieved from HomeVC through segue
     public var eventData = Event(title: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
     
+    let dateFormatter = DateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let startDate = eventData.startDate
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        
+        let startDate = dateFormatter.string(from: eventData.startDate)
         let startTime = eventData.startTime
         
         //Customizing labels to eventData
         titleLabel.text = eventData.title
         timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
-        dateLabel.text = "date: \(startDate)"
+        dateLabel.text = "date: " + startDate
         detailLabel.text = eventData.details
     }
     

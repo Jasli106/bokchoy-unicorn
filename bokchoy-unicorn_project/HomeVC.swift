@@ -38,9 +38,8 @@ extension Event: Equatable {
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
 class HomeVC: UITableViewController, UISearchResultsUpdating {
-    //TODO: Sort dates in chronological order
     //TODO: Store old posts in database but remove from home table
-    //TODO: Format dates (ew)
+    //TODO: Format dates sort of...(ew)
     
     //Variables
     var ref: DatabaseReference!
@@ -101,24 +100,12 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         })
     }
     
-    //TODO: Order dates chronologically
-    /*func orderDates() {
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        
-        for date in uniqueDates {
-            //let dateString
-            //let formattedDate = dateFormatter.date(from: date)
-            //if let date = date {
-            //    convertedArray.append(date)
-            //}
-        }
-    }*/
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         //Search bar setup
         searchController.searchResultsUpdater = self
@@ -130,6 +117,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         addDatabaseToEvents()
         
         dateFormatter.dateFormat = "MM/dd/yyyy"
+        
         
     }
     
@@ -183,11 +171,23 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 sectionedEvents.append([event])
             }
         }
+        
+        //Order dates
+        orderedUniqueDates = uniqueDates.sorted(by: <)
+        //TODO: order events also
+        for date in orderedUniqueDates {
+            for eventSection in sectionedEvents {
+                if eventSection[0].startDate == date {
+                    orderedSectionedEvents.append(eventSection)
+                }
+            }
+        }
+        
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         calculateSections()
-        return uniqueDates.count
+        return orderedUniqueDates.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -195,12 +195,12 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             return filteredEvents[section].count
         }
         else {
-            return sectionedEvents[section].count
+            return orderedSectionedEvents[section].count
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let date = dateFormatter.string(from: uniqueDates[section])
+        let date = dateFormatter.string(from: orderedUniqueDates[section])
         return date
     }
     
@@ -212,7 +212,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         if isFiltering() {
             event = filteredEvents[indexPath.section][indexPath.row]
         } else {
-            event = sectionedEvents[indexPath.section][indexPath.row]
+            event = orderedSectionedEvents[indexPath.section][indexPath.row]
         }
         
         // title cell text: title
@@ -245,7 +245,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? EventDetailVC,
             let index = self.tableView.indexPathForSelectedRow {
-                viewController.eventData = self.sectionedEvents[index.section][index.row]
+                viewController.eventData = self.orderedSectionedEvents[index.section][index.row]
             }
     }
  
