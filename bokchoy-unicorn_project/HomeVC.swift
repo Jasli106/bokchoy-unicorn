@@ -97,11 +97,10 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     //appending it to list
                     self.events.append(event)
                 }
-                //Archiving old posts
-                self.saveOldPosts()
                 //reloading the tableview
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
+            
         })
     }
     
@@ -109,14 +108,13 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     func saveOldPosts() {
         let oldRef = Database.database().reference()
         let date = Date()
+        let dateStart = Calendar.current.startOfDay(for: date)
+        print("TODAY: \(dateStart)")
         for event in events {
             let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
-            if event.endDate < date {
-                /*oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
-                events.remove(at: events.firstIndex(of: event)!)
-                oldRef.child("events").child(event.key).removeValue()*/
-                print(event.endDate)
-                print("AAAAA")
+            if event.endDate < dateStart {
+                oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
+                oldRef.child("events").child(event.key).removeValue()
             }
         }
     }
@@ -127,6 +125,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addDatabaseToEvents()
+        
         dateFormatter.dateFormat = "MM/dd/yyyy"
         
         //Search bar setup
@@ -136,12 +136,18 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        addDatabaseToEvents()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(events)
+        saveOldPosts()
         self.tableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //saveOldPosts()
+        
     }
     
     //Search and filter functions
@@ -161,7 +167,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             filteredEvents.append(section.filter({( event : Event) -> Bool in
                 return (event.title.lowercased().contains(searchText.lowercased()))
             }))
-            print(filteredEvents)
         }
         
         tableView.reloadData()
