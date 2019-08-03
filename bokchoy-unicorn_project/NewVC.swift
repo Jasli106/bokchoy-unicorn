@@ -98,7 +98,6 @@ class NewVC: UIViewController {
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
     
         let randomID = Database.database().reference().childByAutoId().key!
-        print(randomID)
         
         //adding newEvent to database with automatically assigned unique ID
         refEvents.child(randomID).setValue(newEvent){
