@@ -410,10 +410,6 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="mu2-ay-fhg" id="GAH-u4-hw8"/>
-                            <outlet property="delegate" destination="mu2-ay-fhg" id="LeQ-1k-vtc"/>
-                        </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Home" id="WQP-fX-wCw"/>
                     <connections>
