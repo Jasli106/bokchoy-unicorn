@@ -31,13 +31,11 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     let user = Auth.auth().currentUser?.uid
     
     fileprivate func addDatabaseToEvents() {
-        print("ADDDATABASETOEVENTS JUST STARTED")
         
         //This function takes the information from the database and adds it to the list of events in this view controller, so that it can use it later
         //Database reference
         let refAuthoredEvents = Database.database().reference().child("eventsByUser").child(user!).child("authored")
         
-        print(refAuthoredEvents.key!)
         let refEvents = Database.database().reference().child("events")
         
         //if any changes in authoredEvents...
@@ -96,13 +94,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 })
             }
         })
-       
-        print("ADDDATABASETOEVENTS JUST ENDED")
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     override func viewDidLoad() {
-        print("VIEWDIDLOAD JUST STARTED")
         
         super.viewDidLoad()
         
@@ -116,14 +111,11 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         searchController.searchBar.placeholder = "Search Gigs"
         
         addDatabaseToEvents()
-        print("VIEWDIDLOAD JUST FINISHED")
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("VIEWWILLAPPEAR JUST STARTED")
         super.viewWillAppear(animated)
         tableView.reloadData()
-        print("VIEWWILLAPPEAR JUST FINISHED")
     }
     
     //-----------------------------------------------------------------------
@@ -144,7 +136,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             filteredEvents.append(section.filter({( event : Event) -> Bool in
                 return (event.title.lowercased().contains(searchText.lowercased()))
             }))
-            print("HERE ARE THE FILTERED EVENTS ",filteredEvents)
         }
         tableView.reloadData()
     }
