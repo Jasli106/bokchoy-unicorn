@@ -33,8 +33,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("STARTING TO UPDATE PROFILE")
-        
+
         let userProfileRef = ref.child("users").child(userDatabaseID!)
         
         //observing the data changes

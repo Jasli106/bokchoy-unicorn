@@ -18,7 +18,7 @@ class EventDetailVC: UIViewController {
     
     @IBOutlet weak var interestedButton: UIButton!
     
-    //Declaring eventData as an Event; data recieved from HomeVC through segue
+    //Declaring eventData as an Event; data recieved from HomeVC or GigsVC through segue
     public var eventData = Event(title: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
     
     let dateFormatter = DateFormatter()
