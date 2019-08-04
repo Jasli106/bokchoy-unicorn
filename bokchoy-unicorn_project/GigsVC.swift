@@ -62,23 +62,13 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         
                         //getting values
                         let value = eachEvent.value as? [String: AnyObject]
-                        let ID = events.key
+                        let ID = eachEvent.key
                         
                         let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
                         let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                         
                         //Converting to custom object of type Event
-                        let eventObject = Event(ID: ID, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
-                        
-                        let eventTitle  = eventObject.title
-                        let eventDetails  = eventObject.details
-                        let eventStartDate = eventObject.startDate
-                        let eventStartTime = eventObject.startTime
-                        let eventEndDate = eventObject.endDate
-                        let eventEndTime = eventObject.endTime
-                        
-                        //creating event object with model and fetched values
-                        let event = Event(ID: ID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                        let event = Event(ID: ID, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                         
                         //appending it to list
                         self.events.append(event)
