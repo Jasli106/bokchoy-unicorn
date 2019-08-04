@@ -62,14 +62,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         
                         //getting values
                         let value = eachEvent.value as? [String: AnyObject]
+                        let ID = events.key
                         
                         let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
                         let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                         
                         //Converting to custom object of type Event
-                        let eventObject = Event(ID: value!["ID"] as! String, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                        let eventObject = Event(ID: ID, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                         
-                        let eventID = eventObject.ID
                         let eventTitle  = eventObject.title
                         let eventDetails  = eventObject.details
                         let eventStartDate = eventObject.startDate
@@ -78,11 +78,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         let eventEndTime = eventObject.endTime
                         
                         //creating event object with model and fetched values
-                        let event = Event(ID: eventID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                        let event = Event(ID: ID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
                         
                         //appending it to list
                         self.events.append(event)
-                        
                     }
                 }
                 //reloading the tableview
