@@ -13,7 +13,7 @@ import FirebaseAuth
 
 //Struct for events
 struct Event {
-    var key: String
+    var ID: String
     var title: String
     //var author: String //Idk if this actually needs to be in the struct? Unless we use the author at some point. So probably.
     var details: String
@@ -81,9 +81,9 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let eventObject = Event(key: events.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                    let eventObject = Event(ID: events.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
-                    let eventKey = eventObject.key
+                    let eventID = eventObject.ID
                     let eventTitle = eventObject.title
                     let eventDetails = eventObject.details
                     let eventStartDate = eventObject.startDate
@@ -92,7 +92,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let eventEndTime = eventObject.endTime
                     
                     //creating event object with model and fetched values
-                    let event = Event(key: eventKey, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                    let event = Event(ID: eventID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
                     
                     //appending it to list
                     self.events.append(event)
@@ -112,9 +112,9 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         for event in events {
             let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
             if event.endDate < date {
-                /*oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
+                oldRef.child("oldEvents").child(event.ID).setValue(eventToArchive)
                 events.remove(at: events.firstIndex(of: event)!)
-                oldRef.child("events").child(event.key).removeValue()*/
+                oldRef.child("events").child(event.ID).removeValue()
                 print(event.endDate)
                 print("AAAAA")
             }
