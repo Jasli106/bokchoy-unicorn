@@ -57,13 +57,13 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     let searchController = UISearchController(searchResultsController: nil)
 
     
-    fileprivate func addDatabaseToEvents(completion: () -> ()) {
+    fileprivate func addDatabaseToEvents(completion: @escaping () -> ()) {
         //This function takes the information from the database and adds it to the list of events in this view controller, so that it can use it later
         //Database reference
         let refEvents = Database.database().reference().child("events")
         
         //observing the data changes
-        refEvents.observe(DataEventType.value, with: { (snapshot) in
+        refEvents.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             //if the reference have some values
             if snapshot.childrenCount > 0 {
@@ -89,9 +89,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 //reloading the tableview
                 self.tableView.reloadData()
             }
-            
+            completion()
         })
-        completion()
         
     }
     
@@ -105,6 +104,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             if event.endDate < dateStart {
                 oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
                 oldRef.child("events").child(event.ID).removeValue()
+                events.remove(at: events.firstIndex(of: event)!)
             }
         }
         tableView.reloadData()
@@ -112,14 +112,19 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
+
+    override func loadView() {
+        super.loadView()
+        addDatabaseToEvents(completion: {
+            self.saveOldPosts()
+            self.calculateSections()
+            self.tableView.reloadData()
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addDatabaseToEvents(completion: {
-            self.saveOldPosts()
-        })
-        tableView.reloadData()
         
         dateFormatter.dateFormat = "MM/dd/yyyy"
         
@@ -132,9 +137,10 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    /*override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    }
+        tableView.reloadData()
+    }*/
     
     //Search and filter functions
     func updateSearchResults(for searchController: UISearchController) {
@@ -193,7 +199,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        calculateSections()
         return orderedUniqueDates.count
     }
     
