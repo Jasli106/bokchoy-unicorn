@@ -34,30 +34,17 @@ class NewVC: UIViewController {
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
     @IBAction func postEvent(_ sender: Any) {
         
-        /*
-        //gives who the post author is (useful later)
-        let userID = Auth.auth().currentUser?.uid
-        ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            let value = snapshot.value as? NSDictionary
-            let username = value?["username"] as? String ?? ""
-            let user = User(username: username)
-            
-            // ...
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-        */
-        
         //coding newEvent based on user input in text fields
         
         let user = Auth.auth().currentUser?.uid
+        let randomID = Database.database().reference().childByAutoId().key!
         
         //Getting date and time components as ints
         let startDate = startTimePicker.date.getDateTime()
         let endDate = endTimePicker.date.getDateTime()
         
         let newEvent = [
+            "ID" : randomID,
             "title" : titleTextField.text!,
             "start date" : "\(startDate.month)/\(startDate.day)/\(startDate.year)",
             "start time" : [startDate.hour, startDate.minute],
@@ -70,6 +57,7 @@ class NewVC: UIViewController {
         
         var necessaryTextFields = newEvent
         //removing traits that are not necessary for posting
+        necessaryTextFields.removeValue(forKey: "ID")
         necessaryTextFields.removeValue(forKey: "author")
         necessaryTextFields.removeValue(forKey: "start date")
         necessaryTextFields.removeValue(forKey: "start time")
@@ -96,8 +84,6 @@ class NewVC: UIViewController {
         //referencing "events" in database
         let refEvents = Database.database().reference().child("events")
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
-    
-        let randomID = Database.database().reference().childByAutoId().key!
         
         //adding newEvent to database with automatically assigned unique ID
         refEvents.child(randomID).setValue(newEvent){
