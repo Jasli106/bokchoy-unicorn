@@ -312,10 +312,10 @@
             </objects>
             <point key="canvasLocation" x="1326" y="-655"/>
         </scene>
-        <!--Item-->
+        <!--Gigs-->
         <scene sceneID="jGm-dl-MXj">
             <objects>
-                <tableViewController storyboardIdentifier="Gigs" id="Nks-SG-1Fd" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="Gigs" id="Nks-SG-1Fd" customClass="GigsVC" customModule="bokchoy_unicorn_project" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="elk-jo-RnF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -324,6 +324,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="elk-jo-RnF" id="cUM-mt-YjI"/>
+                            </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LabelCell" textLabel="bXS-7r-3BO" detailTextLabel="sjz-fu-rTL" style="IBUITableViewCellStyleValue1" id="hZD-wp-vPc">
@@ -359,7 +362,30 @@
                             <outlet property="delegate" destination="Nks-SG-1Fd" id="KU6-8v-rp2"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="eBu-TY-RPz"/>
+                    <tabBarItem key="tabBarItem" title="Gigs" id="eBu-TY-RPz"/>
+                    <toolbarItems>
+                        <barButtonItem title="My Posts" id="u2g-OQ-hZk">
+                            <connections>
+                                <action selector="pressedMine:" destination="Nks-SG-1Fd" id="BRR-0T-2rm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Bookmarked" id="B5K-NA-mg6">
+                            <connections>
+                                <action selector="pressedBookmarked:" destination="Nks-SG-1Fd" id="Ii0-ht-XUh"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="All" id="cZg-4T-6eu">
+                            <connections>
+                                <action selector="pressedAll:" destination="Nks-SG-1Fd" id="10S-4t-l13"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="allButton" destination="cZg-4T-6eu" id="G4b-L5-tNz"/>
+                        <outlet property="bookmarkedButton" destination="B5K-NA-mg6" id="Lsp-Bm-1M2"/>
+                        <outlet property="mineButton" destination="u2g-OQ-hZk" id="a2l-Yg-wtR"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="35I-zy-LNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -450,6 +476,7 @@
                                 <state key="normal" title="I'm Interested!"/>
                                 <connections>
                                     <action selector="interestButton:" destination="Lya-IA-cCE" eventType="touchUpInside" id="M69-cf-sxV"/>
+                                    <action selector="interested:" destination="YLM-UD-1k2" eventType="touchUpInside" id="vof-LA-m7y"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ud0-HU-sPe">

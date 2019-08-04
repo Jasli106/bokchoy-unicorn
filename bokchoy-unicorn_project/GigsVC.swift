@@ -8,16 +8,21 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 
 class GigsVC: UITableViewController, UISearchResultsUpdating {
-    //TODO: Store old posts in database but remove from gigs table
-    //TODO: Sort posts by time as well (within each section)
-    //TODO: Format dates sort of...(ew)
+    
+    @IBOutlet weak var mineButton: UIBarButtonItem!
+    @IBOutlet weak var bookmarkedButton: UIBarButtonItem!
+    @IBOutlet weak var allButton: UIBarButtonItem!
     
     //Variables
     var ref: DatabaseReference!
     var events = [Event]()
+    var authoredEvents : Array<String> = []
+    var bookmarkedEvents : Array<String> = []
+    
     var filteredEvents = [[Event]]()
     var uniqueDates = [Date]()
     var sectionedEvents = [[Event]]()
@@ -28,14 +33,21 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     let searchController = UISearchController(searchResultsController: nil)
     
+    let user = Auth.auth().currentUser?.uid
     
-    fileprivate func addDatabaseToEvents() {
-        //This function takes the information from the database and adds it to the list of events in this view controller, so that it can use it later
-        //Database reference
-        let refEvents = Database.database().reference().child("events")
+    
+    
+    let refEvents = Database.database().reference().child("events")
+    let refEventsByUser = Database.database().reference().child("eventsByUser")
+    
+    
+    //scanEvents() takes input (an array) and sees if any of the array items are the keys for any "events" in database
+    //events with keys from input get added to table
+    func scanEvents(eventsOfInterest: Array<String>){
         
-        //observing the data changes
-        refEvents.observe(DataEventType.value, with: { (snapshot) in
+        print("SCANEVENTS BEGAN")
+        //observing the data changes in events of interest
+        refEvents.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             //if the reference have some values
             if snapshot.childrenCount > 0 {
@@ -44,40 +56,43 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 self.events.removeAll()
                 
                 //iterating through all the values
-                for events in snapshot.children.allObjects as! [DataSnapshot] {
-                    
-                    //getting values
-                    let value = events.value as? [String: AnyObject]
-                    let key = events.key
-                    
-                    let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
-                    let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
-                    
-                    //Converting to custom object of type Event
-                    let eventObject = Event(key: key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
-                    
-                    let eventTitle  = eventObject.title
-                    let eventDetails  = eventObject.details
-                    let eventStartDate = eventObject.startDate
-                    let eventStartTime = eventObject.startTime
-                    let eventEndDate = eventObject.endDate
-                    let eventEndTime = eventObject.endTime
-                    
-                    //creating event object with model and fetched values
-                    let event = Event(key: key, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
-                    
-                    //appending it to list
-                    self.events.append(event)
+                for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
+                    //if eachEvent is listed in authoredEvents
+                    if eventsOfInterest.contains(eachEvent.key) {
+                        
+                        //getting values
+                        let value = eachEvent.value as? [String: AnyObject]
+                        let ID = events.key
+                        
+                        let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
+                        let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
+                        
+                        //Converting to custom object of type Event
+                        let eventObject = Event(ID: ID, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                        
+                        let eventTitle  = eventObject.title
+                        let eventDetails  = eventObject.details
+                        let eventStartDate = eventObject.startDate
+                        let eventStartTime = eventObject.startTime
+                        let eventEndDate = eventObject.endDate
+                        let eventEndTime = eventObject.endTime
+                        
+                        //creating event object with model and fetched values
+                        let event = Event(ID: ID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                        
+                        //appending it to list
+                        self.events.append(event)
+                    }
                 }
                 //reloading the tableview
                 self.tableView.reloadData()
             }
         })
     }
-    
     //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         dateFormatter.dateFormat = "MM/dd/yyyy"
@@ -85,16 +100,18 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         //Search bar setup
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = true
-        self.tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        addDatabaseToEvents()
+        mineFilter()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     //-----------------------------------------------------------------------
@@ -115,7 +132,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             filteredEvents.append(section.filter({( event : Event) -> Bool in
                 return (event.title.lowercased().contains(searchText.lowercased()))
             }))
-            print(filteredEvents)
         }
         tableView.reloadData()
     }
@@ -138,7 +154,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 //}
             }
             else {
-                uniqueDates.append(event.startDate)
+               uniqueDates.append(event.startDate)
                 sectionedEvents.append([event])
             }
         }
@@ -204,9 +220,65 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         return cell
     }
     
+    
+    func mineFilter() {
+        //if any changes in authoredEvents...
+        refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (authoredSnapshot) in
+            
+            if authoredSnapshot.childrenCount > 0 {
+                //clearing the list
+                self.authoredEvents.removeAll()
+                
+                //iterating through and adding eventID to authoredEvents list
+                for eachEvent in authoredSnapshot.children.allObjects as! [DataSnapshot] {
+                    self.authoredEvents.append(eachEvent.key)
+                }
+                
+                self.scanEvents(eventsOfInterest: self.authoredEvents)
+                
+            }
+        })
+    }
+    
+    func bookmarkedFilter() {
+        //if any changes in bookmarkedEvents...
+        refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (bookmarkedSnapshot) in
+            
+            if bookmarkedSnapshot.childrenCount > 0 {
+                //clearing the list
+                self.bookmarkedEvents.removeAll()
+                
+                //iterating through and adding eventID to bookmarkedEvents list
+                for eachEvent in bookmarkedSnapshot.children.allObjects as! [DataSnapshot] {
+                    self.bookmarkedEvents.append(eachEvent.key)
+                }
+                
+                self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
+                
+            }
+        })
+    }
+
+    func allFilter() {
+    }
+    
+    @IBAction func pressedMine(_ sender: Any) {
+        mineFilter()
+    }
+    
+    @IBAction func pressedBookmarked(_ sender: Any) {
+        bookmarkedFilter()
+    }
+    
+    @IBAction func pressedAll(_ sender: Any) {
+        allFilter()
+    }
+    
+    
+    
     //When cell is selected, show event detail
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "gigsToDetail", sender: self)
+        performSegue(withIdentifier: "gigsToDetail", sender: self)
     }
     
     // Passing data when segue happens to event detail
@@ -214,10 +286,8 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if  let viewController = segue.destination as? EventDetailVC,
-            let index = self.tableView.indexPathForSelectedRow {
-            viewController.eventData = self.orderedSectionedEvents[index.section][index.row]
+            let index = tableView.indexPathForSelectedRow {
+            viewController.eventData = orderedSectionedEvents[index.section][index.row]
         }
     }
-    
 }
-

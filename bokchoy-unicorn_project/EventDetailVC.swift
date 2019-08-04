@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class EventDetailVC: UIViewController {
     
@@ -18,8 +20,10 @@ class EventDetailVC: UIViewController {
     
     @IBOutlet weak var interestedButton: UIButton!
     
+    let user = Auth.auth().currentUser?.uid
+    
     //Declaring eventData as an Event; data recieved from HomeVC through segue
-    public var eventData = Event(key: "", title: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    public var eventData = Event(ID: "", title: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
     
     let dateFormatter = DateFormatter()
     
@@ -41,7 +45,9 @@ class EventDetailVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //@IBAction func interested(_ sender: Any) {
-    //}
+    @IBAction func interested(_ sender: Any) {
+        let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
+        refEventsByUser.child("bookmarked").child(eventData.ID).setValue(eventData.ID)
+    }
     
 }
