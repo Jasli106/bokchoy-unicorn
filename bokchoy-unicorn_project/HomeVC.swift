@@ -57,13 +57,15 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     let searchController = UISearchController(searchResultsController: nil)
 
     
-    fileprivate func addDatabaseToEvents() {
+    fileprivate func addDatabaseToEvents(completion: () -> ()) {
         //This function takes the information from the database and adds it to the list of events in this view controller, so that it can use it later
         //Database reference
         let refEvents = Database.database().reference().child("events")
         
         //observing the data changes
         refEvents.observe(DataEventType.value, with: { (snapshot) in
+            
+            print("Observing")
             
             //if the reference have some values
             if snapshot.childrenCount > 0 {
@@ -72,16 +74,16 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 self.events.removeAll()
                 
                 //iterating through all the values
-                for events in snapshot.children.allObjects as! [DataSnapshot] {
+                for snapshotEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     
                     //getting values
-                    let value = events.value as? [String: AnyObject]
+                    let value = snapshotEvent.value as? [String: AnyObject]
                     
                     let startDateFormatted = self.dateFormatter.date(from: value!["start date"] as! String)
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let eventObject = Event(key: events.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                    let eventObject = Event(key: snapshotEvent.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
                     let eventKey = eventObject.key
                     let eventTitle = eventObject.title
@@ -102,6 +104,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
             }
             
         })
+        completion()
+        
     }
     
     //TODO: forbid user from setting end date to a date before start date
@@ -109,7 +113,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         let oldRef = Database.database().reference()
         let date = Date()
         let dateStart = Calendar.current.startOfDay(for: date)
-        print("TODAY: \(dateStart)")
         for event in events {
             let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
             if event.endDate < dateStart {
@@ -117,6 +120,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 oldRef.child("events").child(event.key).removeValue()
             }
         }
+        tableView.reloadData()
     }
     
 
@@ -125,14 +129,17 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addDatabaseToEvents()
+        addDatabaseToEvents(completion: {
+            self.saveOldPosts()
+        })
+        tableView.reloadData()
         
         dateFormatter.dateFormat = "MM/dd/yyyy"
         
         //Search bar setup
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = true
-        self.tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
@@ -140,14 +147,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(events)
-        saveOldPosts()
-        self.tableView.reloadData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        //saveOldPosts()
-        
     }
     
     //Search and filter functions
@@ -168,7 +167,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                 return (event.title.lowercased().contains(searchText.lowercased()))
             }))
         }
-        
         tableView.reloadData()
     }
     
