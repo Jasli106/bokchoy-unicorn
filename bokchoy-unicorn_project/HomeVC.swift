@@ -65,8 +65,6 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         //observing the data changes
         refEvents.observe(DataEventType.value, with: { (snapshot) in
             
-            print("Observing")
-            
             //if the reference have some values
             if snapshot.childrenCount > 0 {
                 
@@ -83,18 +81,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let eventObject = Event(ID: events.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
-  
-                    let eventID = eventObject.ID
-                    let eventTitle = eventObject.title
-                    let eventDetails = eventObject.details
-                    let eventStartDate = eventObject.startDate
-                    let eventStartTime = eventObject.startTime
-                    let eventEndDate = eventObject.endDate
-                    let eventEndTime = eventObject.endTime
-                    
-                    //creating event object with model and fetched values
-                    let event = Event(ID: eventID, title: eventTitle, details: eventDetails, startDate: eventStartDate, startTime: eventStartTime, endDate: eventEndDate, endTime: eventEndTime)
+                    let event = Event(ID: snapshotEvent.key, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
                     //appending it to list
                     self.events.append(event)
