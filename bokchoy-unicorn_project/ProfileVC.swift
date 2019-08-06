@@ -11,7 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
@@ -65,9 +65,23 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate {
     }
     
 //----------------------------------------------------------------------------------------------------------------
+
+let videos = ["Example1", "Example2"]
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return videos.count
+    }
     
-
-
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath) as! CollectionViewCell
+        
+        cell.label.text = videos[indexPath.item]
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item)
+    }
 //----------------------------------------------------------------------------------------------------------------
     
     //Logout button
