@@ -18,8 +18,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
 
-    
-    
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
@@ -65,23 +63,53 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     }
     
 //----------------------------------------------------------------------------------------------------------------
-
-let videos = ["Example1", "Example2"]
+    
+    //Collection View
+    let videos = ["Example1", "Example2"]
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos.count
+        if section == 0 {
+            return 1
+        }
+        else {
+            return videos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath) as! CollectionViewCell
-        
-        cell.label.text = videos[indexPath.item]
-        
-        return cell
+        let section = indexPath.section
+        if section == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath) as! CollectionViewCell
+            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderWidth = 1
+            cell.label.text = videos[indexPath.item]
+            return cell
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addNewCell", for: indexPath) as! CollectionViewCell
+            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderWidth = 1
+            cell.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item)
+        let section = indexPath.section
+        if section == 1 {
+            print(indexPath.item)
+        }
     }
+    
+    @objc func buttonPressed()
+    {
+        print("Add New")
+    }
+    
 //----------------------------------------------------------------------------------------------------------------
     
     //Logout button
@@ -101,6 +129,3 @@ let videos = ["Example1", "Example2"]
     }
     
 }
-
-
-
