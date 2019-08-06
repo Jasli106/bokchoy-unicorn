@@ -11,30 +11,34 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
-
-
-class ProfileVC: UIViewController, UINavigationControllerDelegate{
+class ProfileVC: UIViewController, UINavigationControllerDelegate {
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
+
+    
     
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    let ref = Database.database().reference()
     var profileData : Dictionary<String, Any> = [:]
     
+    //References
+    let videoRef = Storage.storage().reference().child("Videos")
+    let ref = Database.database().reference()
+
+//----------------------------------------------------------------------------------------------------------------
+    
+    //Setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //Store user ID in Firebase
         user = Auth.auth().currentUser
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-
+    fileprivate func updateProfile() {
         let userProfileRef = ref.child("users").child(userDatabaseID!)
         
         //observing the data changes
@@ -56,6 +60,16 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        updateProfile()
+    }
+    
+//----------------------------------------------------------------------------------------------------------------
+    
+
+
+//----------------------------------------------------------------------------------------------------------------
+    
     //Logout button
     @IBAction func logOutAction(sender: UIButton) {
         //Sign out on Firebase
@@ -73,5 +87,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate{
     }
     
 }
+
 
 
