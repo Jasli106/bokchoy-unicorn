@@ -13,15 +13,15 @@ import FirebaseAuth
 
 class GigsVC: UITableViewController, UISearchResultsUpdating {
     
-    @IBOutlet weak var mineButton: UIBarButtonItem!
-    @IBOutlet weak var bookmarkedButton: UIBarButtonItem!
-    @IBOutlet weak var allButton: UIBarButtonItem!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    var dataFilter = 0
     
     //Variables
     var ref: DatabaseReference!
     var events = [Event]()
     var authoredEvents : Array<String> = []
     var bookmarkedEvents : Array<String> = []
+    var allEvents : Array<String> = []
     
     var filteredEvents = [[Event]]()
     var uniqueDates = [Date]()
@@ -73,9 +73,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         //appending it to list
                         self.events.append(event)
                     }
+                    print("HERE ARE THE EVENTS: ", self.events)
+                    //reloading the tableview
+                    self.tableView.reloadData()
                 }
-                //reloading the tableview
-                self.tableView.reloadData()
             }
         })
     }
@@ -94,9 +95,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        mineFilter()
-        
-        
+        allFilter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -148,9 +147,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 sectionedEvents.append([event])
             }
         }
+        //INCORRECT
+        print("Here are sectionedevents as of calculatesection: ")
+        print(sectionedEvents)
         
+        orderedSectionedEvents.removeAll()
         //Order dates and events
         orderedUniqueDates = uniqueDates.sorted(by: <)
+        print(orderedUniqueDates)
         for date in orderedUniqueDates {
             for eventSection in sectionedEvents {
                 if eventSection[0].startDate == date {
@@ -158,10 +162,12 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 }
             }
         }
+        print("orderedSectionedEvents: ", orderedSectionedEvents)
         
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
+        print("Calculating number of sections")
         calculateSections()
         return orderedUniqueDates.count
     }
@@ -212,18 +218,20 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     
     func mineFilter() {
+        print("Filtering events")
         //if any changes in authoredEvents...
-        refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (authoredSnapshot) in
+        refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
             
-            if authoredSnapshot.childrenCount > 0 {
+            if snapshot.childrenCount > 0 {
                 //clearing the list
                 self.authoredEvents.removeAll()
                 
                 //iterating through and adding eventID to authoredEvents list
-                for eachEvent in authoredSnapshot.children.allObjects as! [DataSnapshot] {
+                for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.authoredEvents.append(eachEvent.key)
                 }
-                
+                print("AUTHOREDEVENTS: ",self.authoredEvents)
+                self.events.removeAll()
                 self.scanEvents(eventsOfInterest: self.authoredEvents)
                 
             }
@@ -232,17 +240,18 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     func bookmarkedFilter() {
         //if any changes in bookmarkedEvents...
-        refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (bookmarkedSnapshot) in
+        refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
             
-            if bookmarkedSnapshot.childrenCount > 0 {
+            if snapshot.childrenCount > 0 {
                 //clearing the list
                 self.bookmarkedEvents.removeAll()
                 
                 //iterating through and adding eventID to bookmarkedEvents list
-                for eachEvent in bookmarkedSnapshot.children.allObjects as! [DataSnapshot] {
+                for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.bookmarkedEvents.append(eachEvent.key)
                 }
-                
+                self.events.removeAll()
+                print("BOOKMARKED EVENTS: ", self.bookmarkedEvents)
                 self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
                 
             }
@@ -250,18 +259,60 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     }
 
     func allFilter() {
+        //if any changes in authoredEvents...
+        refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
+            
+            if snapshot.childrenCount > 0 {
+                //clearing the list
+                self.authoredEvents.removeAll()
+                
+                //iterating through and adding eventID to authoredEvents list
+                for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
+                    self.authoredEvents.append(eachEvent.key)
+                }
+            }
+        })
+        //if any changes in bookmarkedEvents...
+        refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
+            
+            if snapshot.childrenCount > 0 {
+                //clearing the list
+                self.bookmarkedEvents.removeAll()
+                
+                //iterating through and adding eventID to bookmarkedEvents list
+                for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
+                    self.bookmarkedEvents.append(eachEvent.key)
+                }
+           }
+        })
+        
+        var tempA = authoredEvents
+        for event in bookmarkedEvents {
+            if tempA.contains(event) {
+                tempA.remove(at: tempA.firstIndex(of: event)!)
+            }
+        }
+        allEvents = tempA + bookmarkedEvents
+        scanEvents(eventsOfInterest: allEvents)
     }
     
-    @IBAction func pressedMine(_ sender: Any) {
-        mineFilter()
-    }
-    
-    @IBAction func pressedBookmarked(_ sender: Any) {
-        bookmarkedFilter()
-    }
-    
-    @IBAction func pressedAll(_ sender: Any) {
-        allFilter()
+    @IBAction func segmentedControlAction(_ sender: Any) {
+        
+        switch segmentedControl.selectedSegmentIndex {
+
+        case 0:
+            allFilter()
+            dataFilter = 0
+        case 1:
+            mineFilter()
+            dataFilter = 1
+        case 2:
+            bookmarkedFilter()
+            dataFilter = 2
+        default:
+            allFilter()
+            dataFilter = 0
+        }
     }
     
     
