@@ -328,6 +328,18 @@
                                 <outlet property="delegate" destination="elk-jo-RnF" id="cUM-mt-YjI"/>
                             </connections>
                         </searchBar>
+                        <segmentedControl key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="AMA-ud-N9n">
+                            <rect key="frame" x="0.0" y="655" width="375" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="All"/>
+                                <segment title="Mine"/>
+                                <segment title="Bookmarked"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedControlAction:" destination="Nks-SG-1Fd" eventType="valueChanged" id="0ke-dj-nr3"/>
+                            </connections>
+                        </segmentedControl>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LabelCell" textLabel="bXS-7r-3BO" detailTextLabel="sjz-fu-rTL" style="IBUITableViewCellStyleValue1" id="hZD-wp-vPc">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
@@ -353,7 +365,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="YLM-UD-1k2" kind="presentation" id="My4-2Y-AsS"/>
+                                    <segue destination="YLM-UD-1k2" kind="presentation" identifier="gigsToDetail" id="My4-2Y-AsS"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -363,28 +375,10 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Gigs" id="eBu-TY-RPz"/>
-                    <toolbarItems>
-                        <barButtonItem title="My Posts" id="u2g-OQ-hZk">
-                            <connections>
-                                <action selector="pressedMine:" destination="Nks-SG-1Fd" id="BRR-0T-2rm"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem title="Bookmarked" id="B5K-NA-mg6">
-                            <connections>
-                                <action selector="pressedBookmarked:" destination="Nks-SG-1Fd" id="Ii0-ht-XUh"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem title="All" id="cZg-4T-6eu">
-                            <connections>
-                                <action selector="pressedAll:" destination="Nks-SG-1Fd" id="10S-4t-l13"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="allButton" destination="cZg-4T-6eu" id="G4b-L5-tNz"/>
-                        <outlet property="bookmarkedButton" destination="B5K-NA-mg6" id="Lsp-Bm-1M2"/>
-                        <outlet property="mineButton" destination="u2g-OQ-hZk" id="a2l-Yg-wtR"/>
+                        <outlet property="segmentedControl" destination="AMA-ud-N9n" id="2BJ-wH-Rr6"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="35I-zy-LNw" userLabel="First Responder" sceneMemberID="firstResponder"/>
