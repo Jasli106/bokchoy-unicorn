@@ -52,13 +52,15 @@ class NewVC: UIViewController {
             "end time" : [endDate.hour, endDate.minute],
             "details" : detailsTextField.text!,
             
-            "author" : user!
+            "author" : user!,
+            "interested" : 0
             ] as [String : Any]
         
         var necessaryTextFields = newEvent
         //removing traits that are not necessary for posting
         necessaryTextFields.removeValue(forKey: "ID")
         necessaryTextFields.removeValue(forKey: "author")
+        necessaryTextFields.removeValue(forKey: "interested")
         necessaryTextFields.removeValue(forKey: "start date")
         necessaryTextFields.removeValue(forKey: "start time")
         necessaryTextFields.removeValue(forKey: "end date")

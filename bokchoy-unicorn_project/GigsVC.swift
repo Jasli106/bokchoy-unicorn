@@ -45,7 +45,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     //events with keys from input get added to table
     func scanEvents(eventsOfInterest: Array<String>){
         
-        print("SCANEVENTS BEGAN")
         //observing the data changes in events of interest
         refEvents.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
@@ -68,12 +67,11 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                         
                         //Converting to custom object of type Event
-                        let event = Event(ID: ID, title: value!["title"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                        let event = Event(ID: ID, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as? Int ?? 0, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                         
                         //appending it to list
                         self.events.append(event)
                     }
-                    print("HERE ARE THE EVENTS: ", self.events)
                     //reloading the tableview
                     self.tableView.reloadData()
                 }
@@ -132,6 +130,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     // Determining characteristics of table (sections, rows, etc.)
     func calculateSections() {
+        print("CALCULATE SECTIONS BEGAN")
         uniqueDates = [Date]()
         sectionedEvents = [[Event]]()
         //Iterates through all events and checks if they occur on a new date or not. If not, add date to list of dates when events occur (uniqueDates). Also checks if event is already in sectioned events section
@@ -147,14 +146,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 sectionedEvents.append([event])
             }
         }
-        //INCORRECT
-        print("Here are sectionedevents as of calculatesection: ")
-        print(sectionedEvents)
         
         orderedSectionedEvents.removeAll()
         //Order dates and events
         orderedUniqueDates = uniqueDates.sorted(by: <)
-        print(orderedUniqueDates)
         for date in orderedUniqueDates {
             for eventSection in sectionedEvents {
                 if eventSection[0].startDate == date {
@@ -162,12 +157,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 }
             }
         }
-        print("orderedSectionedEvents: ", orderedSectionedEvents)
-        
+        print("CALCULATE SECTIONS ENDED")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        print("Calculating number of sections")
         calculateSections()
         return orderedUniqueDates.count
     }
@@ -188,6 +181,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     // creates cells according to Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("CELL CREATION BEGAN")
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         let event: Event
         
@@ -213,15 +207,16 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             cell.detailTextLabel?.text = "\(startTime[0]):\(startTime[1])"
         }
         
+        print("CELL CREATION ENDED")
         return cell
     }
     
     
     func mineFilter() {
-        print("Filtering events")
+        print("MINE FILTER BEGAN")
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
-            
+            self.events.removeAll()
             if snapshot.childrenCount > 0 {
                 //clearing the list
                 self.authoredEvents.removeAll()
@@ -230,15 +225,15 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.authoredEvents.append(eachEvent.key)
                 }
-                print("AUTHOREDEVENTS: ",self.authoredEvents)
-                self.events.removeAll()
                 self.scanEvents(eventsOfInterest: self.authoredEvents)
                 
             }
         })
+        print("MINE FILTER ENDED")
     }
     
     func bookmarkedFilter() {
+        print("BOOKMARKED FILTER STARTED")
         //if any changes in bookmarkedEvents...
         refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
             
@@ -250,15 +245,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.bookmarkedEvents.append(eachEvent.key)
                 }
-                self.events.removeAll()
-                print("BOOKMARKED EVENTS: ", self.bookmarkedEvents)
                 self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
-                
             }
         })
+        print("BOOKMARKED FILTER ENDED")
     }
 
     func allFilter() {
+        print("ALL FILTER BEGAN")
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
             
@@ -294,6 +288,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         }
         allEvents = tempA + bookmarkedEvents
         scanEvents(eventsOfInterest: allEvents)
+        print("ALL FILTER ENDED")
     }
     
     @IBAction func segmentedControlAction(_ sender: Any) {
