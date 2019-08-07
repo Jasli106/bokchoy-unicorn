@@ -538,6 +538,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="interestedLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAu-2h-DY2">
+                                <rect key="frame" x="39" y="332" width="269" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -562,6 +569,7 @@
                         <outlet property="dateLabel" destination="dDn-mn-ZLT" id="Jud-fw-N3k"/>
                         <outlet property="detailLabel" destination="Tv3-4M-sjL" id="WSP-IR-DWU"/>
                         <outlet property="interestedButton" destination="gTX-HY-vVC" id="8E0-pZ-J2A"/>
+                        <outlet property="interestedLabel" destination="eAu-2h-DY2" id="p1L-W8-ZEg"/>
                         <outlet property="timeLabel" destination="qnp-fe-B9C" id="IYV-ER-uE7"/>
                         <outlet property="titleLabel" destination="ud0-HU-sPe" id="hIq-Nz-3S7"/>
                     </connections>
@@ -569,7 +577,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0D-t9-cHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Lya-IA-cCE" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-582" y="554"/>
+            <point key="canvasLocation" x="-583.20000000000005" y="553.44827586206895"/>
         </scene>
         <!--Sign Up VC-->
         <scene sceneID="Mck-um-oan">
