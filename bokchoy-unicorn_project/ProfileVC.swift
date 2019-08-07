@@ -10,8 +10,10 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import MobileCoreServices
+import AVFoundation
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate {
     
     //Objects
     @IBOutlet weak var nameLabel: UILabel!
@@ -24,8 +26,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     var profileData : Dictionary<String, Any> = [:]
     
     //References
-    let videoRef = Storage.storage().reference().child("Videos")
-    let ref = Database.database().reference()
+    let storageRef = Storage.storage().reference()
+    let mediaRef = Storage.storage().reference().child("User Media")
+    let databaseRef = Database.database().reference()
 
 //----------------------------------------------------------------------------------------------------------------
     
@@ -37,7 +40,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     }
     
     fileprivate func updateProfile() {
-        let userProfileRef = ref.child("users").child(userDatabaseID!)
+        let userProfileRef = databaseRef.child("users").child(userDatabaseID!)
         
         //observing the data changes
         userProfileRef.observe(DataEventType.value, with: { (snapshot) in
@@ -107,9 +110,50 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
     @objc func buttonPressed()
     {
-        print("Add New")
+        let mediaPicker = UIImagePickerController()
+        
+        mediaPicker.delegate = self
+        mediaPicker.allowsEditing = true
+        mediaPicker.mediaTypes = [kUTTypeImage, kUTTypeMovie] as [String]
+        mediaPicker.sourceType = .photoLibrary
+        
+        self.present(mediaPicker, animated: true, completion: nil)
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        
+        if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
+            
+            if mediaType  == "public.image" {
+                let originalImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
+                print(originalImage.size)
+            }
+            
+            if mediaType == "public.movie" {
+                let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
+                print("Video URL: \(videoURL!)")
+                /*let filename = "example.mov"
+                mediaRef.child(filename).putFile(from: videoURL!, metadata: nil) { (metadata, error) in
+                    guard let metadata = metadata else {
+                        // Uh-oh, an error occurred!
+                        return
+                    }
+                    // You can also access to download URL after upload.
+                    self.storageRef.downloadURL { (url, error) in
+                        guard let downloadURL = url else {
+                            // Uh-oh, an error occurred!
+                            return
+                        }
+                        print("Download URL: \(downloadURL)")
+                    }*/
+            }
+        }
+        
+        
+        dismiss(animated: true, completion: nil)
+    }
+
 //----------------------------------------------------------------------------------------------------------------
     
     //Logout button
