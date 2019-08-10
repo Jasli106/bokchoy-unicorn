@@ -74,6 +74,9 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setProfilePic" destination="N1f-lA-qme" eventType="touchUpInside" id="0gO-B8-CR4"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cQO-65-rGS" userLabel="NameTextField">
                                 <rect key="frame" x="157.66666666666663" y="108" width="202.33333333333337" height="41"/>
@@ -186,8 +189,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="akH-A0-6X2" userLabel="ProfilePicImage">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="akH-A0-6X2" userLabel="ProfilePicImage">
                                 <rect key="frame" x="14" y="109" width="132" height="128"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="akH-A0-6X2" secondAttribute="height" multiplier="33:32" id="elv-HB-dQd"/>
                                 </constraints>
@@ -325,6 +331,7 @@
                         <outlet property="collectionView" destination="HJc-R4-afj" id="vVy-5E-YeV"/>
                         <outlet property="instrumentsLabel" destination="DJj-Na-Uws" id="8I3-np-5s1"/>
                         <outlet property="nameLabel" destination="G04-ea-9y0" id="GCg-af-RW0"/>
+                        <outlet property="profilePicView" destination="akH-A0-6X2" id="jsd-IQ-31t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uah-fZ-JJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1043,6 +1050,19 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kjc-ad-2Cl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2498" y="-655"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="mds-vF-snN">
+            <objects>
+                <viewController id="SKn-PN-ygb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eaR-GZ-Y3W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mvr-fR-bmE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
