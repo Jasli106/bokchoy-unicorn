@@ -654,7 +654,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Privacy Policy"/>
                                 <connections>
-                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="07J-WL-2Q6" id="kf1-wh-8GJ">
+                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" identifier="signUpToPrivacy" popoverAnchorView="07J-WL-2Q6" id="kf1-wh-8GJ">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -665,7 +665,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Terms of Use"/>
                                 <connections>
-                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="47c-Jd-X05" id="JCZ-Ms-SEo">
+                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" identifier="signUpToTerms" popoverAnchorView="47c-Jd-X05" id="JCZ-Ms-SEo">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -1023,7 +1023,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Terms of Use"/>
                                 <connections>
-                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="0gO-zy-nQd" id="wBw-jY-2sh">
+                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" identifier="settingsToTerms" popoverAnchorView="0gO-zy-nQd" id="wBw-jY-2sh">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -1034,7 +1034,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Privacy Policy"/>
                                 <connections>
-                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" popoverAnchorView="kv1-hW-w28" id="JC8-gH-nKr">
+                                    <segue destination="Kdh-4g-yNk" kind="popoverPresentation" identifier="settingsToPrivacy" popoverAnchorView="kv1-hW-w28" id="JC8-gH-nKr">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -1054,7 +1054,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wBw-jY-2sh"/>
+        <segue reference="JC8-gH-nKr"/>
         <segue reference="My4-2Y-AsS"/>
         <segue reference="2ie-fL-Hxp"/>
     </inferredMetricsTieBreakers>
