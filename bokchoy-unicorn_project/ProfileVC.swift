@@ -11,6 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import MobileCoreServices
+import AVKit
 import AVFoundation
 
 class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate {
@@ -19,15 +20,18 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
 
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
     var profileData : Dictionary<String, Any> = [:]
+    //var videoURL: URL!
     
     //References
     let storageRef = Storage.storage().reference()
-    let mediaRef = Storage.storage().reference().child("User Media")
+    let videoRef = Storage.storage().reference().child("Videos")
+    let imageRef = Storage.storage().reference().child("Images")
     let databaseRef = Database.database().reference()
 
 //----------------------------------------------------------------------------------------------------------------
@@ -37,6 +41,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         super.viewDidLoad()
         //Store user ID in Firebase
         user = Auth.auth().currentUser
+        updateProfile()
+        updateMedia(completion: {
+            print(self.videos)
+            print(self.images)
+            self.collectionView.reloadData()
+        })
     }
     
     fileprivate func updateProfile() {
@@ -61,14 +71,79 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         })
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        updateProfile()
+    
+    fileprivate func updateMedia(completion: @escaping () -> ()) {
+        print("UPDATING MEDIA")
+        getVideosFromDatabase(completion: {
+            self.getImagesFromDatabase(completion: {
+                self.getMediaFromDatabase(completion: {
+                    completion()
+                })
+            })
+        })
+        //self.collectionView.reloadData()
+    }
+    
+//----------------------------------------------------------------------------------------------------------------
+    
+    //Getting info from database
+    fileprivate func getVideosFromDatabase(completion: @escaping () -> ()) {
+        //Get videos
+        let refVideos = Database.database().reference().child("users").child(userDatabaseID!).child("videos")
+        refVideos.observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                self.videos.removeAll()
+                for snapshotVideo in snapshot.children.allObjects as! [DataSnapshot] {
+                    let videoAsURL = NSURL(string: snapshotVideo.value as! String)! as URL
+                    self.videos.append(videoAsURL)
+                }
+                print(self.videos)
+                completion()
+            }
+        }
+    }
+    
+    fileprivate func getImagesFromDatabase(completion: @escaping () -> ()) {
+        //Get images
+        let refImages = Database.database().reference().child("users").child(userDatabaseID!).child("images")
+        refImages.observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                self.images.removeAll()
+                for snapshotImage in snapshot.children.allObjects as! [DataSnapshot] {
+                    //let data = try? Data(contentsOf: NSURL(string: snapshotImage.value as! String)! as URL)
+                    //let imageAsUIImage = UIImage(data: data!)
+                    let imageURL = NSURL(string: snapshotImage.value as! String)! as URL
+                    self.images.append(imageURL)
+                }
+                print(self.images)
+                completion()
+            }
+        }
+    }
+    
+    fileprivate func getMediaFromDatabase(completion: @escaping () -> ()) {
+        //Get whole media list
+        let refMedia = Database.database().reference().child("users").child(userDatabaseID!).child("media")
+        refMedia.observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                self.media.removeAll()
+                for snapshotMedia in snapshot.children.allObjects as! [DataSnapshot] {
+                    let URL = NSURL(string: snapshotMedia.value as! String)! as URL
+                    self.media.append(URL)
+                }
+                print(self.media)
+                completion()
+            }
+        }
     }
     
 //----------------------------------------------------------------------------------------------------------------
     
     //Collection View
-    let videos = ["Example1", "Example2"]
+    var videos: [URL] = []
+    var images: [URL] = []
+    var media: [URL] = []
+    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -79,35 +154,72 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             return 1
         }
         else {
-            return videos.count
+            return media.count
         }
     }
     
+    //Creating cells
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("CREATING CELLS")
         let section = indexPath.section
+        //Cells displaying media
         if section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "videoCell", for: indexPath) as! CollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as! CollectionViewCell
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
-            cell.label.text = videos[indexPath.item]
+            //If item is a video
+            print(images)
+            if videos.contains(media[indexPath.item]) {
+                //imageView.image = TODO: Get video thumbnail
+                let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
+                cell.imageView.image = thumbnailImage
+            }
+            //If item is an image
+            else if images.contains(media[indexPath.item]) {
+                let imageData = try? Data(contentsOf: media[indexPath.item])
+                let imageAsImage = UIImage(data: imageData!)
+                cell.imageView.image = imageAsImage
+            }
             return cell
         }
+        //Add new cell
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addNewCell", for: indexPath) as! CollectionViewCell
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
             cell.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+            
             return cell
         }
     }
     
+//----------------------------------------------------------------------------------------------------------------
+    
+    //Picking/interacting with media
+    
+    //When cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = indexPath.section
         if section == 1 {
-            print(indexPath.item)
+            //If item is a video
+            if videos.contains(media[indexPath.item]) {
+                let video = AVPlayer(url: videos[indexPath.item])
+                let videoPlayer = AVPlayerViewController()
+                videoPlayer.player = video
+                present(videoPlayer, animated: true) {
+                    video.play()
+                }
+            }
+            //If item is an image
+            else if images.contains(media[indexPath.item]) {
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+                performZoom(imageView: cell.imageView)
+            }
+            
         }
     }
     
+    //When add new button pressed
     @objc func buttonPressed()
     {
         let mediaPicker = UIImagePickerController()
@@ -120,38 +232,144 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         self.present(mediaPicker, animated: true, completion: nil)
     }
     
+    //When media picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
-        
+        print("MEDIA PICKED")
         if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
-            
+            //Image selected
             if mediaType  == "public.image" {
-                let originalImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
-                print(originalImage.size)
+                let finalImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
+                handleImageSelectedForImage(image: finalImage, completion: {
+                    picker.dismiss(animated: true, completion: nil)
+                })
             }
-            
-            if mediaType == "public.movie" {
-                let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
-                print("Video URL: \(videoURL!)")
-                /*let filename = "example.mov"
-                mediaRef.child(filename).putFile(from: videoURL!, metadata: nil) { (metadata, error) in
-                    guard let metadata = metadata else {
-                        // Uh-oh, an error occurred!
-                        return
-                    }
-                    // You can also access to download URL after upload.
-                    self.storageRef.downloadURL { (url, error) in
-                        guard let downloadURL = url else {
-                            // Uh-oh, an error occurred!
-                            return
-                        }
-                        print("Download URL: \(downloadURL)")
-                    }*/
+                    
+            //Video selected
+            else if mediaType == "public.movie" {
+                let pickedURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
+                //Check if error w/ URL
+                if pickedURL != nil {
+                    handleVideoSelectedForURL(url: pickedURL, completion: {
+                        picker.dismiss(animated: true, completion: nil)
+                    })
+                }
+                else {
+                    let alert = UIAlertController(title: "Error", message: "Could not upload video.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                        picker.dismiss(animated: true, completion: nil)
+                    }))
+                    self.present(alert, animated: true)
+                }
+                
             }
         }
+    }
+    
+    //Image selected function
+    fileprivate func handleImageSelectedForImage(image: UIImage, completion: @escaping () -> ()) {
+        let filename = "\(UUID().uuidString).png"
+        if let imageData = image.pngData() {
+            imageRef.child(filename).putData(imageData, metadata: nil) { (metadata, error) in
+                let imageRef = self.storageRef.child("Images/\(filename)")
+                imageRef.downloadURL(completion: { url , error in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        let downloadURL = url!
+                        self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
+                        self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
+                        self.updateMedia(completion: {
+                            self.collectionView.reloadData()
+                        })
+                    }
+                })
+                completion()
+            }
+        }
+    }
+    
+    //Video selected function
+    fileprivate func handleVideoSelectedForURL(url: URL?, completion: @escaping () -> ()) {
+        let filename = "\(UUID().uuidString).mov"
+        videoRef.child(filename).putFile(from: url!, metadata: nil) { (metadata, error) in
+            let videoRef = self.storageRef.child("Videos/\(filename)")
+            videoRef.downloadURL(completion: { url , error in
+                if let error = error {
+                    print(error)
+                } else {
+                    let downloadURL = url!
+                    self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
+                    self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
+                    self.updateMedia(completion: {
+                        self.collectionView.reloadData()
+                    })
+                }
+            })
+            completion()
+        }
+    }
+    
+    func thumbnailImageForURL(url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let assetGenerator = AVAssetImageGenerator(asset: asset)
         
+        do {
+            let thumbnail = try assetGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: thumbnail)
+        } catch let error {
+            print(error)
+            return nil
+        }
+    }
+    
+//----------------------------------------------------------------------------------------------------------------
+    
+    var startingFrame: CGRect?
+    var blackBackground: UIView?
+    
+    //Handling image zoom
+    func performZoom(imageView: UIImageView) {
+        //Setting up views
+        startingFrame = imageView.superview?.convert(imageView.frame, to: nil)
         
-        dismiss(animated: true, completion: nil)
+        let zoomingImageView = UIImageView(frame: startingFrame!)
+        zoomingImageView.image = imageView.image
+        zoomingImageView.isUserInteractionEnabled = true
+        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+        
+        if let keyWindow = UIApplication.shared.keyWindow {
+            //Setting up subviews
+            blackBackground = UIView(frame: keyWindow.frame)
+            blackBackground!.backgroundColor = UIColor.black
+            keyWindow.addSubview(blackBackground!)
+            blackBackground!.alpha = 0
+            keyWindow.addSubview(zoomingImageView)
+            
+            //Math: h1/w1 = h2/w2
+            //Solve for h2
+            //h2 = (h1*w2)/w1
+            let height = (startingFrame!.height * keyWindow.frame.width)/startingFrame!.width
+                
+            //Performing animation
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.blackBackground!.alpha = 1
+                zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+                zoomingImageView.center = keyWindow.center
+            }, completion: nil)
+        }
+    }
+    
+    @objc func handleZoomOut(tapGesture: UITapGestureRecognizer) {
+        if let zoomOutImageView = tapGesture.view {
+            //Animating zoom out
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                zoomOutImageView.frame = self.startingFrame!
+                self.blackBackground!.alpha = 0
+            }) { (completed: Bool) in
+                zoomOutImageView.removeFromSuperview()
+                self.blackBackground?.removeFromSuperview()
+            }
+        }
     }
 
 //----------------------------------------------------------------------------------------------------------------
