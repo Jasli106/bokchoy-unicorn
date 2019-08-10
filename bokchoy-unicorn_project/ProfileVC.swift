@@ -86,6 +86,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
 //----------------------------------------------------------------------------------------------------------------
     
+    //Getting info from database
     fileprivate func getVideosFromDatabase(completion: @escaping () -> ()) {
         //Get videos
         let refVideos = Database.database().reference().child("users").child(userDatabaseID!).child("videos")
@@ -166,7 +167,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
             //If item is a video
-            //print(media[indexPath.item])
             print(images)
             if videos.contains(media[indexPath.item]) {
                 //imageView.image = TODO: Get video thumbnail
@@ -205,7 +205,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             }
             //If item is an image
             else if images.contains(media[indexPath.item]) {
-                //TODO: performZoom()
                 let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
                 performZoom(imageView: cell.imageView)
             }
@@ -269,7 +268,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     if let error = error {
                         print(error)
                     } else {
-                        //print("Download URL is \(String(describing: url))")
                         let downloadURL = url!
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
@@ -292,7 +290,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 if let error = error {
                     print(error)
                 } else {
-                    //print("Download URL is \(String(describing: url))")
                     let downloadURL = url!
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
@@ -307,9 +304,52 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
 //----------------------------------------------------------------------------------------------------------------
     
+    var startingFrame: CGRect?
+    var blackBackground: UIView?
+    
     //Handling image zoom
     func performZoom(imageView: UIImageView) {
-        print("ZOOMING IN NOW (zoomies!)")
+        //Setting up views
+        startingFrame = imageView.superview?.convert(imageView.frame, to: nil)
+        
+        let zoomingImageView = UIImageView(frame: startingFrame!)
+        zoomingImageView.image = imageView.image
+        zoomingImageView.isUserInteractionEnabled = true
+        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+        
+        if let keyWindow = UIApplication.shared.keyWindow {
+            //Setting up subviews
+            blackBackground = UIView(frame: keyWindow.frame)
+            blackBackground!.backgroundColor = UIColor.black
+            keyWindow.addSubview(blackBackground!)
+            blackBackground!.alpha = 0
+            keyWindow.addSubview(zoomingImageView)
+            
+            //Math: h1/w1 = h2/w2
+            //Solve for h2
+            //h2 = (h1*w2)/w1
+            let height = (startingFrame!.height * keyWindow.frame.width)/startingFrame!.width
+                
+            //Performing animation
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.blackBackground!.alpha = 1
+                zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+                zoomingImageView.center = keyWindow.center
+            }, completion: nil)
+        }
+    }
+    
+    @objc func handleZoomOut(tapGesture: UITapGestureRecognizer) {
+        if let zoomOutImageView = tapGesture.view {
+            //Animating zoom out
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                zoomOutImageView.frame = self.startingFrame!
+                self.blackBackground!.alpha = 0
+            }) { (completed: Bool) in
+                zoomOutImageView.removeFromSuperview()
+                self.blackBackground?.removeFromSuperview()
+            }
+        }
     }
 
 //----------------------------------------------------------------------------------------------------------------
