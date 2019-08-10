@@ -144,6 +144,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     var images: [URL] = []
     var media: [URL] = []
     
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -170,6 +171,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             print(images)
             if videos.contains(media[indexPath.item]) {
                 //imageView.image = TODO: Get video thumbnail
+                let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
+                cell.imageView.image = thumbnailImage
             }
             //If item is an image
             else if images.contains(media[indexPath.item]) {
@@ -189,6 +192,10 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             return cell
         }
     }
+    
+//----------------------------------------------------------------------------------------------------------------
+    
+    //Picking/interacting with media
     
     //When cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -299,6 +306,19 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 }
             })
             completion()
+        }
+    }
+    
+    func thumbnailImageForURL(url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let assetGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do {
+            let thumbnail = try assetGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: thumbnail)
+        } catch let error {
+            print(error)
+            return nil
         }
     }
     
