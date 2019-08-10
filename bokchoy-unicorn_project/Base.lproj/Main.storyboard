@@ -289,24 +289,21 @@
                                             <outlet property="button" destination="qcQ-r9-Dfl" id="xvW-AZ-bxx"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="videoCell" id="B70-8y-UAt" userLabel="VideoCell" customClass="CollectionViewCell" customModule="bokchoy_unicorn_project" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="mediaCell" id="B70-8y-UAt" userLabel="MediaCell" customClass="CollectionViewCell" customModule="bokchoy_unicorn_project" customModuleProvider="target">
                                         <rect key="frame" x="125" y="9" width="110" height="110"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nu2-TH-FKz">
-                                                    <rect key="frame" x="14" y="35" width="82" height="40"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uh3-Bj-HR7">
+                                                    <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <connections>
-                                            <outlet property="label" destination="nu2-TH-FKz" id="Uuu-id-qFO"/>
+                                            <outlet property="imageView" destination="uh3-Bj-HR7" id="m7W-iv-NRw"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -325,6 +322,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bioLabel" destination="Sez-2D-dTp" id="S3B-DU-m0f"/>
+                        <outlet property="collectionView" destination="HJc-R4-afj" id="vVy-5E-YeV"/>
                         <outlet property="instrumentsLabel" destination="DJj-Na-Uws" id="8I3-np-5s1"/>
                         <outlet property="nameLabel" destination="G04-ea-9y0" id="GCg-af-RW0"/>
                     </connections>
