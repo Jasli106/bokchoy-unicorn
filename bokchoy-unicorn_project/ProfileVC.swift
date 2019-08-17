@@ -21,11 +21,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var profilePicView: UIImageView!
 
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    var profileData : Dictionary<String, Any> = [:]
+    var profileData : Dictionary<String, String> = ["bio" : "", "instruments" : "", "name" : "", "profile pic" : ""]
     //var videoURL: URL!
     
     //References
@@ -41,10 +42,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         super.viewDidLoad()
         //Store user ID in Firebase
         user = Auth.auth().currentUser
+        self.profilePicView.frame = CGRect(x: 14, y: 109, width: 130, height: 130)
+        profilePicView.clipsToBounds = true
         updateProfile()
         updateMedia(completion: {
-            print(self.videos)
-            print(self.images)
+            //print(self.videos)
+            //print(self.images)
             self.collectionView.reloadData()
         })
     }
@@ -62,12 +65,24 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 let value = characteristic.value!
                 let key = characteristic.key
                 
-                self.profileData[key] = value
+                self.profileData[key] = value as? String
             }
             //assigning text to labels
-            self.nameLabel.text = self.profileData["name"] as? String
-            self.instrumentsLabel.text = self.profileData["instruments"] as? String
-            self.bioLabel.text = self.profileData["bio"] as? String
+            self.nameLabel.text = self.profileData["name"]
+            self.instrumentsLabel.text = self.profileData["instruments"]
+            self.bioLabel.text = self.profileData["bio"]
+            
+            //Setting profile image
+            let imageURL = NSURL(string: self.profileData["profile pic"]!)! as URL
+            print("Image URL: \(imageURL)")
+            let imageData = try? Data(contentsOf: imageURL)
+            if let data = imageData {
+                self.profilePicView.image = UIImage(data: data)
+            }
+            else {
+                self.profilePicView.image = nil
+            }
+            
         })
     }
     
@@ -234,7 +249,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
     //When media picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print("MEDIA PICKED")
+        //print("MEDIA PICKED")
         if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
             //Image selected
             if mediaType  == "public.image" {
@@ -348,7 +363,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             //Math: h1/w1 = h2/w2
             //Solve for h2
             //h2 = (h1*w2)/w1
-            let height = (startingFrame!.height * keyWindow.frame.width)/startingFrame!.width
+            let height = startingFrame!.height / startingFrame!.width * keyWindow.frame.width//(startingFrame!.height * keyWindow.frame.width)/startingFrame!.width
                 
             //Performing animation
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
