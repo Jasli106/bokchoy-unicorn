@@ -44,6 +44,7 @@ class EventDetailVC: UIViewController {
         timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
         dateLabel.text = "date: " + startDate
         detailLabel.text = eventData.details
+        //print(eventData.interested)
         interestedLabel.text = String(eventData.interested) + " people have expressed interest"
         
         
@@ -72,7 +73,6 @@ class EventDetailVC: UIViewController {
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
         let refEvents = Database.database().reference().child("events")
         var interestCounter : Int = 0
-        
         
         if alreadyBookmarked == true {
             

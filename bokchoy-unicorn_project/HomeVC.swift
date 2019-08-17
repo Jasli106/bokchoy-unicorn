@@ -188,6 +188,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         }
         
         //Order dates and events
+        orderedSectionedEvents.removeAll()
         orderedUniqueDates = uniqueDates.sorted(by: <)
         for date in orderedUniqueDates {
             for eventSection in sectionedEvents {
