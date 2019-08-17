@@ -42,6 +42,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         super.viewDidLoad()
         //Store user ID in Firebase
         user = Auth.auth().currentUser
+        self.profilePicView.frame = CGRect(x: 14, y: 109, width: 130, height: 130)
         profilePicView.clipsToBounds = true
         updateProfile()
         updateMedia(completion: {
