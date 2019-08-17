@@ -74,7 +74,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             
             //Setting profile image
             let imageURL = NSURL(string: self.profileData["profile pic"]!)! as URL
-            print("Image URL: \(imageURL)")
+            //print("Image URL: \(imageURL)")
             let imageData = try? Data(contentsOf: imageURL)
             if let data = imageData {
                 self.profilePicView.image = UIImage(data: data)
@@ -112,9 +112,10 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     let videoAsURL = NSURL(string: snapshotVideo.value as! String)! as URL
                     self.videos.append(videoAsURL)
                 }
-                print(self.videos)
-                completion()
+                //print(self.videos)
+                
             }
+            completion()
         }
     }
     
@@ -130,9 +131,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     let imageURL = NSURL(string: snapshotImage.value as! String)! as URL
                     self.images.append(imageURL)
                 }
-                print(self.images)
-                completion()
+                //print(self.images)
             }
+            completion()
         }
     }
     
@@ -146,9 +147,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     let URL = NSURL(string: snapshotMedia.value as! String)! as URL
                     self.media.append(URL)
                 }
-                print(self.media)
-                completion()
+                //print(self.media)
             }
+            completion()
         }
     }
     
@@ -182,13 +183,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as! CollectionViewCell
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 1
+            
             //If item is a video
-            print(images)
             if videos.contains(media[indexPath.item]) {
                 //imageView.image = TODO: Get video thumbnail
                 let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
                 cell.imageView.image = thumbnailImage
             }
+                
             //If item is an image
             else if images.contains(media[indexPath.item]) {
                 let imageData = try? Data(contentsOf: media[indexPath.item])
@@ -197,6 +199,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             }
             return cell
         }
+            
         //Add new cell
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addNewCell", for: indexPath) as! CollectionViewCell
@@ -206,6 +209,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             
             return cell
         }
+        
     }
     
 //----------------------------------------------------------------------------------------------------------------
@@ -294,6 +298,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                         self.updateMedia(completion: {
+                            print("RELOADING DATA")
                             self.collectionView.reloadData()
                         })
                     }
@@ -316,6 +321,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                     self.updateMedia(completion: {
+                        print("RELOADING DATA")
                         self.collectionView.reloadData()
                     })
                 }
