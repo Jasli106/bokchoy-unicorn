@@ -93,7 +93,9 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        allFilter()
+        allFilter {
+            self.allFilterCompletion()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,7 +132,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     // Determining characteristics of table (sections, rows, etc.)
     func calculateSections() {
-        print("CALCULATE SECTIONS BEGAN")
         uniqueDates = [Date]()
         sectionedEvents = [[Event]]()
         //Iterates through all events and checks if they occur on a new date or not. If not, add date to list of dates when events occur (uniqueDates). Also checks if event is already in sectioned events section
@@ -157,7 +158,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 }
             }
         }
-        print("CALCULATE SECTIONS ENDED")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -181,7 +181,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     // creates cells according to Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("CELL CREATION BEGAN")
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         let event: Event
         
@@ -207,13 +206,11 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             cell.detailTextLabel?.text = "\(startTime[0]):\(startTime[1])"
         }
         
-        print("CELL CREATION ENDED")
         return cell
     }
     
     
     func mineFilter() {
-        print("MINE FILTER BEGAN")
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
             self.events.removeAll()
@@ -229,11 +226,9 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 
             }
         })
-        print("MINE FILTER ENDED")
     }
     
     func bookmarkedFilter() {
-        print("BOOKMARKED FILTER STARTED")
         //if any changes in bookmarkedEvents...
         refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
             
@@ -248,11 +243,9 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
             }
         })
-        print("BOOKMARKED FILTER ENDED")
     }
-
-    func allFilter() {
-        print("ALL FILTER BEGAN")
+    
+    func allFilter(completion: @escaping () -> ()) {
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
             
@@ -278,8 +271,12 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                     self.bookmarkedEvents.append(eachEvent.key)
                 }
            }
+            completion()
         })
-        
+
+    }
+    
+    fileprivate func allFilterCompletion() {
         var tempA = authoredEvents
         for event in bookmarkedEvents {
             if tempA.contains(event) {
@@ -288,7 +285,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         }
         allEvents = tempA + bookmarkedEvents
         scanEvents(eventsOfInterest: allEvents)
-        print("ALL FILTER ENDED")
+        tableView.reloadData()
     }
     
     @IBAction func segmentedControlAction(_ sender: Any) {
@@ -296,7 +293,9 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         switch segmentedControl.selectedSegmentIndex {
 
         case 0:
-            allFilter()
+            allFilter {
+                self.allFilterCompletion()
+            }
             dataFilter = 0
         case 1:
             mineFilter()
@@ -305,7 +304,9 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             bookmarkedFilter()
             dataFilter = 2
         default:
-            allFilter()
+            allFilter {
+                self.allFilterCompletion()
+            }
             dataFilter = 0
         }
     }
