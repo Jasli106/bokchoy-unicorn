@@ -540,7 +540,7 @@
                                     <navigationItem title="Event Detail" id="zVF-yA-0la">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="NXH-Mv-5pY">
                                             <connections>
-                                                <action selector="backToHomeTable:" destination="YLM-UD-1k2" id="YZd-bg-Sf7"/>
+                                                <action selector="backButton:" destination="YLM-UD-1k2" id="4aD-hN-rkQ"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -573,6 +573,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jgQ-on-Wu2" userLabel="Delete Button">
+                                <rect key="frame" x="-1" y="739" width="375" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Delete Event">
+                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteEvent" destination="YLM-UD-1k2" eventType="touchUpInside" id="QQ8-dS-IMI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -595,6 +605,7 @@
                     </view>
                     <connections>
                         <outlet property="dateLabel" destination="dDn-mn-ZLT" id="Jud-fw-N3k"/>
+                        <outlet property="deleteButton" destination="jgQ-on-Wu2" id="8zJ-7h-Vbk"/>
                         <outlet property="detailLabel" destination="Tv3-4M-sjL" id="WSP-IR-DWU"/>
                         <outlet property="interestedButton" destination="gTX-HY-vVC" id="8E0-pZ-J2A"/>
                         <outlet property="interestedLabel" destination="eAu-2h-DY2" id="p1L-W8-ZEg"/>
