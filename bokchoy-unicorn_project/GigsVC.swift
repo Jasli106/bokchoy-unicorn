@@ -13,30 +13,26 @@ import FirebaseAuth
 
 class GigsVC: UITableViewController, UISearchResultsUpdating {
     
+    //UI Elements
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    var dataFilter = 0
     
     //Variables
+    var dataFilter = 0
     var ref: DatabaseReference!
     var events = [Event]()
     var authoredEvents : Array<String> = []
     var bookmarkedEvents : Array<String> = []
     var allEvents : Array<String> = []
-    
     var filteredEvents = [[Event]]()
     var uniqueDates = [Date]()
     var sectionedEvents = [[Event]]()
     var orderedUniqueDates = [Date]()
     var orderedSectionedEvents = [[Event]]()
     
+    //Constants
     let dateFormatter = DateFormatter()
-    
     let searchController = UISearchController(searchResultsController: nil)
-    
     let user = Auth.auth().currentUser?.uid
-    
-    
-    
     let refEvents = Database.database().reference().child("events")
     let refEventsByUser = Database.database().reference().child("eventsByUser")
     
@@ -93,14 +89,16 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        allFilter {
+        /*allFilter {
             self.allFilterCompletion()
-        }
+        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        allFilter {
+            self.allFilterCompletion()
+        }
     }
     
     //-----------------------------------------------------------------------

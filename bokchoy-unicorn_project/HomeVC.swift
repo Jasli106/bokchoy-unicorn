@@ -30,6 +30,9 @@ extension Event: Equatable {
     static func == (firstEvent: Event, secondEvent: Event) -> Bool {
         return
             firstEvent.title == secondEvent.title &&
+                firstEvent.ID == secondEvent.ID &&
+                firstEvent.author == secondEvent.author &&
+                firstEvent.interested == secondEvent.interested &&
                 firstEvent.details == secondEvent.details &&
                 firstEvent.startDate == secondEvent.startDate &&
                 firstEvent.startTime == secondEvent.startTime &&
