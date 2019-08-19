@@ -39,17 +39,16 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
     //scanEvents() takes input (an array) and sees if any of the array items are the keys for any "events" in database
     //events with keys from input get added to table
-    func scanEvents(eventsOfInterest: Array<String>){
-        
+    func scanEvents(eventsOfInterest: Array<String>) {
+
         //observing the data changes in events of interest
         refEvents.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
+            //clearing the list
+            self.events.removeAll()
+            
             //if the reference have some values
             if snapshot.childrenCount > 0 {
-                
-                //clearing the list
-                self.events.removeAll()
-                
                 //iterating through all the values
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     //if eachEvent is listed in authoredEvents
@@ -68,13 +67,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         //appending it to list
                         self.events.append(event)
                     }
-                    //reloading the tableview
-                    self.tableView.reloadData()
                 }
             }
+            //reloading the tableview
+            self.tableView.reloadData()
         })
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
     
     override func viewDidLoad() {
         
@@ -101,7 +101,8 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         }
     }
     
-    //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     //Search and filter functions
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
@@ -126,7 +127,8 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
-    //--------------------------------------------------------------------------
+    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
     
     // Determining characteristics of table (sections, rows, etc.)
     func calculateSections() {
@@ -142,7 +144,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
             }
             else {
                uniqueDates.append(event.startDate)
-                sectionedEvents.append([event])
+               sectionedEvents.append([event])
             }
         }
         
@@ -211,10 +213,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     func mineFilter() {
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
-            self.events.removeAll()
+            //clearing the list
+            self.authoredEvents.removeAll()
+            
             if snapshot.childrenCount > 0 {
-                //clearing the list
-                self.authoredEvents.removeAll()
                 
                 //iterating through and adding eventID to authoredEvents list
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
@@ -229,10 +231,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     func bookmarkedFilter() {
         //if any changes in bookmarkedEvents...
         refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
+            //clearing the list
+            self.bookmarkedEvents.removeAll()
             
             if snapshot.childrenCount > 0 {
-                //clearing the list
-                self.bookmarkedEvents.removeAll()
                 
                 //iterating through and adding eventID to bookmarkedEvents list
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
@@ -247,9 +249,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         //if any changes in authoredEvents...
         refEventsByUser.child(user!).child("authored").observe(DataEventType.value, with: { (snapshot) in
             
+            //clearing the list
+            self.authoredEvents.removeAll()
+            
             if snapshot.childrenCount > 0 {
-                //clearing the list
-                self.authoredEvents.removeAll()
                 
                 //iterating through and adding eventID to authoredEvents list
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
@@ -260,9 +263,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         //if any changes in bookmarkedEvents...
         refEventsByUser.child(user!).child("bookmarked").observe(DataEventType.value, with: { (snapshot) in
             
+            //clearing the list
+            self.bookmarkedEvents.removeAll()
+            
             if snapshot.childrenCount > 0 {
-                //clearing the list
-                self.bookmarkedEvents.removeAll()
                 
                 //iterating through and adding eventID to bookmarkedEvents list
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {

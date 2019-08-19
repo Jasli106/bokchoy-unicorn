@@ -69,11 +69,11 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         //observing the data changes
         refEvents.observe(DataEventType.value, with: { (snapshot) in
             
+            //clearing the list
+            self.events.removeAll()
+            
             //if the reference have some values
             if snapshot.childrenCount > 0 {
-                
-                //clearing the list
-                self.events.removeAll()
                 
                 //iterating through all the values
                 for snapshotEvent in snapshot.children.allObjects as! [DataSnapshot] {
