@@ -501,7 +501,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1578" y="554"/>
+            <point key="canvasLocation" x="-1506" y="796"/>
         </scene>
         <!--Event Detail VC-->
         <scene sceneID="plA-eK-6jI">
@@ -583,6 +583,15 @@
                                     <action selector="deleteEvent" destination="YLM-UD-1k2" eventType="touchUpInside" id="QQ8-dS-IMI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6C9-iZ-Hhj" userLabel="Edit Button">
+                                <rect key="frame" x="16" y="697" width="343" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Edit Post"/>
+                                <connections>
+                                    <action selector="editEvent" destination="YLM-UD-1k2" eventType="touchUpInside" id="eFH-vX-FCZ"/>
+                                    <segue destination="7F8-5o-pPq" kind="presentation" identifier="detailToNew" id="3VH-2W-TLs"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -616,7 +625,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0D-t9-cHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Lya-IA-cCE" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-583.20000000000005" y="553.44827586206895"/>
+            <point key="canvasLocation" x="-580" y="610"/>
         </scene>
         <!--Sign Up VC-->
         <scene sceneID="Mck-um-oan">
@@ -1111,7 +1120,8 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="JC8-gH-nKr"/>
-        <segue reference="My4-2Y-AsS"/>
-        <segue reference="2ie-fL-Hxp"/>
+        <segue reference="3VH-2W-TLs"/>
+        <segue reference="WZq-B1-rld"/>
+        <segue reference="7Sg-jO-rU3"/>
     </inferredMetricsTieBreakers>
 </document>
