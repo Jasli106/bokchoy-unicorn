@@ -92,6 +92,11 @@ class EventDetailVC: UIViewController {
         self.present(deleteConfirmAlert, animated: true, completion: nil)
     }
     
+    //Edit event
+    @IBAction func editEvent() {
+        self.performSegue(withIdentifier: "detailToNew", sender: self)
+    }
+    
     //Dismiss details
     @IBAction func backButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
