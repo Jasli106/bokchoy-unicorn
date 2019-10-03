@@ -12,9 +12,9 @@ import FirebaseAuth
 
 class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
-    
+    @IBOutlet weak var detailsTextView: UITextView!
+    @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var detailsTextField: UITextView!
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     
@@ -50,7 +50,8 @@ class NewVC: UIViewController {
             "start time" : [startDate.hour, startDate.minute],
             "end date" : "\(endDate.month)/\(endDate.day)/\(endDate.year)",
             "end time" : [endDate.hour, endDate.minute],
-            "details" : detailsTextField.text!,
+            "details" : detailsTextView.text!,
+            "location" : locationTextField.text!,
             
             "author" : user!,
             "interested" : 0
@@ -65,6 +66,7 @@ class NewVC: UIViewController {
         necessaryTextFields.removeValue(forKey: "start time")
         necessaryTextFields.removeValue(forKey: "end date")
         necessaryTextFields.removeValue(forKey: "end time")
+        necessaryTextFields.removeValue(forKey: "details")
         
         //checking if any textfields were left blank
         for textField in necessaryTextFields.values {

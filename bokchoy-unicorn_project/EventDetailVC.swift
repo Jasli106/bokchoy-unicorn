@@ -20,11 +20,12 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var interestedLabel: UILabel!
     @IBOutlet weak var interestedButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
     
     let user = Auth.auth().currentUser?.uid
     
     //Declaring eventData as an Event; data recieved from HomeVC through segue
-    public var eventData = Event(ID: "", title: "", author: "", interested: 25, details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
     
     //References
     let refEvents = Database.database().reference().child("events")
@@ -50,13 +51,25 @@ class EventDetailVC: UIViewController {
         dateFormatter.dateFormat = "MM/dd/yyyy"
         let startDate = dateFormatter.string(from: eventData.startDate)
         let startTime = eventData.startTime
+        let endDate = dateFormatter.string(from: eventData.endDate)
+        let endTime = eventData.endTime
         
         //Customizing labels to eventData
         titleLabel.text = eventData.title
-        timeLabel.text = "time: \(startTime[0]):\(startTime[1])"
-        dateLabel.text = "date: " + startDate
+        if startTime == endTime {
+            timeLabel.text = "Time: \(startTime[0]):\(startTime[1])"
+        } else {
+            timeLabel.text = "Time: \(startTime[0]):\(startTime[1]) to \(endTime[0]):\(endTime[1])"
+        }
+        
+        if startDate == endDate {
+            dateLabel.text = "Date: " + startDate
+        } else{
+            dateLabel.text = "Dates: \(startDate) to \(endDate)"
+        }
         detailLabel.text = eventData.details
         interestedLabel.text = String(eventData.interested) + " people have expressed interest"
+        locationLabel.text = "Place: \(String(eventData.location))"
         
         //checking if this event is already bookmarked
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
