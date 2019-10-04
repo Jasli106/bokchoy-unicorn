@@ -85,20 +85,34 @@
                                 <textInputTraits key="textInputTraits" textContentType="name"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Instruments" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9u2-2H-Jwu" userLabel="InstrumentsTextField">
-                                <rect key="frame" x="15" y="255.66666666666666" width="235" height="40.666666666666657"/>
+                                <rect key="frame" x="15" y="255.66666666666666" width="98" height="40.666666666666657"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZIM-1u-qUv" userLabel="AgePicker">
                                 <rect key="frame" x="157.66666666666663" y="154" width="202.33333333333337" height="40.666666666666657"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="tag">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="N1f-lA-qme" id="PeU-zv-6r2"/>
+                                    <outlet property="delegate" destination="N1f-lA-qme" id="gQ4-ed-cvL"/>
+                                </connections>
                             </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6E-fb-RgQ" userLabel="ContactButton">
-                                <rect key="frame" x="260" y="255.66666666666666" width="100" height="85.666666666666657"/>
-                                <state key="normal" title="Contact"/>
-                            </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCE-2A-KT0" userLabel="GenderPicker">
                                 <rect key="frame" x="157.66666666666663" y="199.66666666666666" width="202.33333333333337" height="41"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="tag">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="N1f-lA-qme" id="fz1-vw-NLB"/>
+                                    <outlet property="delegate" destination="N1f-lA-qme" id="Y7V-RD-x8G"/>
+                                </connections>
                             </pickerView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TOd-Tc-JCu" userLabel="Videos Collection View">
                                 <rect key="frame" x="15" y="356.33333333333331" width="345" height="120"/>
@@ -115,10 +129,18 @@
                                 <cells/>
                             </collectionView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bio" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zPO-GE-Z4q" userLabel="BioTextField">
-                                <rect key="frame" x="15" y="311.33333333333331" width="235" height="30"/>
+                                <rect key="frame" x="15" y="311.33333333333331" width="98" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Info" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dam-rg-gql" userLabel="ContactInfoTextField">
+                                <rect key="frame" x="250" y="260" width="110" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" hint="Contact Info"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -129,12 +151,9 @@
                             <constraint firstItem="9u2-2H-Jwu" firstAttribute="trailing" secondItem="zPO-GE-Z4q" secondAttribute="trailing" id="7Py-eC-4eQ"/>
                             <constraint firstItem="9u2-2H-Jwu" firstAttribute="leading" secondItem="z4H-eK-88N" secondAttribute="leading" id="82K-Zy-QUW"/>
                             <constraint firstItem="TOd-Tc-JCu" firstAttribute="trailing" secondItem="cQO-65-rGS" secondAttribute="trailing" id="B30-Er-xfh"/>
-                            <constraint firstItem="Sff-gI-vhk" firstAttribute="trailing" secondItem="J6E-fb-RgQ" secondAttribute="trailing" constant="15" id="Bca-0U-5QP"/>
-                            <constraint firstItem="J6E-fb-RgQ" firstAttribute="top" secondItem="9u2-2H-Jwu" secondAttribute="top" id="By6-g5-b3B"/>
                             <constraint firstItem="TOd-Tc-JCu" firstAttribute="centerX" secondItem="Sff-gI-vhk" secondAttribute="centerX" id="Epn-CW-BBJ"/>
                             <constraint firstItem="cQO-65-rGS" firstAttribute="height" secondItem="ZIM-1u-qUv" secondAttribute="height" id="GNW-NE-jqG"/>
                             <constraint firstItem="ZIM-1u-qUv" firstAttribute="trailing" secondItem="cQO-65-rGS" secondAttribute="trailing" id="M6H-h7-qy7"/>
-                            <constraint firstItem="J6E-fb-RgQ" firstAttribute="leading" secondItem="9u2-2H-Jwu" secondAttribute="trailing" constant="10" id="RTk-uW-agT"/>
                             <constraint firstItem="Sff-gI-vhk" firstAttribute="centerX" secondItem="z4H-eK-88N" secondAttribute="trailing" constant="40" id="SH0-9o-uNM"/>
                             <constraint firstItem="BCE-2A-KT0" firstAttribute="leading" secondItem="cQO-65-rGS" secondAttribute="leading" id="UZj-F7-7fI"/>
                             <constraint firstItem="Sff-gI-vhk" firstAttribute="trailing" secondItem="cQO-65-rGS" secondAttribute="trailing" constant="15" id="Xzm-PW-Uld"/>
@@ -146,10 +165,8 @@
                             <constraint firstItem="BCE-2A-KT0" firstAttribute="top" secondItem="ZIM-1u-qUv" secondAttribute="bottom" constant="5" id="hGv-n5-zkY"/>
                             <constraint firstItem="cQO-65-rGS" firstAttribute="height" secondItem="BCE-2A-KT0" secondAttribute="height" id="i3L-X5-Mil"/>
                             <constraint firstItem="z4H-eK-88N" firstAttribute="leading" secondItem="TOd-Tc-JCu" secondAttribute="leading" id="iJq-Ud-hr5"/>
-                            <constraint firstItem="J6E-fb-RgQ" firstAttribute="leading" secondItem="Sff-gI-vhk" secondAttribute="trailing" constant="-115" id="lTG-wf-s6J"/>
                             <constraint firstItem="zPO-GE-Z4q" firstAttribute="top" secondItem="9u2-2H-Jwu" secondAttribute="bottom" constant="15" id="lm0-LX-Yri"/>
                             <constraint firstItem="z4H-eK-88N" firstAttribute="top" secondItem="Sff-gI-vhk" secondAttribute="top" constant="20" id="nzt-jC-Rcp"/>
-                            <constraint firstItem="J6E-fb-RgQ" firstAttribute="bottom" secondItem="zPO-GE-Z4q" secondAttribute="bottom" id="rhh-e3-Uii"/>
                             <constraint firstItem="9u2-2H-Jwu" firstAttribute="height" secondItem="cQO-65-rGS" secondAttribute="height" id="rm4-ej-CfL"/>
                             <constraint firstItem="9u2-2H-Jwu" firstAttribute="top" secondItem="z4H-eK-88N" secondAttribute="bottom" constant="15" id="xDU-Je-VTE"/>
                             <constraint firstItem="cQO-65-rGS" firstAttribute="trailing" secondItem="BCE-2A-KT0" secondAttribute="trailing" id="ycC-F3-3By"/>
@@ -169,7 +186,7 @@
                     <connections>
                         <outlet property="agePicker" destination="ZIM-1u-qUv" id="VOE-Cf-gPd"/>
                         <outlet property="bioField" destination="zPO-GE-Z4q" id="MjV-j7-qth"/>
-                        <outlet property="contactButton" destination="J6E-fb-RgQ" id="L0L-9t-4tk"/>
+                        <outlet property="contactField" destination="Dam-rg-gql" id="HqY-SK-sJ3"/>
                         <outlet property="doneEditingButton" destination="9eH-vh-Bs3" id="eu6-Fg-X8A"/>
                         <outlet property="genderPicker" destination="BCE-2A-KT0" id="BkB-oh-Flt"/>
                         <outlet property="instrumentsField" destination="9u2-2H-Jwu" id="CZl-2Y-GML"/>
@@ -179,7 +196,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeH-kg-sKo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2345" y="-655"/>
+            <point key="canvasLocation" x="2344.8000000000002" y="-655.41871921182269"/>
         </scene>
         <!--Profile VC-->
         <scene sceneID="fKJ-pk-xyY">
@@ -304,6 +321,13 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xZN-fE-W7e" userLabel="RatingImageView">
                                 <rect key="frame" x="192.66666666666663" y="630" width="167.33333333333337" height="40.666666666666742"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBn-Dr-Rmz" userLabel="ContactLabel">
+                                <rect key="frame" x="170" y="258" width="168" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -350,8 +374,11 @@
                         <barButtonItem key="backBarButtonItem" title="Cancel" id="R9P-rL-c39"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="ageLabel" destination="jiT-wc-gkf" id="GFn-Ov-Vz2"/>
                         <outlet property="bioLabel" destination="Sez-2D-dTp" id="S3B-DU-m0f"/>
                         <outlet property="collectionView" destination="HJc-R4-afj" id="vVy-5E-YeV"/>
+                        <outlet property="contactLabel" destination="tBn-Dr-Rmz" id="COW-0g-WdK"/>
+                        <outlet property="genderLabel" destination="0GP-e3-Htw" id="ojx-zh-XvH"/>
                         <outlet property="instrumentsLabel" destination="DJj-Na-Uws" id="8I3-np-5s1"/>
                         <outlet property="nameLabel" destination="G04-ea-9y0" id="GCg-af-RW0"/>
                         <outlet property="profilePicView" destination="akH-A0-6X2" id="jsd-IQ-31t"/>

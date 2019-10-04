@@ -20,13 +20,18 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var genderLabel: UILabel!
+    @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var profilePicView: UIImageView!
+    
 
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    var profileData : Dictionary<String, String> = ["bio" : "", "instruments" : "", "name" : "", "profile pic" : ""]
+    //UPDATE PROFILE DATA TO INCLUDE AGE AND GENDER
+    var profileData : Dictionary<String, String> = ["bio" : "Bio", "instruments" : "Instruments", "name" : "Name", "profile pic" : "", "age" : "1", "gender" : "Prefer not to say", "contact" : ""]
     //var videoURL: URL!
     
     //References
@@ -46,10 +51,12 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         profilePicView.clipsToBounds = true
         updateProfile()
         updateMedia(completion: {
-            //print(self.videos)
-            //print(self.images)
             self.collectionView.reloadData()
+            self.removeSpinner()
         })
+        //Loading spinner
+        self.showSpinner(onView: self.view)
+        
     }
     
     fileprivate func updateProfile() {
@@ -68,9 +75,15 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 self.profileData[key] = value as? String
             }
             //assigning text to labels
-            self.nameLabel.text = self.profileData["name"]
-            self.instrumentsLabel.text = self.profileData["instruments"]
+            self.nameLabel.text = "Name: " + self.profileData["name"]!
+            self.instrumentsLabel.text = "Instruments: " + self.profileData["instruments"]!
             self.bioLabel.text = self.profileData["bio"]
+            self.ageLabel.text = "Age: " + self.profileData["age"]!
+            self.genderLabel.text = "Gender: " + self.profileData["gender"]!
+            if self.profileData["contact"] == "" {
+                self.profileData["contact"] = self.user.email
+            }
+            self.contactLabel.text = "Contact: " + self.profileData["contact"]!
             
             //Setting profile image
             let imageURL = NSURL(string: self.profileData["profile pic"]!)! as URL
@@ -233,6 +246,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             else if images.contains(media[indexPath.item]) {
                 let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
                 performZoom(imageView: cell.imageView)
+                deleteMedia(imageView: cell.imageView)
             }
             
         }
@@ -249,6 +263,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         mediaPicker.sourceType = .photoLibrary
         
         self.present(mediaPicker, animated: true, completion: nil)
+        self.showSpinner(onView: self.view)
     }
     
     //When media picked
@@ -298,7 +313,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                         self.updateMedia(completion: {
-                            print("RELOADING DATA")
+                            self.removeSpinner()
                             self.collectionView.reloadData()
                         })
                     }
@@ -321,7 +336,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                     self.updateMedia(completion: {
-                        print("RELOADING DATA")
+                        self.removeSpinner()
                         self.collectionView.reloadData()
                     })
                 }
@@ -391,6 +406,23 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 self.blackBackground?.removeFromSuperview()
             }
         }
+    }
+    
+    //Deleting media
+    func deleteMedia(imageView: UIImageView) {
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleDelete)))
+    }
+    
+    @objc func handleDelete(pressGesture: UILongPressGestureRecognizer) {
+        let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+            print("Long Press")
+            //Remove media from database
+            //Reload media cells
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
 //----------------------------------------------------------------------------------------------------------------

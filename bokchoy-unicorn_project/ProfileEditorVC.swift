@@ -12,7 +12,7 @@ import FirebaseAuth
 import FirebaseStorage
 import MobileCoreServices
 
-class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     //Objects
     @IBOutlet weak var profilePicButton: UIButton!
@@ -21,11 +21,15 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerC
     @IBOutlet weak var genderPicker: UIPickerView!
     @IBOutlet weak var instrumentsField: UITextField!
     @IBOutlet weak var bioField: UITextField!
-    @IBOutlet weak var contactButton: UIButton!
+    
+    @IBOutlet weak var contactField: UITextField!
     
     @IBOutlet weak var doneEditingButton: UIBarButtonItem!
     
+    
+    
     //Variables
+    var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
     let userProfileRef = Database.database().reference().child("users")
     var profileData : Dictionary<String, Any> = [:]
@@ -33,11 +37,30 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerC
     let storagePicRef = Storage.storage().reference().child("Profile Pics")
     var urlString : String = ""
     
+    var agePickerData: [String] = [String]()
+    var genderPickerData: [String] = [String]()
+    
+    var age: String? = "1"
+    var gender: String? = "Prefer not to say"
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        
+        //Fill in previous information
         fillTextFields()
+        
+        //Set up pickers
+        agePickerData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        genderPickerData = ["Female", "Male", "Non-binary", "Other", "Prefer not to say"]
+        
+        self.agePicker.delegate = self
+        self.agePicker.dataSource = self
+        self.genderPicker.delegate = self
+        self.genderPicker.dataSource = self
+        
     }
     
     //checks user profile in database and inserts textfield text accordingly
@@ -46,15 +69,55 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerC
             // Get values
             let value = snapshot.value as? NSDictionary
             
-            //assigning values to textfields
+            //assigning values to textfields and pickers
             self.nameField.text = value?["name"] as? String ?? ""
+            let ageIndex = self.agePickerData.firstIndex(of: value?["age"] as? String ?? "1")
+            let genderIndex = self.genderPickerData.firstIndex(of: value?["gender"] as? String ?? "Prefer not to say")
+            self.agePicker.selectRow(ageIndex! , inComponent: 0, animated: true)
+            self.genderPicker.selectRow(genderIndex!, inComponent: 0, animated: true)
             self.instrumentsField.text = value?["instruments"] as? String ?? ""
             self.bioField.text = value?["bio"] as? String ?? ""
+            self.contactField.text = value?["contact"] as? String ?? self.user.email
             
         }) { (error) in
             print(error.localizedDescription)
         }
     }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+    
+    //Setting up picker views
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 1 {
+            return agePickerData.count
+        }
+        else {
+            return genderPickerData.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView.tag == 1 {
+            return "\(agePickerData[row])"
+        } else {
+            return "\(genderPickerData[row])"
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 1 {
+            age = agePickerData[row]
+        }
+        else {
+            gender = genderPickerData[row]
+        }
+    }
+    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
     
     //Set profile image
     @IBAction func setProfilePic() {
@@ -94,11 +157,16 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerC
             }
         }
     }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
     
     @IBAction func doneEditing(_ sender: Any) {
         let editedProfile = ["name": self.nameField.text!,
+                             "age": age,
+                             "gender": gender,
                              "instruments": self.instrumentsField.text!,
                              "bio": self.bioField.text!,
+                             "contact": self.contactField.text!, 
                              "profile pic": urlString]
         
         //adding changes to database
