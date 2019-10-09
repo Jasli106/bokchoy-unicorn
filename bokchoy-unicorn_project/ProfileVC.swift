@@ -20,13 +20,18 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var genderLabel: UILabel!
+    @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var profilePicView: UIImageView!
+    
 
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    var profileData : Dictionary<String, String> = ["bio" : "", "instruments" : "", "name" : "", "profile pic" : ""]
+    //UPDATE PROFILE DATA TO INCLUDE AGE AND GENDER
+    var profileData : Dictionary<String, String> = ["bio" : "Bio", "instruments" : "Instruments", "name" : "Name", "profile pic" : "", "age" : "1", "gender" : "Prefer not to say", "contact" : ""]
     //var videoURL: URL!
     
     //References
@@ -46,10 +51,15 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         profilePicView.clipsToBounds = true
         updateProfile()
         updateMedia(completion: {
-            //print(self.videos)
-            //print(self.images)
             self.collectionView.reloadData()
+            self.removeSpinner()
         })
+        //Loading spinner
+        self.showSpinner(onView: self.view)
+        
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+        self.collectionView.addGestureRecognizer(lpgr)
+        
     }
     
     fileprivate func updateProfile() {
@@ -68,9 +78,15 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 self.profileData[key] = value as? String
             }
             //assigning text to labels
-            self.nameLabel.text = self.profileData["name"]
-            self.instrumentsLabel.text = self.profileData["instruments"]
+            self.nameLabel.text = "Name: " + self.profileData["name"]!
+            self.instrumentsLabel.text = "Instruments: " + self.profileData["instruments"]!
             self.bioLabel.text = self.profileData["bio"]
+            self.ageLabel.text = "Age: " + self.profileData["age"]!
+            self.genderLabel.text = "Gender: " + self.profileData["gender"]!
+            if self.profileData["contact"] == "" {
+                self.profileData["contact"] = self.user.email
+            }
+            self.contactLabel.text = "Contact: " + self.profileData["contact"]!
             
             //Setting profile image
             let imageURL = NSURL(string: self.profileData["profile pic"]!)! as URL
@@ -220,6 +236,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = indexPath.section
         if section == 1 {
+            let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
             //If item is a video
             if videos.contains(media[indexPath.item]) {
                 let video = AVPlayer(url: videos[indexPath.item])
@@ -228,11 +245,13 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 present(videoPlayer, animated: true) {
                     video.play()
                 }
+                //deleteMedia(imageView: cell.imageView)
             }
             //If item is an image
             else if images.contains(media[indexPath.item]) {
-                let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+                
                 performZoom(imageView: cell.imageView)
+                //deleteMedia(imageView: cell.imageView)
             }
             
         }
@@ -249,6 +268,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         mediaPicker.sourceType = .photoLibrary
         
         self.present(mediaPicker, animated: true, completion: nil)
+        self.showSpinner(onView: self.view)
     }
     
     //When media picked
@@ -298,7 +318,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
                         self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                         self.updateMedia(completion: {
-                            print("RELOADING DATA")
+                            self.removeSpinner()
                             self.collectionView.reloadData()
                         })
                     }
@@ -321,7 +341,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
                     self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
                     self.updateMedia(completion: {
-                        print("RELOADING DATA")
+                        self.removeSpinner()
                         self.collectionView.reloadData()
                     })
                 }
@@ -391,6 +411,49 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 self.blackBackground?.removeFromSuperview()
             }
         }
+    }
+    
+    //Deleting media
+    /*func deleteMedia(imageView: UIImageView) {
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleDelete)))
+    }
+ 
+    @objc func handleDelete(pressGesture: UILongPressGestureRecognizer) {
+        let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+            print("Long Press")
+            //Remove media from database
+            //Reload media cells
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }*/
+    
+    @objc func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
+        if gestureReconizer.state != UIGestureRecognizer.State.ended {
+            return
+        }
+        
+        let p = gestureReconizer.location(in: self.collectionView)
+        let indexPath = self.collectionView.indexPathForItem(at: p)
+        let section = indexPath?.section
+        if section == 1 {
+            if let index = indexPath {
+                var cell = self.collectionView.cellForItem(at: index)
+                let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                    print(cell)
+                    //Remove media from database
+                    //Reload media cells
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                print("Could not find index path")
+            }
+        }
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------
