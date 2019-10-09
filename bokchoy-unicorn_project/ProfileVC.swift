@@ -57,6 +57,9 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         //Loading spinner
         self.showSpinner(onView: self.view)
         
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+        self.collectionView.addGestureRecognizer(lpgr)
+        
     }
     
     fileprivate func updateProfile() {
@@ -233,6 +236,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = indexPath.section
         if section == 1 {
+            let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
             //If item is a video
             if videos.contains(media[indexPath.item]) {
                 let video = AVPlayer(url: videos[indexPath.item])
@@ -241,12 +245,13 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 present(videoPlayer, animated: true) {
                     video.play()
                 }
+                //deleteMedia(imageView: cell.imageView)
             }
             //If item is an image
             else if images.contains(media[indexPath.item]) {
-                let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+                
                 performZoom(imageView: cell.imageView)
-                deleteMedia(imageView: cell.imageView)
+                //deleteMedia(imageView: cell.imageView)
             }
             
         }
@@ -409,13 +414,13 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     }
     
     //Deleting media
-    func deleteMedia(imageView: UIImageView) {
+    /*func deleteMedia(imageView: UIImageView) {
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleDelete)))
     }
-    
+ 
     @objc func handleDelete(pressGesture: UILongPressGestureRecognizer) {
-        let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
             print("Long Press")
             //Remove media from database
@@ -423,6 +428,32 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }*/
+    
+    @objc func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
+        if gestureReconizer.state != UIGestureRecognizer.State.ended {
+            return
+        }
+        
+        let p = gestureReconizer.location(in: self.collectionView)
+        let indexPath = self.collectionView.indexPathForItem(at: p)
+        let section = indexPath?.section
+        if section == 1 {
+            if let index = indexPath {
+                var cell = self.collectionView.cellForItem(at: index)
+                let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                    print(cell)
+                    //Remove media from database
+                    //Reload media cells
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                print("Could not find index path")
+            }
+        }
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------
