@@ -12,19 +12,34 @@ import FirebaseAuth
 
 class NewVC: UIViewController {
     @IBOutlet weak var postButton: UIButton!
-    
+    @IBOutlet weak var detailsTextView: UITextView!
+    @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var detailsTextField: UITextView!
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     
-    // public var events : Array<Dictionary<String, Any>> = []
+    //Declaring eventData as an Event; data recieved from eventDetailVC through segue
+    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    
+    var eventInDatabase = false
     
     let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view
+        if eventData.ID != ""{
+            titleTextField.text = eventData.title
+            detailsTextView.text = eventData.details
+            locationTextField.text = eventData.location
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat =  "HH:mm"
+            
+            let date = dateFormatter.date(from: "\(eventData.startTime[0]):\(eventData.startTime[1])")
+            
+            startTimePicker.date = date!
+        }
     }
     
     
@@ -43,14 +58,20 @@ class NewVC: UIViewController {
         let startDate = startTimePicker.date.getDateTime()
         let endDate = endTimePicker.date.getDateTime()
         
+        var ident = randomID
+        if eventData.ID != ""{
+            ident = eventData.ID
+        }
+        
         let newEvent = [
-            "ID" : randomID,
+            "ID" : ident,
             "title" : titleTextField.text!,
             "start date" : "\(startDate.month)/\(startDate.day)/\(startDate.year)",
             "start time" : [startDate.hour, startDate.minute],
             "end date" : "\(endDate.month)/\(endDate.day)/\(endDate.year)",
             "end time" : [endDate.hour, endDate.minute],
-            "details" : detailsTextField.text!,
+            "details" : detailsTextView.text!,
+            "location" : locationTextField.text!,
             
             "author" : user!,
             "interested" : 0
@@ -65,6 +86,7 @@ class NewVC: UIViewController {
         necessaryTextFields.removeValue(forKey: "start time")
         necessaryTextFields.removeValue(forKey: "end date")
         necessaryTextFields.removeValue(forKey: "end time")
+        necessaryTextFields.removeValue(forKey: "details")
         
         //checking if any textfields were left blank
         for textField in necessaryTextFields.values {
@@ -87,26 +109,41 @@ class NewVC: UIViewController {
         let refEvents = Database.database().reference().child("events")
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
         
-        //adding newEvent to database with automatically assigned unique ID
-        refEvents.child(randomID).setValue(newEvent){
-            (error:Error?, ref:DatabaseReference) in
-            if let error = error {
-                print("Data could not be saved: \(error).")
-            } else {
-                refEventsByUser.child("authored").child(randomID).setValue(randomID)
-                //if no error, alerts user that post was successful                
-                let alert = UIAlertController(title: "Posted!",
-                                              message: "Data saved successfully",
-                                              preferredStyle: .alert)
-                let okay = UIAlertAction(title: "OK", style: .default, handler: {_ in
-                    CATransaction.setCompletionBlock({
-                        self.performSegue(withIdentifier: "newToHome", sender: nil)
-                    })
-                })
-                alert.addAction(okay)
-                self.present(alert, animated: true, completion: nil)
+        if eventData.ID != ""{
+            eventInDatabase = true
+            refEvents.child(self.eventData.ID).setValue(newEvent){
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    print("Data could not be saved: \(error).")
+                }
             }
         }
+        
+       
+        if self.eventInDatabase == false {
+            //adding newEvent to database with automatically assigned unique ID
+            refEvents.child(randomID).setValue(newEvent){
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    print("Data could not be saved: \(error).")
+                } else {
+                    refEventsByUser.child("authored").child(randomID).setValue(randomID)
+                }
+            }
+        }
+        
+        //if no error, alerts user that post was successful
+        let alert = UIAlertController(title: "Posted!",
+                                      message: "Data saved successfully",
+                                      preferredStyle: .alert)
+        let okay = UIAlertAction(title: "OK", style: .default, handler: {_ in
+            CATransaction.setCompletionBlock({
+                self.performSegue(withIdentifier: "newToHome", sender: nil)
+            })
+        })
+        alert.addAction(okay)
+        self.present(alert, animated: true, completion: nil)
+        
     }
 
 }

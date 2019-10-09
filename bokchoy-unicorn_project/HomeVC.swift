@@ -17,6 +17,7 @@ struct Event {
     var title: String
     var author: String
     var interested: Int
+    var location: String
     var details: String
     var startDate: Date
     var startTime: Array<Int>
@@ -33,6 +34,7 @@ extension Event: Equatable {
                 firstEvent.ID == secondEvent.ID &&
                 firstEvent.author == secondEvent.author &&
                 firstEvent.interested == secondEvent.interested &&
+                firstEvent.location == secondEvent.location &&
                 firstEvent.details == secondEvent.details &&
                 firstEvent.startDate == secondEvent.startDate &&
                 firstEvent.startTime == secondEvent.startTime &&
@@ -85,7 +87,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let event = Event(ID: snapshotEvent.key, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as? Int ?? 0, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                    let event = Event(ID: snapshotEvent.key, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as? Int ?? 0, location: value!["location"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
                     
                     //appending it to list
                     self.events.append(event)
@@ -104,7 +106,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         let date = Date()
         let dateStart = Calendar.current.startOfDay(for: date)
         for event in events {
-            let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
+            let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "location": event.location, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
             if event.endDate < dateStart {
                 oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
                 oldRef.child("events").child(event.ID).removeValue()
