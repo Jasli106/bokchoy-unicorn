@@ -21,11 +21,13 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var interestedButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var editPostButton: UIButton!
     
     let user = Auth.auth().currentUser?.uid
     
     //Declaring eventData as an Event; data recieved from HomeVC through segue
     public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    
     
     //References
     let refEvents = Database.database().reference().child("events")
@@ -42,9 +44,11 @@ class EventDetailVC: UIViewController {
         
         if eventData.author == user {
             deleteButton.isHidden = false
+            editPostButton.isHidden = false
         }
         else {
             deleteButton.isHidden = true
+            editPostButton.isHidden = true
         }
         
         //Formatting date stuff
@@ -165,4 +169,11 @@ class EventDetailVC: UIViewController {
      
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if  let viewController = segue.destination as? NewVC{
+            viewController.eventData = eventData
+        }
+    }
 }

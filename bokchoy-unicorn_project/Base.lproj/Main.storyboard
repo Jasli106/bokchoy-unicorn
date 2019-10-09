@@ -625,6 +625,7 @@
                         <outlet property="dateLabel" destination="dDn-mn-ZLT" id="Jud-fw-N3k"/>
                         <outlet property="deleteButton" destination="jgQ-on-Wu2" id="8zJ-7h-Vbk"/>
                         <outlet property="detailLabel" destination="Tv3-4M-sjL" id="WSP-IR-DWU"/>
+                        <outlet property="editPostButton" destination="6C9-iZ-Hhj" id="Rq7-E4-o7d"/>
                         <outlet property="interestedButton" destination="gTX-HY-vVC" id="8E0-pZ-J2A"/>
                         <outlet property="interestedLabel" destination="eAu-2h-DY2" id="p1L-W8-ZEg"/>
                         <outlet property="locationLabel" destination="r1L-uG-Tg2" id="lun-Fe-gvK"/>
@@ -872,7 +873,9 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="New Post" id="EOa-5k-mtb"/>
+                                    <navigationItem title="New Post" id="EOa-5k-mtb">
+                                        <barButtonItem key="backBarButtonItem" title="cancel" id="Bgh-Xg-z4v"/>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWG-JR-nOn">
@@ -983,6 +986,7 @@
                         <viewLayoutGuide key="safeArea" id="efW-np-UTc"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="New" id="Yz8-cg-AOI"/>
+                    <navigationItem key="navigationItem" title="Title" id="PbG-46-3By"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="detailsTextView" destination="jpe-0A-30W" id="kMP-F0-4ai"/>
