@@ -30,6 +30,15 @@ class NewVC: UIViewController {
         // Do any additional setup after loading the view
         if eventData.ID != ""{
             titleTextField.text = eventData.title
+            detailsTextView.text = eventData.details
+            locationTextField.text = eventData.location
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat =  "HH:mm"
+            
+            let date = dateFormatter.date(from: "\(eventData.startTime[0]):\(eventData.startTime[1])")
+            
+            startTimePicker.date = date!
         }
     }
     
