@@ -194,16 +194,20 @@ class EventDetailVC: UIViewController {
             print("GOING TO NEWVC")
             let seguetype = type(of: segue.destination)
             print(seguetype)
-            let viewController = segue.destination as! NewVC
+            if let viewController = segue.destination as? NewVC {
+                viewController.eventData = eventData
+            }
             print(segue.destination)
-            viewController.eventData = eventData
+            
         }
         else if segue.identifier == "detailToProfileOther" {
             print("GOING TO PROFILE OTHER")
             let seguetype = type(of: segue.destination)
             print(seguetype)
-            let viewController = segue.destination as! ProfileOtherVC
-            viewController.profileData["user"] = eventData.author
+            if let viewController = segue.destination as? ProfileOtherVC {
+                viewController.profileData["user"] = eventData.author
+            }
+            
         }
     }
 }
