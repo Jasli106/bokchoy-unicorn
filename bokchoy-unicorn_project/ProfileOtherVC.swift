@@ -1,8 +1,8 @@
 //
-//  ProfileVC.swift
+//  ProfileOtherVC.swift
 //  bokchoy-unicorn_project
 //
-//  Created by Jasmine Li on 6/27/19.
+//  Created by Jasmine Li on 11/8/19.
 //  Copyright © 2019 Jasmine Li. All rights reserved.
 //
 
@@ -14,9 +14,8 @@ import MobileCoreServices
 import AVKit
 import AVFoundation
 
-class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate {
+class ProfileOtherVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    //Objects
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var instrumentsLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
@@ -26,26 +25,24 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var profilePicView: UIImageView!
     
-
-    //Variables
-    var user: User!
-    var userDatabaseID = Auth.auth().currentUser?.uid
-    var profileData : Dictionary<String, String> = ["bio" : "Bio", "instruments" : "Instruments", "name" : "Name", "profile pic" : "", "age" : "1", "gender" : "Prefer not to say", "contact" : ""]
-    var editingMedia = false
+    public var profileData : Dictionary<String, String> = ["bio" : "Bio", "instruments" : "Instruments", "name" : "Name", "profile pic" : "", "age" : "1", "gender" : "Prefer not to say", "contact" : "", "user" : "User"]
     
     //References
     let storageRef = Storage.storage().reference()
     let videoRef = Storage.storage().reference().child("Videos")
     let imageRef = Storage.storage().reference().child("Images")
     let databaseRef = Database.database().reference()
-
+    
+    public var user : String = "User"
+    
 //----------------------------------------------------------------------------------------------------------------
     
     //Setup
     override func viewDidLoad() {
+        user = profileData["user"]!
+        print("LOADING VIEW")
         super.viewDidLoad()
         //Store user ID in Firebase
-        user = Auth.auth().currentUser
         self.profilePicView.frame = CGRect(x: 14, y: 109, width: 130, height: 130)
         profilePicView.clipsToBounds = true
         updateProfile()
@@ -55,11 +52,10 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         })
         //Loading spinner
         self.showSpinner(onView: self.view)
-        
     }
     
     fileprivate func updateProfile() {
-        let userProfileRef = databaseRef.child("users").child(userDatabaseID!)
+        let userProfileRef = databaseRef.child("users").child(user)
         
         //observing the data changes
         userProfileRef.observe(DataEventType.value, with: { (snapshot) in
@@ -76,17 +72,16 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             //assigning text to labels
             self.nameLabel.text = "Name: " + self.profileData["name"]!
             self.instrumentsLabel.text = "Instruments: " + self.profileData["instruments"]!
-            self.bioLabel.text = self.profileData["bio"]
+            self.bioLabel.text = self.profileData["bio"] ?? " "
             self.ageLabel.text = "Age: " + self.profileData["age"]!
             self.genderLabel.text = "Gender: " + self.profileData["gender"]!
             if self.profileData["contact"] == "" {
-                self.profileData["contact"] = self.user.email
+                self.profileData["contact"] = self.profileData["contact"]
             }
             self.contactLabel.text = "Contact: " + self.profileData["contact"]!
             
             //Setting profile image
             let imageURL = NSURL(string: self.profileData["profile pic"]!)! as URL
-            //print("Image URL: \(imageURL)")
             let imageData = try? Data(contentsOf: imageURL)
             if let data = imageData {
                 self.profilePicView.image = UIImage(data: data)
@@ -108,7 +103,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 })
             })
         })
-        //self.collectionView.reloadData()
     }
     
 //----------------------------------------------------------------------------------------------------------------
@@ -116,7 +110,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     //Getting info from database
     fileprivate func getVideosFromDatabase(completion: @escaping () -> ()) {
         //Get videos
-        let refVideos = Database.database().reference().child("users").child(userDatabaseID!).child("videos")
+        let refVideos = Database.database().reference().child("users").child(user).child("videos")
         refVideos.observeSingleEvent(of: DataEventType.value) { (snapshot) in
             if snapshot.childrenCount > 0 {
                 self.videos.removeAll()
@@ -133,7 +127,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
     fileprivate func getImagesFromDatabase(completion: @escaping () -> ()) {
         //Get images
-        let refImages = Database.database().reference().child("users").child(userDatabaseID!).child("images")
+        let refImages = Database.database().reference().child("users").child(user).child("images")
         refImages.observeSingleEvent(of: DataEventType.value) { (snapshot) in
             if snapshot.childrenCount > 0 {
                 self.images.removeAll()
@@ -151,7 +145,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
     fileprivate func getMediaFromDatabase(completion: @escaping () -> ()) {
         //Get whole media list
-        let refMedia = Database.database().reference().child("users").child(userDatabaseID!).child("media")
+        let refMedia = Database.database().reference().child("users").child(user).child("media")
         refMedia.observeSingleEvent(of: DataEventType.value) { (snapshot) in
             if snapshot.childrenCount > 0 {
                 self.media.removeAll()
@@ -174,53 +168,36 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
-        else {
-            return media.count
-        }
+        return media.count
     }
     
     //Creating cells
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("CREATING CELLS")
-        let section = indexPath.section
         //Cells displaying media
-        if section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as! CollectionViewCell
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 1
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as! CollectionViewCell
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.borderWidth = 1
+        
+        //If item is a video
+        if videos.contains(media[indexPath.item]) {
+            //imageView.image = TODO: Get video thumbnail
+            let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
+            cell.imageView.image = thumbnailImage
+        }
             
-            //If item is a video
-            if videos.contains(media[indexPath.item]) {
-                //imageView.image = TODO: Get video thumbnail
-                let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
-                cell.imageView.image = thumbnailImage
-            }
-                
             //If item is an image
-            else if images.contains(media[indexPath.item]) {
-                let imageData = try? Data(contentsOf: media[indexPath.item])
-                let imageAsImage = UIImage(data: imageData!)
-                cell.imageView.image = imageAsImage
-            }
-            return cell
+        else if images.contains(media[indexPath.item]) {
+            let imageData = try? Data(contentsOf: media[indexPath.item])
+            let imageAsImage = UIImage(data: imageData!)
+            cell.imageView.image = imageAsImage
         }
-            
-        //Add new cell
-        else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addNewCell", for: indexPath) as! CollectionViewCell
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 1
-            cell.button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-            
-            return cell
-        }
+        return cell
+    
         
     }
     
@@ -242,105 +219,11 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                     video.play()
                 }
             }
-            //If item is an image
+                //If item is an image
             else if images.contains(media[indexPath.item]) {
                 
                 performZoom(imageView: cell.imageView)
             }
-            
-        }
-    }
-    
-    //When add new button pressed
-    @objc func buttonPressed()
-    {
-        let mediaPicker = UIImagePickerController()
-        
-        mediaPicker.delegate = self
-        mediaPicker.allowsEditing = true
-        mediaPicker.mediaTypes = [kUTTypeImage, kUTTypeMovie] as [String]
-        mediaPicker.sourceType = .photoLibrary
-        
-        self.present(mediaPicker, animated: true, completion: nil)
-        self.showSpinner(onView: self.view)
-    }
-    
-    //When media picked
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        //print("MEDIA PICKED")
-        if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
-            //Image selected
-            if mediaType  == "public.image" {
-                let finalImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
-                handleImageSelectedForImage(image: finalImage, completion: {
-                    picker.dismiss(animated: true, completion: nil)
-                })
-            }
-                    
-            //Video selected
-            else if mediaType == "public.movie" {
-                let pickedURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
-                //Check if error w/ URL
-                if pickedURL != nil {
-                    handleVideoSelectedForURL(url: pickedURL, completion: {
-                        picker.dismiss(animated: true, completion: nil)
-                    })
-                }
-                else {
-                    let alert = UIAlertController(title: "Error", message: "Could not upload video.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
-                        picker.dismiss(animated: true, completion: nil)
-                    }))
-                    self.present(alert, animated: true)
-                }
-                
-            }
-        }
-    }
-    
-    //Image selected function
-    fileprivate func handleImageSelectedForImage(image: UIImage, completion: @escaping () -> ()) {
-        let filename = "\(UUID().uuidString).png"
-        if let imageData = image.pngData() {
-            imageRef.child(filename).putData(imageData, metadata: nil) { (metadata, error) in
-                let imageRef = self.storageRef.child("Images/\(filename)")
-                imageRef.downloadURL(completion: { url , error in
-                    if let error = error {
-                        print(error)
-                    } else {
-                        let downloadURL = url!
-                        self.databaseRef.child("users").child(self.userDatabaseID!).child("images").childByAutoId().setValue(downloadURL.absoluteString)
-                        self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
-                        self.updateMedia(completion: {
-                            self.removeSpinner()
-                            self.collectionView.reloadData()
-                        })
-                    }
-                })
-                completion()
-            }
-        }
-    }
-    
-    //Video selected function
-    fileprivate func handleVideoSelectedForURL(url: URL?, completion: @escaping () -> ()) {
-        let filename = "\(UUID().uuidString).mov"
-        videoRef.child(filename).putFile(from: url!, metadata: nil) { (metadata, error) in
-            let videoRef = self.storageRef.child("Videos/\(filename)")
-            videoRef.downloadURL(completion: { url , error in
-                if let error = error {
-                    print(error)
-                } else {
-                    let downloadURL = url!
-                    self.databaseRef.child("users").child(self.userDatabaseID!).child("videos").childByAutoId().setValue(downloadURL.absoluteString)
-                    self.databaseRef.child("users").child(self.userDatabaseID!).child("media").childByAutoId().setValue(downloadURL.absoluteString)
-                    self.updateMedia(completion: {
-                        self.removeSpinner()
-                        self.collectionView.reloadData()
-                    })
-                }
-            })
-            completion()
         }
     }
     
@@ -384,7 +267,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             //Solve for h2
             //h2 = (h1*w2)/w1
             let height = startingFrame!.height / startingFrame!.width * keyWindow.frame.width//(startingFrame!.height * keyWindow.frame.width)/startingFrame!.width
-                
+            
             //Performing animation
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackBackground!.alpha = 1
@@ -407,48 +290,5 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         }
     }
     
-    //Editing mode
-    @IBAction func showEditing(sender: UIButton) {
-        //The following code doesn't work: references different cells??? Makes a copy of cells in collectionview? Just doesn't work
-        let indexpaths = self.collectionView.indexPathsForVisibleItems
-        var cells : [CollectionViewCell] = []
-        for indexpath in indexpaths {
-            if indexpath[0] == 1 {
-                cells.append(collectionView(collectionView, cellForItemAt: indexpath) as! CollectionViewCell)
-            }
-        }
-        //Need it to show delete button if editing, hide if not
-        if editingMedia {
-            print("STOP EDITING")
-            editingMedia = false
-        }
-        else {
-            print("START EDITING")
-            editingMedia = true
-            
-        }
-        //Get cells in section 1 ONLY
-        //Show deleteButton for cells
-        //When deleteButton tapped, remove from array, Firebase
-        //Reload collectionView
-    }
-    
-//----------------------------------------------------------------------------------------------------------------
-    
-    //Logout button
-    @IBAction func logOutAction(sender: UIButton) {
-        //Sign out on Firebase
-        do {
-            try Auth.auth().signOut()
-        }
-        catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-        
-        //Go back to first screen
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let initial = storyboard.instantiateInitialViewController()
-        UIApplication.shared.keyWindow?.rootViewController = initial
-    }
-    
+
 }

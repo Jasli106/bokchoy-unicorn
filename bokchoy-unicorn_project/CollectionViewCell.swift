@@ -11,4 +11,17 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var button: UIButton!
+    
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    let profile = ProfileVC()
+    func handleButtons() {
+        if profile.editingMedia {
+            deleteButton.isHidden = false
+        }
+        else {
+            deleteButton.isHidden = true
+        }
+    }
+    
 }
