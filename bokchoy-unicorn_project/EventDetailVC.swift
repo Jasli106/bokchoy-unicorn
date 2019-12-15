@@ -19,6 +19,7 @@ class EventDetailVC: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var interestedLabel: UILabel!
     @IBOutlet weak var interestedButton: UIButton!
+    @IBOutlet weak var authorButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var editPostButton: UIButton!
@@ -31,6 +32,7 @@ class EventDetailVC: UIViewController {
     
     //References
     let refEvents = Database.database().reference().child("events")
+    let refUsers = Database.database().reference().child("users")
     
     //setting default
     var alreadyBookmarked = false
@@ -45,10 +47,12 @@ class EventDetailVC: UIViewController {
         if eventData.author == user {
             deleteButton.isHidden = false
             editPostButton.isHidden = false
+            authorButton.isHidden = true
         }
         else {
             deleteButton.isHidden = true
             editPostButton.isHidden = true
+            authorButton.isHidden = false
         }
         
         //Formatting date stuff
@@ -75,6 +79,14 @@ class EventDetailVC: UIViewController {
         interestedLabel.text = String(eventData.interested) + " people have expressed interest"
         locationLabel.text = "Place: \(String(eventData.location))"
         
+        //Setting author button text
+        var author: String = " "
+        refUsers.child(eventData.author).child("name").observeSingleEvent(of: .value) { (snapshot) in
+            author = snapshot.value as? String ?? " "
+            self.authorButton.setTitle(author, for: .normal)
+        }
+        
+        
         //checking if this event is already bookmarked
         let refEventsByUser = Database.database().reference().child("eventsByUser").child(user!)
         refEventsByUser.child("bookmarked").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
@@ -94,6 +106,11 @@ class EventDetailVC: UIViewController {
     }
     
 //-----------------------------------------------------------------------------------------------------------------------------------------------
+    //Author button clicked
+    @IBAction func showProfile() {
+        self.performSegue(withIdentifier: "detailToProfileOther", sender: self)
+        print("BUTTON CLICKED")
+    }
     
     //Delete event
     @IBAction func deleteEvent() {
@@ -170,10 +187,27 @@ class EventDetailVC: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("PREPARING FOR SEGUE")
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if  let viewController = segue.destination as? NewVC{
-            viewController.eventData = eventData
+        if segue.identifier == "detailToNew" {
+            print("GOING TO NEWVC")
+            let seguetype = type(of: segue.destination)
+            print(seguetype)
+            if let viewController = segue.destination as? NewVC {
+                viewController.eventData = eventData
+            }
+            print(segue.destination)
+            
+        }
+        else if segue.identifier == "detailToProfileOther" {
+            print("GOING TO PROFILE OTHER")
+            let seguetype = type(of: segue.destination)
+            print(seguetype)
+            if let viewController = segue.destination as? ProfileOtherVC {
+                viewController.profileData["user"] = eventData.author
+            }
+            
         }
     }
 }

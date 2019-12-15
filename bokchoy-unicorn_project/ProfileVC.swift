@@ -14,6 +14,16 @@ import MobileCoreServices
 import AVKit
 import AVFoundation
 
+struct editing {
+    static var editingMedia: Bool = false
+    static var sender: UIButton?
+}
+
+extension Notification.Name {
+    static let didReceiveData = Notification.Name("didReceiveData")
+    static let didConfirmDelete = Notification.Name("didConfirmDelete")
+}
+
 class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate {
     
     //Objects
@@ -30,9 +40,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     //Variables
     var user: User!
     var userDatabaseID = Auth.auth().currentUser?.uid
-    //UPDATE PROFILE DATA TO INCLUDE AGE AND GENDER
     var profileData : Dictionary<String, String> = ["bio" : "Bio", "instruments" : "Instruments", "name" : "Name", "profile pic" : "", "age" : "1", "gender" : "Prefer not to say", "contact" : ""]
-    //var videoURL: URL!
     
     //References
     let storageRef = Storage.storage().reference()
@@ -49,6 +57,7 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         user = Auth.auth().currentUser
         self.profilePicView.frame = CGRect(x: 14, y: 109, width: 130, height: 130)
         profilePicView.clipsToBounds = true
+        editing.editingMedia = false
         updateProfile()
         updateMedia(completion: {
             self.collectionView.reloadData()
@@ -56,9 +65,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         })
         //Loading spinner
         self.showSpinner(onView: self.view)
-        
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
-        self.collectionView.addGestureRecognizer(lpgr)
         
     }
     
@@ -157,14 +163,14 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         //Get whole media list
         let refMedia = Database.database().reference().child("users").child(userDatabaseID!).child("media")
         refMedia.observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            self.media.removeAll()
             if snapshot.childrenCount > 0 {
-                self.media.removeAll()
                 for snapshotMedia in snapshot.children.allObjects as! [DataSnapshot] {
                     let URL = NSURL(string: snapshotMedia.value as! String)! as URL
                     self.media.append(URL)
                 }
-                //print(self.media)
             }
+            print("AFTER GETTING MEDIA: ", self.media)
             completion()
         }
     }
@@ -194,6 +200,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("CREATING CELLS")
         let section = indexPath.section
+        
+        print(self.media)
         //Cells displaying media
         if section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as! CollectionViewCell
@@ -202,7 +210,6 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
             
             //If item is a video
             if videos.contains(media[indexPath.item]) {
-                //imageView.image = TODO: Get video thumbnail
                 let thumbnailImage = thumbnailImageForURL(url: media[indexPath.item])
                 cell.imageView.image = thumbnailImage
             }
@@ -213,6 +220,11 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 let imageAsImage = UIImage(data: imageData!)
                 cell.imageView.image = imageAsImage
             }
+            
+            //Show/hide delete buttons
+            cell.handleButtons()
+            cell.deleteButton.tag = indexPath.row
+            
             return cell
         }
             
@@ -245,13 +257,11 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
                 present(videoPlayer, animated: true) {
                     video.play()
                 }
-                //deleteMedia(imageView: cell.imageView)
             }
             //If item is an image
             else if images.contains(media[indexPath.item]) {
                 
                 performZoom(imageView: cell.imageView)
-                //deleteMedia(imageView: cell.imageView)
             }
             
         }
@@ -413,49 +423,127 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
         }
     }
     
-    //Deleting media
-    /*func deleteMedia(imageView: UIImageView) {
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleDelete)))
+    //Editing mode
+    @IBAction func showEditing(sender: UIButton){
+        if editing.editingMedia {
+            editing.editingMedia = false
+        }
+        else {
+            editing.editingMedia = true
+        }
+        collectionView.reloadData()
     }
- 
-    @objc func handleDelete(pressGesture: UILongPressGestureRecognizer) {
-        let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
-            print("Long Press")
-            //Remove media from database
-            //Reload media cells
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }*/
     
-    @objc func handleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
-        if gestureReconizer.state != UIGestureRecognizer.State.ended {
-            return
-        }
+    //Delete media
+    @IBAction func deleteMedia() {
+        //When deleteButton tapped, remove from array, Firebase
+        print("DELETE MEDIA")
+        //Alerts
+        let deleteConfirmAlert = UIAlertController(title: "Are you sure you want to delete this event?", message: "This action cannot be undone.", preferredStyle: .alert)
+        deleteConfirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        deleteConfirmAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            //Observing received data
+            print("ADDING OBSERVER")
+            NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: .didReceiveData, object: nil)
+            //Posting confirmed delete
+            NotificationCenter.default.post(name: .didConfirmDelete, object: nil)
+        }))
         
-        let p = gestureReconizer.location(in: self.collectionView)
-        let indexPath = self.collectionView.indexPathForItem(at: p)
-        let section = indexPath?.section
-        if section == 1 {
-            if let index = indexPath {
-                var cell = self.collectionView.cellForItem(at: index)
-                let alert = UIAlertController(title: "Delete?", message: "Are you sure you would like to delete this media?", preferredStyle: .actionSheet)
-                alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
-                    print(cell)
-                    //Remove media from database
-                    //Reload media cells
-                }))
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            } else {
-                print("Could not find index path")
-            }
-        }
-        
+        self.present(deleteConfirmAlert, animated: true, completion: nil)
     }
-
+    
+    @objc func onDidReceiveData(_ notification:Notification) {
+        //print(notification.userInfo as Any)
+        let sender = notification.userInfo?["sender"] as! UIButton
+        doTheDelete(cell: sender)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
+    
+    func doTheDelete(cell: UIButton) {
+        //Get current cell
+        //print("CELL TAG: ", cell.tag)
+        let currentCell = cell.tag
+        //print(currentCell)
+        
+        let userRef = Database.database().reference().child("users").child(self.user.uid)
+        let url = self.media[currentCell].absoluteString
+        
+        //If item is video
+        if self.videos.contains(self.media[currentCell]) {
+            //Remove from storage database
+            let videoRef = Storage.storage().reference(forURL: url)
+            videoRef.delete { (error) in
+                if let error = error {
+                    print("ERROR")
+                    print(error)
+                } else {
+                    print("SUCCESS")
+                }
+            }
+            //Remove from video section under user
+            userRef.child("videos").observe(.value, with: { snapshot in
+                for child in snapshot.children {
+                    let valueD = child as! DataSnapshot
+                    let keyD = valueD.key
+                    let value1 = valueD.value as! String
+                    
+                    if value1 == self.media[currentCell].absoluteString {
+                        userRef.child("videos").child(keyD).removeValue()
+                    }
+                }
+            })
+        }
+            
+            //If item is an image
+        else if self.images.contains(self.media[currentCell]) {
+            print(self.media[currentCell])
+            //Delete image from storage database
+            let imageRef = Storage.storage().reference(forURL: url)
+            imageRef.delete { (error) in
+                if let error = error {
+                    print("ERROR")
+                    print(error)
+                } else {
+                    print("SUCCESS")
+                }
+            }
+            //Remove from images section under user
+            userRef.child("images").observe(.value, with: { snapshot in
+                for child in snapshot.children {
+                    let valueD = child as! DataSnapshot
+                    let keyD = valueD.key
+                    let value1 = valueD.value as! String
+                    
+                    if value1 == self.media[currentCell].absoluteString {
+                        userRef.child("images").child(keyD).removeValue()
+                    }
+                }
+            })
+        }
+        //Remove from media section under user
+        userRef.child("media").observe(.value, with: { snapshot in
+            for child in snapshot.children {
+                let valueD = child as! DataSnapshot
+                let keyD = valueD.key
+                let value1 = valueD.value as! String
+                
+                if value1 == self.media[currentCell].absoluteString {
+                    userRef.child("media").child(keyD).removeValue()
+                }
+            }
+        })
+        
+        self.updateMedia {
+            self.removeSpinner()
+            self.collectionView.reloadData()
+            editing.editingMedia = false
+            //print(self.collectionView.visibleCells)
+            //print(self.media)
+        }
+    }
+    
 //----------------------------------------------------------------------------------------------------------------
     
     //Logout button
