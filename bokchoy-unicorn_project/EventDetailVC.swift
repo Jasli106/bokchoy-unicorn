@@ -27,7 +27,7 @@ class EventDetailVC: UIViewController {
     let user = Auth.auth().currentUser?.uid
     
     //Declaring eventData as an Event; data recieved from HomeVC through segue
-    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [], imageURL: "")
     
     
     //References
@@ -59,17 +59,36 @@ class EventDetailVC: UIViewController {
         dateFormatter.dateFormat = "MM/dd/yyyy"
         let startDate = dateFormatter.string(from: eventData.startDate)
         let startTime = eventData.startTime
+        print(eventData.startDate)
         let endDate = dateFormatter.string(from: eventData.endDate)
         let endTime = eventData.endTime
         
         //Customizing labels to eventData
+        //Setting title label
         titleLabel.text = eventData.title
+        //Formatting low minutes correctly
+        var startMinute = "00"
+        var endMinute = "00"
+        if startTime[1] < 10 {
+            startMinute = "0" + String(startTime[1])
+        }
+        else {
+            startMinute = String(startTime[1])
+        }
+        if endTime[1] < 10 {
+            endMinute = "0" + String(endTime[1])
+        }
+        else {
+            endMinute = String(endTime[1])
+        }
+        //Setting time label
         if startTime == endTime {
-            timeLabel.text = "Time: \(startTime[0]):\(startTime[1])"
+            timeLabel.text = "Time: \(startTime[0]):\(startMinute)"
         } else {
-            timeLabel.text = "Time: \(startTime[0]):\(startTime[1]) to \(endTime[0]):\(endTime[1])"
+            timeLabel.text = "Time: \(startTime[0]):\(startMinute) to \(endTime[0]):\(endMinute)"
         }
         
+        //Setting date label
         if startDate == endDate {
             dateLabel.text = "Date: " + startDate
         } else{
@@ -195,6 +214,7 @@ class EventDetailVC: UIViewController {
             let seguetype = type(of: segue.destination)
             print(seguetype)
             if let viewController = segue.destination as? NewVC {
+                print(eventData.startDate)
                 viewController.eventData = eventData
             }
             print(segue.destination)

@@ -31,6 +31,15 @@ extension Date {
         return(day, month, year, hour, minute)
     }
     
+    public func removeTimeStamp(fromDate: Date) -> Date {
+        print(fromDate)
+        guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: fromDate)) else {
+            fatalError("Failed to strip time from Date object")
+        }
+        print("DATE: \(date)")
+        return date
+    }
+    
     /*func convertTimeZone (initTimeZone: TimeZone, finalTimeZone: TimeZone) -> Date? {
     }*/
 }
