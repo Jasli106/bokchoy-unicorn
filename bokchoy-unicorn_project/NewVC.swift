@@ -9,8 +9,11 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
+import MobileCoreServices
 
-class NewVC: UIViewController {
+
+class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var postButton: UIButton!
     @IBOutlet weak var detailsTextView: UITextView!
     @IBOutlet weak var locationTextField: UITextField!
@@ -19,10 +22,13 @@ class NewVC: UIViewController {
     @IBOutlet weak var endTimePicker: UIDatePicker!
     
     //Declaring eventData as an Event; data recieved from eventDetailVC through segue
-    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [])
+    public var eventData = Event(ID: "", title: "", author: "", interested: 25, location: "", details: "", startDate: Date(timeIntervalSince1970: 0), startTime: [], endDate: Date(timeIntervalSince1970: 0), endTime: [], imageURL: "")
     
     var eventInDatabase = false
+    var userDatabaseID = Auth.auth().currentUser?.uid
+    var urlString : String = ""
     
+    let storageImgRef = Storage.storage().reference().child("Event Pics")
     let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
@@ -33,34 +39,81 @@ class NewVC: UIViewController {
             detailsTextView.text = eventData.details
             locationTextField.text = eventData.location
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat =  "HH:mm"
+            //Set time pickers to correct dates and times
+            let startTimeInterval: TimeInterval = TimeInterval(eventData.startTime[0] * 60 * 60 + eventData.startTime[1] * 60)
+            let startDate = eventData.startDate.addingTimeInterval(startTimeInterval)
+            let endTimeInterval: TimeInterval = TimeInterval(eventData.endTime[0] * 60 * 60 + eventData.endTime[1] * 60)
+            let endDate = eventData.startDate.addingTimeInterval(endTimeInterval)
             
-            let date = dateFormatter.date(from: "\(eventData.startTime[0]):\(eventData.startTime[1])")
-            
-            startTimePicker.date = date!
+            startTimePicker.date = startDate
+            endTimePicker.date = endDate
         }
     }
     
-    
-    //Convert times to time zone of poster + store in database as that time
+//-----------------------------------------------------------------------------------------------------------------------------------------------
 
+    var addImgButton: UIButton!
+    
+    //Set event image
+    @IBAction func setEventImage(sender: UIButton) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.mediaTypes = [kUTTypeImage] as [String]
+        imagePicker.sourceType = .photoLibrary
+        
+        addImgButton = sender
+        
+        self.present(imagePicker, animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
+        handleImageSelectedForImage(image: pickedImage) {
+            picker.dismiss(animated: true, completion: nil)
+            self.addImgButton.setBackgroundImage(pickedImage, for: .normal)
+        }
+        
+    }
+    
+    fileprivate func handleImageSelectedForImage(image: UIImage, completion: @escaping () -> ()) {
+        let filename = "\(ident).png"
+        print(ident)
+        if let imageData = image.pngData() {
+            storageImgRef.child(filename).putData(imageData, metadata: nil) { (metadata, error) in
+                let imageRef = self.storageImgRef.child(filename)
+                imageRef.downloadURL(completion: { url , error in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        let downloadURL = url!
+                        self.urlString = downloadURL.absoluteString
+                    }
+                })
+                completion()
+            }
+        }
+    }
+    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+let user = Auth.auth().currentUser?.uid
+
+var ident = Database.database().reference().childByAutoId().key!
+    
     //clicking "post" button will postEvent()
     //postEvent() makes userInput into newEvent (dict), adds newEvent to events in database
     @IBAction func postEvent(_ sender: Any) {
         
         //coding newEvent based on user input in text fields
         
-        let user = Auth.auth().currentUser?.uid
-        let randomID = Database.database().reference().childByAutoId().key!
-        
         //Getting date and time components as ints
         let startDate = startTimePicker.date.getDateTime()
         let endDate = endTimePicker.date.getDateTime()
         
-        var ident = randomID
         if eventData.ID != ""{
-            ident = eventData.ID
+            self.ident = eventData.ID
         }
         
         let newEvent = [
@@ -72,6 +125,7 @@ class NewVC: UIViewController {
             "end time" : [endDate.hour, endDate.minute],
             "details" : detailsTextView.text!,
             "location" : locationTextField.text!,
+            "imageURL" : urlString,
             
             "author" : user!,
             "interested" : 0
@@ -122,12 +176,12 @@ class NewVC: UIViewController {
        
         if self.eventInDatabase == false {
             //adding newEvent to database with automatically assigned unique ID
-            refEvents.child(randomID).setValue(newEvent){
+            refEvents.child(ident).setValue(newEvent){
                 (error:Error?, ref:DatabaseReference) in
                 if let error = error {
                     print("Data could not be saved: \(error).")
                 } else {
-                    refEventsByUser.child("authored").child(randomID).setValue(randomID)
+                    refEventsByUser.child("authored").child(self.ident).setValue(self.ident)
                 }
             }
         }

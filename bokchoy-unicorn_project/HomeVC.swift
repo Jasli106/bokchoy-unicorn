@@ -24,6 +24,7 @@ struct Event {
     var endDate: Date
     var endTime: Array<Int>
     //var location: String //Might have to change type later, research how location works?
+    var imageURL: String
 }
 
 //Make Events equatable (can check if they are equal)
@@ -39,7 +40,8 @@ extension Event: Equatable {
                 firstEvent.startDate == secondEvent.startDate &&
                 firstEvent.startTime == secondEvent.startTime &&
                 firstEvent.endDate == secondEvent.endDate &&
-                firstEvent.endTime == secondEvent.endTime
+                firstEvent.endTime == secondEvent.endTime &&
+                firstEvent.imageURL == secondEvent.imageURL
     }
 }
 
@@ -61,6 +63,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
     let dateFormatter = DateFormatter()
     
     let searchController = UISearchController(searchResultsController: nil)
+    
 
     
     fileprivate func addDatabaseToEvents(completion: @escaping () -> ()) {
@@ -87,7 +90,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
                     let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                     
                     //Converting to custom object of type Event
-                    let event = Event(ID: snapshotEvent.key, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as? Int ?? 0, location: value!["location"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                    let event = Event(ID: snapshotEvent.key, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as? Int ?? 0, location: value!["location"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>, imageURL: value!["imageURL"] as! String)
                     
                     //appending it to list
                     self.events.append(event)
@@ -106,7 +109,7 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         let date = Date()
         let dateStart = Calendar.current.startOfDay(for: date)
         for event in events {
-            let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "location": event.location, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime] as [String : Any]
+            let eventToArchive = ["title" : event.title, "author": Auth.auth().currentUser!.uid, "location": event.location, "details": event.details, "start date": dateFormatter.string(from: event.startDate), "start time": event.startTime, "end date": dateFormatter.string(from: event.endDate), "end time": event.endTime, "imageURL": event.imageURL] as [String : Any]
             if event.endDate < dateStart {
                 oldRef.child("oldEvents").childByAutoId().setValue(eventToArchive)
                 oldRef.child("events").child(event.ID).removeValue()
@@ -237,7 +240,13 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         // title cell text: title
         cell.textLabel?.text = event.title
         
-        // TODO: format time here
+        // set cell image
+        print(event.imageURL)
+        let imageURL = NSURL(string: event.imageURL)! as URL
+        let imageData = try? Data(contentsOf: imageURL)
+        if let data = imageData {
+            cell.imageView?.image = UIImage(data: data)
+        }
         
         // convert start time value to array
         let startTime = event.startTime

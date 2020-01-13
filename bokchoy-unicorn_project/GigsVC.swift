@@ -28,6 +28,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     var sectionedEvents = [[Event]]()
     var orderedUniqueDates = [Date]()
     var orderedSectionedEvents = [[Event]]()
+    var eventList = [Event]()
     
     //Constants
     let dateFormatter = DateFormatter()
@@ -40,13 +41,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     //scanEvents() takes input (an array) and sees if any of the array items are the keys for any "events" in database
     //events with keys from input get added to table
     func scanEvents(eventsOfInterest: Array<String>) {
+        print("SCANNING EVENTS")
 
         //observing the data changes in events of interest
         refEvents.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             //clearing the list
             self.events.removeAll()
-            
+            print("EVENTS AFTER REMOVAL: ", self.events)
             //if the reference have some values
             if snapshot.childrenCount > 0 {
                 //iterating through all the values
@@ -62,13 +64,14 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                         let endDateFormatted = self.dateFormatter.date(from: value!["end date"] as! String)
                         
                         //Converting to custom object of type Event
-                        let event = Event(ID: ID, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as! Int, location: value!["location"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>)
+                        let event = Event(ID: ID, title: value!["title"] as! String, author: value!["author"] as! String, interested: value!["interested"] as! Int, location: value!["location"] as! String, details: value!["details"] as! String, startDate: startDateFormatted!, startTime: value!["start time"] as! Array<Int>, endDate: endDateFormatted!, endTime: value!["end time"] as! Array<Int>, imageURL: value!["imageURL"] as! String)
                         
                         //appending it to list
                         self.events.append(event)
                     }
                 }
             }
+            print(self.events)
             //reloading the tableview
             self.tableView.reloadData()
         })
@@ -79,19 +82,18 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.tableView.dataSource = self;
+        self.tableView.delegate = self;
         
         dateFormatter.dateFormat = "MM/dd/yyyy"
         
         //Search bar setup
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = true
         tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
-        /*allFilter {
-            self.allFilterCompletion()
-        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,7 +105,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     
 //-----------------------------------------------------------------------------------------------------------------------------------------------
     
-    //Search and filter functions
+    //Search and filter events
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
@@ -163,6 +165,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     override func numberOfSections(in tableView: UITableView) -> Int {
         calculateSections()
         return orderedUniqueDates.count
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -183,7 +186,7 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         let event: Event
-        
+        print(orderedSectionedEvents)
         if isFiltering() {
             event = filteredEvents[indexPath.section][indexPath.row]
         } else {
@@ -193,7 +196,12 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         // title cell text: title
         cell.textLabel?.text = event.title
         
-        // TODO: format time here
+        // set cell image
+        let imageURL = NSURL(string: event.imageURL)! as URL
+        let imageData = try? Data(contentsOf: imageURL)
+        if let data = imageData {
+            cell.imageView?.image = UIImage(data: data)
+        }
         
         // convert start time value to array
         let startTime = event.startTime
@@ -205,7 +213,6 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         else {
             cell.detailTextLabel?.text = "\(startTime[0]):\(startTime[1])"
         }
-        
         return cell
     }
     
@@ -222,10 +229,11 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.authoredEvents.append(eachEvent.key)
                 }
-                self.scanEvents(eventsOfInterest: self.authoredEvents)
                 
             }
+            self.scanEvents(eventsOfInterest: self.authoredEvents)
         })
+        
     }
     
     func bookmarkedFilter() {
@@ -240,9 +248,10 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
                 for eachEvent in snapshot.children.allObjects as! [DataSnapshot] {
                     self.bookmarkedEvents.append(eachEvent.key)
                 }
-                self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
             }
+            self.scanEvents(eventsOfInterest: self.bookmarkedEvents)
         })
+        
     }
     
     func allFilter(completion: @escaping () -> ()) {
@@ -294,22 +303,23 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         
         switch segmentedControl.selectedSegmentIndex {
 
-        case 0:
-            allFilter {
-                self.allFilterCompletion()
-            }
-            dataFilter = 0
-        case 1:
-            mineFilter()
-            dataFilter = 1
-        case 2:
-            bookmarkedFilter()
-            dataFilter = 2
-        default:
-            allFilter {
-                self.allFilterCompletion()
-            }
-            dataFilter = 0
+            case 0:
+                allFilter {
+                    self.allFilterCompletion()
+                }
+                dataFilter = 0
+            case 1:
+                mineFilter()
+                dataFilter = 1
+            case 2:
+                bookmarkedFilter()
+                tableView.reloadData()
+                dataFilter = 2
+            default:
+                allFilter {
+                    self.allFilterCompletion()
+                }
+                dataFilter = 0
         }
     }
     
