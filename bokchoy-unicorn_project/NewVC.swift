@@ -33,6 +33,7 @@ class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         // Do any additional setup after loading the view
         if eventData.ID != ""{
             titleTextField.text = eventData.title

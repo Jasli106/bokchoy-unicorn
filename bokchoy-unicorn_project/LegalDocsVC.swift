@@ -9,13 +9,28 @@
 import UIKit
 
 class LegalDocsVC: UIViewController {
-
-    @IBAction func closeDoc(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
+    /*
+    let file = termsandconditions.rtf
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(contentsOf: file)
+        //if segueIdentifier == "SignUpToTerms" {
+        
+        //readFromDocumentsFile(fileName: file)
+        
+        
+        
+    }*/
+    /*
+    func readFromDocumentsFile(fileName:String) -> String {
+        let text = String(contentsOfFile: String, error: nil)
+        print(text)
+        return text
+        
     }
-
+*/
+    @IBAction func closeDoc(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }

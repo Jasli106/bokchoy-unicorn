@@ -124,6 +124,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
 
     override func loadView() {
         super.loadView()
+        self.view.backgroundColor = #colorLiteral(red: 0.7849289775, green: 1, blue: 0.9694601893, alpha: 1)
+        
         addDatabaseToEvents(completion: {
             self.saveOldPosts()
             self.calculateSections()

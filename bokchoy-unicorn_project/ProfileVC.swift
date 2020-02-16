@@ -53,6 +53,8 @@ class ProfileVC: UIViewController, UINavigationControllerDelegate, UICollectionV
     //Setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = #colorLiteral(red: 0.7849289775, green: 1, blue: 0.9694601893, alpha: 1)
+        
         //Store user ID in Firebase
         user = Auth.auth().currentUser
         self.profilePicView.frame = CGRect(x: 14, y: 109, width: 130, height: 130)

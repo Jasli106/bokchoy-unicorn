@@ -94,6 +94,8 @@ class GigsVC: UITableViewController, UISearchResultsUpdating {
         definesPresentationContext = true
         searchController.searchBar.placeholder = "Search Gigs"
         
+        self.view.backgroundColor = #colorLiteral(red: 0.7015351653, green: 0.9191095233, blue: 1, alpha: 1)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
