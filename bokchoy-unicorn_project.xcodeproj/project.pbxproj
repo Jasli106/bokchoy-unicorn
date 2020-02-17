@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA17841323FAF4D900D81680 /* PrivacyPolicy.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA17841223FAF4D900D81680 /* PrivacyPolicy.rtf */; };
 		AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */; };
 		AA56344F22EF6D4900C48AF8 /* LegalDocsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */; };
 		AA56345122EF72CB00C48AF8 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56345022EF72CB00C48AF8 /* SettingsVC.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		767B3F28F99085413E2E2478 /* Pods-bokchoy-unicorn_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.debug.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.debug.xcconfig"; sourceTree = "<group>"; };
+		AA17841223FAF4D900D81680 /* PrivacyPolicy.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = PrivacyPolicy.rtf; sourceTree = "<group>"; };
 		AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; usesTabs = 0; };
 		AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDocsVC.swift; sourceTree = "<group>"; };
 		AA56345022EF72CB00C48AF8 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				DC2A4A1522C52E5400A8BB90 /* Main.storyboard */,
 				DC04831C23753A060002CD18 /* ProfileOtherVC.swift */,
 				AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */,
+				AA17841223FAF4D900D81680 /* PrivacyPolicy.rtf */,
 				AAA36B1523D269F100874380 /* termsandconditions.rtf */,
 				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DC9755982347A60C0042A043 /* LoadingExtension.swift */,
@@ -202,6 +205,7 @@
 				DC2A4A1C22C52E5800A8BB90 /* LaunchScreen.storyboard in Resources */,
 				DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */,
 				DC2A4A1922C52E5800A8BB90 /* Assets.xcassets in Resources */,
+				AA17841323FAF4D900D81680 /* PrivacyPolicy.rtf in Resources */,
 				AAA36B1623D269F100874380 /* termsandconditions.rtf in Resources */,
 				DC2A4A1722C52E5400A8BB90 /* Main.storyboard in Resources */,
 			);
