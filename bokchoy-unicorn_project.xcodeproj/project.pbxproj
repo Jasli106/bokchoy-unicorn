@@ -10,7 +10,6 @@
 		AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */; };
 		AA56344F22EF6D4900C48AF8 /* LegalDocsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */; };
 		AA56345122EF72CB00C48AF8 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56345022EF72CB00C48AF8 /* SettingsVC.swift */; };
-		AAA36B1623D269F100874380 /* termsandconditions.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AAA36B1523D269F100874380 /* termsandconditions.rtf */; };
 		AAB9573722CA92A600B293D3 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9573622CA92A600B293D3 /* HomeVC.swift */; };
 		B9585E9A0CE6B35CFBD15F6F /* Pods_bokchoy_unicorn_project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */; };
 		DC00A3C222E26125000C6126 /* StartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C122E26125000C6126 /* StartVC.swift */; };
@@ -29,6 +28,7 @@
 		DCB003CA22C88CE7001993B7 /* GigsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003C922C88CE7001993B7 /* GigsVC.swift */; };
 		DCB003D422C890D4001993B7 /* NewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003D322C890D4001993B7 /* NewVC.swift */; };
 		DCB003D622C89499001993B7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB003D522C89499001993B7 /* TabBarController.swift */; };
+		DCB130BB23FAE55C00BCCD35 /* termsandconditions.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DCB130BA23FAE55C00BCCD35 /* termsandconditions.pdf */; };
 		DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCCD1CD422C8F0BF00C36BAE /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -37,7 +37,6 @@
 		AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; usesTabs = 0; };
 		AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDocsVC.swift; sourceTree = "<group>"; };
 		AA56345022EF72CB00C48AF8 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		AAA36B1523D269F100874380 /* termsandconditions.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = termsandconditions.rtf; sourceTree = "<group>"; };
 		AAB9573622CA92A600B293D3 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		AEFA965AE08A7520EDE4CAC3 /* Pods_bokchoy_unicorn_project.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bokchoy_unicorn_project.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9D9BEDC9496EBA776518EE /* Pods-bokchoy-unicorn_project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.release.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.release.xcconfig"; sourceTree = "<group>"; };
@@ -59,6 +58,7 @@
 		DCB003C922C88CE7001993B7 /* GigsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GigsVC.swift; sourceTree = "<group>"; };
 		DCB003D322C890D4001993B7 /* NewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewVC.swift; sourceTree = "<group>"; };
 		DCB003D522C89499001993B7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		DCB130BA23FAE55C00BCCD35 /* termsandconditions.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = termsandconditions.pdf; sourceTree = "<group>"; };
 		DCCD1CD422C8F0BF00C36BAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,7 +114,7 @@
 				DC2A4A1522C52E5400A8BB90 /* Main.storyboard */,
 				DC04831C23753A060002CD18 /* ProfileOtherVC.swift */,
 				AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */,
-				AAA36B1523D269F100874380 /* termsandconditions.rtf */,
+				DCB130BA23FAE55C00BCCD35 /* termsandconditions.pdf */,
 				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DC9755982347A60C0042A043 /* LoadingExtension.swift */,
 				DC59F24422F95D68006C7067 /* CollectionViewCell.swift */,
@@ -201,8 +201,8 @@
 			files = (
 				DC2A4A1C22C52E5800A8BB90 /* LaunchScreen.storyboard in Resources */,
 				DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */,
+				DCB130BB23FAE55C00BCCD35 /* termsandconditions.pdf in Resources */,
 				DC2A4A1922C52E5800A8BB90 /* Assets.xcassets in Resources */,
-				AAA36B1623D269F100874380 /* termsandconditions.rtf in Resources */,
 				DC2A4A1722C52E5400A8BB90 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

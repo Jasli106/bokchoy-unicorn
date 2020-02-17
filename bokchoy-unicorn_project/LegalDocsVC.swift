@@ -7,29 +7,28 @@
 //
 
 import UIKit
+import PDFKit
 
 class LegalDocsVC: UIViewController {
-    /*
-    let file = termsandconditions.rtf
+    
+    @IBOutlet var pdfView: PDFView!
+    
+    public var file = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(contentsOf: file)
-        //if segueIdentifier == "SignUpToTerms" {
         
-        //readFromDocumentsFile(fileName: file)
-        
-        
-        
-    }*/
-    /*
-    func readFromDocumentsFile(fileName:String) -> String {
-        let text = String(contentsOfFile: String, error: nil)
-        print(text)
-        return text
+        if let path = Bundle.main.path(forResource: file, ofType: "pdf") {
+            if let pdfDocument = PDFDocument(url: URL(fileURLWithPath: path)) {
+                pdfView.displayMode = .singlePageContinuous
+                pdfView.autoScales = true
+                pdfView.displayDirection = .vertical
+                pdfView.document = pdfDocument
+            }
+        }
         
     }
-*/
+    
     @IBAction func closeDoc(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }

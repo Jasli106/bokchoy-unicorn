@@ -31,6 +31,8 @@ class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
     let storageImgRef = Storage.storage().reference().child("Event Pics")
     let dateFormatter = DateFormatter()
     
+    @IBOutlet weak var imageButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
@@ -48,6 +50,16 @@ class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
             
             startTimePicker.date = startDate
             endTimePicker.date = endDate
+            
+            //Setting add image button image
+            let imageURL = NSURL(string: self.eventData.imageURL)! as URL
+            print(imageURL)
+            let imageData = try? Data(contentsOf: imageURL)
+            if let data = imageData {
+                let image = UIImage(data: data) as UIImage?
+                imageButton.setBackgroundImage(image, for: .normal)
+            }
+
         }
     }
     
