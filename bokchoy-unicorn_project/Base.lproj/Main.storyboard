@@ -1115,8 +1115,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uDP-kg-KjH">
-                                <rect key="frame" x="240" y="581" width="145" height="100"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uDP-kg-KjH">
+                                <rect key="frame" x="30" y="581" width="100" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="uDP-kg-KjH" secondAttribute="height" multiplier="1:1" id="8G8-tE-aaE"/>
@@ -1128,21 +1128,7 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AddMediaCell" id="Gzf-qn-MOh">
-                                        <rect key="frame" x="17" y="0.0" width="111" height="110"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="111" height="110"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                        <size key="customSize" width="111" height="110"/>
-                                        <connections>
-                                            <outlet property="backgroundView" destination="uDP-kg-KjH" id="FhX-b2-Ycw"/>
-                                            <outlet property="selectedBackgroundView" destination="uDP-kg-KjH" id="59u-Yc-Db7"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bxb-R6-PFr">
                                 <rect key="frame" x="310" y="696" width="44" height="33"/>
@@ -1176,8 +1162,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdL-AN-1dD" userLabel="AddImageButton">
-                                <rect key="frame" x="34" y="581" width="100" height="100"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdL-AN-1dD" userLabel="AddImageButton">
+                                <rect key="frame" x="30" y="581" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="oJc-A1-SoM"/>
                                     <constraint firstAttribute="width" secondItem="xdL-AN-1dD" secondAttribute="height" multiplier="1:1" id="qN5-x1-z3i"/>
@@ -1189,10 +1175,10 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="pricing, info, URL, social media, etc." translatesAutoresizingMaskIntoConstraints="NO" id="jpe-0A-30W">
-                                <rect key="frame" x="15" y="441" width="379" height="100"/>
+                                <rect key="frame" x="15" y="441" width="379" height="68"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="kpG-dA-Hg5"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="kpG-dA-Hg5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1206,9 +1192,11 @@
                             <constraint firstItem="Jr7-Ek-vHr" firstAttribute="leading" secondItem="RWG-JR-nOn" secondAttribute="leading" id="1oP-XH-IIA"/>
                             <constraint firstItem="pwy-mi-OUQ" firstAttribute="top" secondItem="An0-Qf-yA1" secondAttribute="bottom" constant="10" id="3zH-pN-a6y"/>
                             <constraint firstItem="An0-Qf-yA1" firstAttribute="leading" relation="lessThanOrEqual" secondItem="3yN-J4-gMh" secondAttribute="trailing" constant="35" id="4Ag-N9-ydo"/>
+                            <constraint firstItem="xdL-AN-1dD" firstAttribute="leading" secondItem="efW-np-UTc" secondAttribute="leading" constant="30" id="4DE-xi-mmC"/>
                             <constraint firstItem="bK4-j2-RQU" firstAttribute="trailing" secondItem="efW-np-UTc" secondAttribute="trailing" id="5Zk-M4-5Lz"/>
                             <constraint firstItem="Ahg-la-CQf" firstAttribute="trailing" secondItem="HIX-Qx-lNq" secondAttribute="trailing" priority="750" id="9o0-Pv-QoM"/>
                             <constraint firstItem="jpe-0A-30W" firstAttribute="trailing" secondItem="HIX-Qx-lNq" secondAttribute="trailing" id="ADi-QB-MaR"/>
+                            <constraint firstItem="efW-np-UTc" firstAttribute="leading" secondItem="uDP-kg-KjH" secondAttribute="leading" constant="-30" id="DUf-CQ-z2d"/>
                             <constraint firstItem="An0-Qf-yA1" firstAttribute="top" secondItem="Ahg-la-CQf" secondAttribute="bottom" constant="10" id="EZ1-0P-FS4"/>
                             <constraint firstItem="bK4-j2-RQU" firstAttribute="centerX" secondItem="Lxp-Ye-jWR" secondAttribute="centerX" id="IMh-ZB-ANI"/>
                             <constraint firstItem="Ahg-la-CQf" firstAttribute="centerY" secondItem="0Z5-w2-mTq" secondAttribute="centerY" id="Ihe-Eq-WEq"/>
@@ -1393,6 +1381,6 @@
         <segue reference="kf1-wh-8GJ"/>
         <segue reference="3VH-2W-TLs"/>
         <segue reference="WZq-B1-rld"/>
-        <segue reference="lt2-3K-kFX"/>
+        <segue reference="Lfy-JR-pVP"/>
     </inferredMetricsTieBreakers>
 </document>
