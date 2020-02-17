@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA17841323FAF4D900D81680 /* PrivacyPolicy.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA17841223FAF4D900D81680 /* PrivacyPolicy.rtf */; };
 		AA4F83D022CD3DC400263819 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */; };
 		AA56344F22EF6D4900C48AF8 /* LegalDocsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */; };
 		AA56345122EF72CB00C48AF8 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56345022EF72CB00C48AF8 /* SettingsVC.swift */; };
@@ -36,7 +35,6 @@
 
 /* Begin PBXFileReference section */
 		767B3F28F99085413E2E2478 /* Pods-bokchoy-unicorn_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bokchoy-unicorn_project.debug.xcconfig"; path = "Target Support Files/Pods-bokchoy-unicorn_project/Pods-bokchoy-unicorn_project.debug.xcconfig"; sourceTree = "<group>"; };
-		AA17841223FAF4D900D81680 /* PrivacyPolicy.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = PrivacyPolicy.rtf; sourceTree = "<group>"; };
 		AA4F83CF22CD3DC400263819 /* EventDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; usesTabs = 0; };
 		AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDocsVC.swift; sourceTree = "<group>"; };
 		AA56345022EF72CB00C48AF8 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -209,8 +207,6 @@
 				DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */,
 				DCB130BB23FAE55C00BCCD35 /* termsandconditions.pdf in Resources */,
 				DC2A4A1922C52E5800A8BB90 /* Assets.xcassets in Resources */,
-				AA17841323FAF4D900D81680 /* PrivacyPolicy.rtf in Resources */,
-				AAA36B1623D269F100874380 /* termsandconditions.rtf in Resources */,
 				DC2A4A1722C52E5400A8BB90 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
