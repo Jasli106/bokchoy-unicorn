@@ -223,9 +223,11 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let date = dateFormatter.string(from: orderedUniqueDates[section])
-        return date
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = UILabel()
+        header.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        header.text = dateFormatter.string(from: orderedUniqueDates[section])
+        return header
     }
     
     // creates cells according to Prototype cell
@@ -260,6 +262,8 @@ class HomeVC: UITableViewController, UISearchResultsUpdating {
         else {
             cell.detailTextLabel?.text = "\(startTime[0]):\(startTime[1])"
         }
+        
+        cell.backgroundColor = #colorLiteral(red: 0.7849289775, green: 1, blue: 0.9694601893, alpha: 1)
         
         return cell
     }
