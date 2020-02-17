@@ -103,7 +103,7 @@ class SettingsVC: UIViewController {
                 viewController.file = "termsandconditions"
             }
             else if segue.identifier == "settingsToPrivacy" {
-                //viewController.file = "privacypolicy"
+                viewController.file = "privacypolicy"
             }
         }
         
