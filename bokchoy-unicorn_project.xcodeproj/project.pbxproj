@@ -17,7 +17,7 @@
 		DC00A3C622E2617C000C6126 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C522E2617C000C6126 /* SignUpVC.swift */; };
 		DC00A3C822E356C6000C6126 /* ProfileEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00A3C722E356C6000C6126 /* ProfileEditorVC.swift */; };
 		DC04831D23753A060002CD18 /* ProfileOtherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04831C23753A060002CD18 /* ProfileOtherVC.swift */; };
-		DC261C3A23FAF53000B66F4B /* privacypolicy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DC261C3923FAF53000B66F4B /* privacypolicy.pdf */; };
+		DC261C3C23FAF75C00B66F4B /* privacypolicy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DC261C3B23FAF75C00B66F4B /* privacypolicy.pdf */; };
 		DC2A4A1222C52E5400A8BB90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */; };
 		DC2A4A1422C52E5400A8BB90 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */; };
 		DC2A4A1722C52E5400A8BB90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC2A4A1522C52E5400A8BB90 /* Main.storyboard */; };
@@ -46,7 +46,7 @@
 		DC00A3C522E2617C000C6126 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		DC00A3C722E356C6000C6126 /* ProfileEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorVC.swift; sourceTree = "<group>"; };
 		DC04831C23753A060002CD18 /* ProfileOtherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOtherVC.swift; sourceTree = "<group>"; };
-		DC261C3923FAF53000B66F4B /* privacypolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacypolicy.pdf; sourceTree = "<group>"; };
+		DC261C3B23FAF75C00B66F4B /* privacypolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = privacypolicy.pdf; path = ../../privacypolicy.pdf; sourceTree = "<group>"; };
 		DC2A4A0E22C52E5400A8BB90 /* bokchoy-unicorn_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bokchoy-unicorn_project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				DC04831C23753A060002CD18 /* ProfileOtherVC.swift */,
 				AA56344E22EF6D4900C48AF8 /* LegalDocsVC.swift */,
 				DCB130BA23FAE55C00BCCD35 /* termsandconditions.pdf */,
-				DC261C3923FAF53000B66F4B /* privacypolicy.pdf */,
+				DC261C3B23FAF75C00B66F4B /* privacypolicy.pdf */,
 				DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */,
 				DC9755982347A60C0042A043 /* LoadingExtension.swift */,
 				DC59F24422F95D68006C7067 /* CollectionViewCell.swift */,
@@ -203,7 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC2A4A1C22C52E5800A8BB90 /* LaunchScreen.storyboard in Resources */,
-				DC261C3A23FAF53000B66F4B /* privacypolicy.pdf in Resources */,
+				DC261C3C23FAF75C00B66F4B /* privacypolicy.pdf in Resources */,
 				DCCD1CD522C8F0BF00C36BAE /* GoogleService-Info.plist in Resources */,
 				DCB130BB23FAE55C00BCCD35 /* termsandconditions.pdf in Resources */,
 				DC2A4A1922C52E5800A8BB90 /* Assets.xcassets in Resources */,
