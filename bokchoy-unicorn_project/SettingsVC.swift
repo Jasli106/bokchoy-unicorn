@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseAuth
+import PDFKit
 
 class SettingsVC: UIViewController {
 
@@ -96,6 +97,15 @@ class SettingsVC: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let viewController = segue.destination as? LegalDocsVC {
+            if segue.identifier == "settingsToTerms" {
+                viewController.file = "termsandconditions"
+            }
+            else if segue.identifier == "settingsToPrivacy" {
+                //viewController.file = "privacypolicy"
+            }
+        }
         
         // This will show in the next view controller being pushed
         let backItem = UIBarButtonItem()
