@@ -20,6 +20,7 @@ class LoginVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.backgroundColor = #colorLiteral(red: 0.7849289775, green: 1, blue: 0.9694601893, alpha: 1)
+        self.hideKeyboardWhenTappedAround()
     }
    
     //Sign in existing user

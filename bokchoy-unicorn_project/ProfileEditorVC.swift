@@ -62,6 +62,8 @@ class ProfileEditorVC: UIViewController, UINavigationBarDelegate, UIImagePickerC
         self.genderPicker.delegate = self
         self.genderPicker.dataSource = self
         
+        self.hideKeyboardWhenTappedAround() 
+        
     }
     
     //checks user profile in database and inserts textfield text accordingly

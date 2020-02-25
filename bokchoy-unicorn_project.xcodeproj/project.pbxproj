@@ -1679,7 +1679,7 @@
 		DC00A3C722E356C6000C6126 /* ProfileEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorVC.swift; sourceTree = "<group>"; };
 		DC04831C23753A060002CD18 /* ProfileOtherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOtherVC.swift; sourceTree = "<group>"; };
 		DC261C3F23FAFD0C00B66F4B /* privacypolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacypolicy.pdf; sourceTree = "<group>"; };
-		DC2A4A0E22C52E5400A8BB90 /* bokchoy-unicorn_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bokchoy-unicorn_project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC2A4A0E22C52E5400A8BB90 /* Pontune.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pontune.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC2A4A1122C52E5400A8BB90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC2A4A1322C52E5400A8BB90 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		DC2A4A1622C52E5400A8BB90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -4604,7 +4604,7 @@
 		DC2A4A0F22C52E5400A8BB90 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DC2A4A0E22C52E5400A8BB90 /* bokchoy-unicorn_project.app */,
+				DC2A4A0E22C52E5400A8BB90 /* Pontune.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4667,7 +4667,7 @@
 			);
 			name = "bokchoy-unicorn_project";
 			productName = "bokchoy-unicorn_project";
-			productReference = DC2A4A0E22C52E5400A8BB90 /* bokchoy-unicorn_project.app */;
+			productReference = DC2A4A0E22C52E5400A8BB90 /* Pontune.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -5034,7 +5034,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jasmineli.bokchoy-unicorn-project.hi";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pontune;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -5053,7 +5053,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jasmineli.bokchoy-unicorn-project.hi";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pontune;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

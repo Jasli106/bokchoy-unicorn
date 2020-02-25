@@ -23,6 +23,7 @@ class SignUpVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        self.hideKeyboardWhenTappedAround()
     }
     
     //Sign up new user
