@@ -62,6 +62,8 @@ class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
             }
 
         }
+        
+        self.hideKeyboardWhenTappedAround() 
     }
     
 //-----------------------------------------------------------------------------------------------------------------------------------------------

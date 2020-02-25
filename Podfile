@@ -5,7 +5,8 @@ project 'bokchoy-unicorn_project.xcodeproj'
 
 target 'bokchoy-unicorn_project' do
   # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+  #use_frameworks!
+  use_modular_headers!
 
   # Pods for bokchoy-unicorn_project
   pod 'Firebase/Core'
