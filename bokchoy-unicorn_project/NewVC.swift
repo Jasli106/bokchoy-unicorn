@@ -58,6 +58,7 @@ class NewVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
             if let data = imageData {
                 let image = UIImage(data: data) as UIImage?
                 imageButton.setBackgroundImage(image, for: .normal)
+                urlString = eventData.imageURL
             }
 
         }
@@ -156,6 +157,7 @@ var ident = Database.database().reference().childByAutoId().key!
         necessaryTextFields.removeValue(forKey: "end date")
         necessaryTextFields.removeValue(forKey: "end time")
         necessaryTextFields.removeValue(forKey: "details")
+        necessaryTextFields.removeValue(forKey: "imageURL")
         
         //checking if any textfields were left blank
         for textField in necessaryTextFields.values {
